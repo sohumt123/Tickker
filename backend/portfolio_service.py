@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 import json
 import os
-from price_service import PriceService
+# from price_service import PriceService
 
 class PortfolioService:
     def __init__(self):
