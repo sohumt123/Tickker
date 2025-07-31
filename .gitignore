@@ -87,3 +87,7 @@ coverage.xml
 data/*.csv
 data/*.json
 !data/.gitkeep
+
+# Project instructions
+claude.md
+CLAUDE.md

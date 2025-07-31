@@ -252,15 +252,47 @@ async def get_portfolio_weights():
     positions = latest.get('positions', [])
     total_value = latest.get('total_value', 0)
     
+    # Calculate cost basis for each position from transactions
+    cost_basis = {}
+    for trans in portfolio_data["transactions"]:
+        symbol = trans['symbol']
+        if symbol and symbol != 'Cash':
+            if symbol not in cost_basis:
+                cost_basis[symbol] = {'total_cost': 0, 'total_shares': 0}
+            
+            if 'BOUGHT' in trans['action'] or 'Buy' in trans['action']:
+                cost_basis[symbol]['total_cost'] += abs(trans['amount'])
+                cost_basis[symbol]['total_shares'] += trans['quantity']
+            elif 'SOLD' in trans['action'] or 'Sell' in trans['action']:
+                # For sales, reduce cost basis proportionally
+                if cost_basis[symbol]['total_shares'] > 0:
+                    avg_cost_per_share = cost_basis[symbol]['total_cost'] / cost_basis[symbol]['total_shares']
+                    sold_cost = avg_cost_per_share * abs(trans['quantity'])
+                    cost_basis[symbol]['total_cost'] -= sold_cost
+                    cost_basis[symbol]['total_shares'] -= abs(trans['quantity'])
+            elif 'REINVESTMENT' in trans['action']:
+                cost_basis[symbol]['total_cost'] += abs(trans['amount'])
+                cost_basis[symbol]['total_shares'] += trans['quantity']
+    
     weights = []
     for pos in positions:
         if total_value > 0:
             weight = (pos['value'] / total_value) * 100
+            
+            # Calculate gain/loss percentage
+            gain_loss_pct = 0
+            if pos['symbol'] in cost_basis and cost_basis[pos['symbol']]['total_cost'] > 0:
+                total_cost = cost_basis[pos['symbol']]['total_cost']
+                current_value = pos['value']
+                gain_loss_pct = ((current_value - total_cost) / total_cost) * 100
+            
             weights.append({
                 'symbol': pos['symbol'],
                 'weight': round(weight, 2),
                 'value': pos['value'],
-                'shares': pos['shares']
+                'shares': pos['shares'],
+                'cost_basis': cost_basis.get(pos['symbol'], {}).get('total_cost', 0),
+                'gain_loss_pct': round(gain_loss_pct, 2)
             })
     
     weights.sort(key=lambda x: x['weight'], reverse=True)
