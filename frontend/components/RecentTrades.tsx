@@ -29,8 +29,18 @@ export default function RecentTrades() {
     }
   }
 
+  const isBuyAction = (action: string) => {
+    const lowerAction = action.toLowerCase()
+    return lowerAction.includes('buy') || lowerAction.includes('bought')
+  }
+
+  const isSellAction = (action: string) => {
+    const lowerAction = action.toLowerCase()
+    return lowerAction.includes('sell') || lowerAction.includes('sold')
+  }
+
   const getActionIcon = (action: string) => {
-    const isBuy = action.toLowerCase().includes('buy')
+    const isBuy = isBuyAction(action)
     const IconComponent = isBuy ? ArrowDownRight : ArrowUpRight
     const colorClass = isBuy ? 'text-success-600' : 'text-danger-600'
     
@@ -38,15 +48,20 @@ export default function RecentTrades() {
   }
 
   const getActionColor = (action: string) => {
-    const isBuy = action.toLowerCase().includes('buy')
-    return isBuy ? 'text-success-600 bg-success-50' : 'text-danger-600 bg-danger-50'
+    if (isBuyAction(action)) {
+      return 'text-success-700 bg-success-100 border-success-200'
+    } else if (isSellAction(action)) {
+      return 'text-danger-700 bg-danger-100 border-danger-200'
+    } else {
+      return 'text-slate-700 bg-slate-100 border-slate-200'
+    }
   }
 
   const getTradeSummary = () => {
     if (!trades.length) return null
 
-    const buyTrades = trades.filter(t => t.action.toLowerCase().includes('buy'))
-    const sellTrades = trades.filter(t => t.action.toLowerCase().includes('sell'))
+    const buyTrades = trades.filter(t => isBuyAction(t.action))
+    const sellTrades = trades.filter(t => isSellAction(t.action))
     
     const totalBought = buyTrades.reduce((sum, t) => sum + Math.abs(t.amount), 0)
     const totalSold = sellTrades.reduce((sum, t) => sum + Math.abs(t.amount), 0)
@@ -191,7 +206,7 @@ export default function RecentTrades() {
                   <td className="py-3 px-4">
                     <div className="flex items-center">
                       {getActionIcon(trade.action)}
-                      <span className={`ml-2 px-2 py-1 rounded text-xs font-medium ${getActionColor(trade.action)}`}>
+                      <span className={`ml-2 px-2 py-1 rounded-md text-xs font-medium border ${getActionColor(trade.action)}`}>
                         {trade.action}
                       </span>
                     </div>

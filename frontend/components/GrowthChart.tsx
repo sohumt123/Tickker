@@ -154,8 +154,8 @@ export default function GrowthChart() {
         },
         ticks: {
           maxTicksLimit: 8,
-          callback: function(value: any, index: number) {
-            const date = this.getLabelForValue(value)
+          callback: function(value: any, index: number, ticks: any): string {
+            const date = ticks[index]?.label || value
             return new Date(date).toLocaleDateString('en-US', { 
               month: 'short', 
               year: '2-digit' 

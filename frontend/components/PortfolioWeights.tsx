@@ -10,7 +10,7 @@ import {
 } from 'chart.js'
 import { portfolioApi } from '@/utils/api'
 import { PortfolioWeight } from '@/types'
-import { formatCurrency, formatPercentage } from '@/utils/format'
+import { formatCurrency, formatPercentage, formatWeight } from '@/utils/format'
 import LoadingSpinner from './LoadingSpinner'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
@@ -90,7 +90,7 @@ export default function PortfolioWeights() {
             const symbol = context.label
             const value = weights.find(w => w.symbol === symbol)?.value || 0
             return [
-              `${symbol}: ${formatPercentage(weight)}`,
+              `${symbol}: ${formatWeight(weight)}`,
               `Value: ${formatCurrency(value)}`
             ]
           },
@@ -184,9 +184,12 @@ export default function PortfolioWeights() {
                   </div>
                   <div className="text-right">
                     <p className="font-semibold text-slate-900">
-                      {formatPercentage(weight.weight)}
+                      {formatWeight(weight.weight)}
                     </p>
-                    <p className="text-sm text-slate-600">
+                    <p className={`text-sm font-medium ${weight.gain_loss_pct >= 0 ? 'text-success-600' : 'text-danger-600'}`}>
+                      {formatPercentage(weight.gain_loss_pct)} P/L
+                    </p>
+                    <p className="text-xs text-slate-500">
                       {formatCurrency(weight.value)}
                     </p>
                   </div>
@@ -201,7 +204,7 @@ export default function PortfolioWeights() {
         <div className="card p-4">
           <h3 className="text-sm font-medium text-slate-600 mb-2">Largest Position</h3>
           <p className="text-lg font-bold text-slate-900">{weights[0]?.symbol}</p>
-          <p className="text-sm text-slate-600">{formatPercentage(weights[0]?.weight || 0)}</p>
+          <p className="text-sm text-slate-600">{formatWeight(weights[0]?.weight || 0)}</p>
         </div>
 
         <div className="card p-4">
@@ -213,7 +216,7 @@ export default function PortfolioWeights() {
         <div className="card p-4">
           <h3 className="text-sm font-medium text-slate-600 mb-2">Top 3 Weight</h3>
           <p className="text-lg font-bold text-slate-900">
-            {formatPercentage(weights.slice(0, 3).reduce((sum, w) => sum + w.weight, 0))}
+            {formatWeight(weights.slice(0, 3).reduce((sum, w) => sum + w.weight, 0))}
           </p>
           <p className="text-sm text-slate-600">Concentration</p>
         </div>
@@ -221,7 +224,7 @@ export default function PortfolioWeights() {
         <div className="card p-4">
           <h3 className="text-sm font-medium text-slate-600 mb-2">Smallest Position</h3>
           <p className="text-lg font-bold text-slate-900">{weights[weights.length - 1]?.symbol}</p>
-          <p className="text-sm text-slate-600">{formatPercentage(weights[weights.length - 1]?.weight || 0)}</p>
+          <p className="text-sm text-slate-600">{formatWeight(weights[weights.length - 1]?.weight || 0)}</p>
         </div>
       </div>
     </div>

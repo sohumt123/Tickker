@@ -26,6 +26,8 @@ export interface PortfolioWeight {
   weight: number
   value: number
   shares: number
+  cost_basis: number
+  gain_loss_pct: number
 }
 
 export interface PerformanceMetric {

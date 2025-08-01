@@ -33,6 +33,13 @@ export default function Home() {
   const handleUploadSuccess = () => {
     setHasData(true)
     setActiveTab('overview')
+    // Force a page refresh to ensure all components reload with new data
+    window.location.reload()
+  }
+
+  const handleNewUpload = () => {
+    setHasData(false)
+    setActiveTab('overview')
   }
 
   const tabs = [
@@ -102,25 +109,35 @@ export default function Home() {
               <h1 className="text-xl font-bold text-slate-900">Portfolio Visualizer</h1>
             </div>
             
-            <nav className="flex space-x-1">
-              {tabs.map((tab) => {
-                const Icon = tab.icon
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                      activeTab === tab.id
-                        ? 'bg-slate-900 text-white'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                    }`}
-                  >
-                    <Icon size={16} className="mr-2" />
-                    {tab.label}
-                  </button>
-                )
-              })}
-            </nav>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={handleNewUpload}
+                className="flex items-center px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors duration-200"
+              >
+                <Upload size={16} className="mr-2" />
+                Upload New CSV
+              </button>
+              
+              <nav className="flex space-x-1">
+                {tabs.map((tab) => {
+                  const Icon = tab.icon
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                        activeTab === tab.id
+                          ? 'bg-slate-900 text-white'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                      }`}
+                    >
+                      <Icon size={16} className="mr-2" />
+                      {tab.label}
+                    </button>
+                  )
+                })}
+              </nav>
+            </div>
           </div>
         </div>
       </header>

@@ -11,6 +11,10 @@ export const formatPercentage = (percentage: number, decimals: number = 2): stri
   return `${percentage >= 0 ? '+' : ''}${percentage.toFixed(decimals)}%`
 }
 
+export const formatWeight = (weight: number, decimals: number = 2): string => {
+  return `${weight.toFixed(decimals)}%`
+}
+
 export const formatNumber = (num: number, decimals: number = 0): string => {
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,
