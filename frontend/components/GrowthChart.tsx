@@ -14,9 +14,10 @@ import {
   Filler,
 } from 'chart.js'
 import { portfolioApi } from '@/utils/api'
-import { ComparisonData } from '@/types'
+import { ComparisonData, CustomSymbol } from '@/types'
 import { formatCurrency, formatDate } from '@/utils/format'
 import LoadingSpinner from './LoadingSpinner'
+import StockSearchBar from './StockSearchBar'
 
 ChartJS.register(
   CategoryScale,
@@ -34,10 +35,18 @@ export default function GrowthChart() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [timeRange, setTimeRange] = useState('1Y')
+  const [customSymbols, setCustomSymbols] = useState<CustomSymbol[]>([])
+  const [customLoading, setCustomLoading] = useState(false)
 
   useEffect(() => {
     fetchData()
   }, [timeRange])
+
+  useEffect(() => {
+    if (customSymbols.length > 0) {
+      fetchCustomData()
+    }
+  }, [customSymbols, timeRange])
 
   const fetchData = async () => {
     try {
@@ -70,38 +79,107 @@ export default function GrowthChart() {
     }
   }
 
+  const fetchCustomData = async () => {
+    if (customSymbols.length === 0) return
+    
+    try {
+      setCustomLoading(true)
+      const symbols = customSymbols.map(s => s.symbol)
+      const result = await portfolioApi.getCustomComparison(symbols)
+      
+      if (result.comparison) {
+        let filteredData = result.comparison
+        
+        if (timeRange !== 'MAX') {
+          const now = new Date()
+          const monthsBack = {
+            '1M': 1,
+            '3M': 3,
+            '6M': 6,
+            '1Y': 12,
+            '2Y': 24,
+          }[timeRange] || 12
+          
+          const cutoffDate = new Date(now.getTime() - (monthsBack * 30 * 24 * 60 * 60 * 1000))
+          filteredData = result.comparison.filter(item => new Date(item.date) >= cutoffDate)
+        }
+        
+        setData(filteredData)
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to load custom comparison data')
+    } finally {
+      setCustomLoading(false)
+    }
+  }
+
+  const handleAddSymbol = (symbol: CustomSymbol) => {
+    setCustomSymbols(prev => [...prev, symbol])
+  }
+
+  const handleRemoveSymbol = (symbolToRemove: string) => {
+    setCustomSymbols(prev => prev.filter(s => s.symbol !== symbolToRemove))
+    
+    // If no custom symbols left, fetch original data
+    if (customSymbols.length === 1) {
+      fetchData()
+    }
+  }
+
   const getChartData = () => {
     if (!data.length) return null
 
     const labels = data.map(item => item.date)
     
+    // Base datasets (Portfolio and SPY)
+    const datasets = [
+      {
+        label: 'Your Portfolio',
+        data: data.map(item => item.portfolio),
+        borderColor: 'rgb(15, 23, 42)',
+        backgroundColor: 'rgba(15, 23, 42, 0.1)',
+        borderWidth: 3,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        fill: false,
+        tension: 0.1,
+      },
+      {
+        label: 'SPY (S&P 500)',
+        data: data.map(item => item.spy),
+        borderColor: 'rgb(100, 116, 139)',
+        backgroundColor: 'rgba(100, 116, 139, 0.1)',
+        borderWidth: 2,
+        borderDash: [5, 5],
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        fill: false,
+        tension: 0.1,
+      },
+    ]
+
+    // Add custom symbol datasets
+    customSymbols.forEach((symbol) => {
+      if (symbol.visible) {
+        const symbolData = data.map(item => item[symbol.symbol.toLowerCase()] as number || null)
+        
+        datasets.push({
+          label: `${symbol.symbol} (${symbol.name.substring(0, 20)}${symbol.name.length > 20 ? '...' : ''})`,
+          data: symbolData,
+          borderColor: symbol.color,
+          backgroundColor: symbol.color + '20', // Add transparency
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          fill: false,
+          tension: 0.1,
+        })
+      }
+    })
+    
     return {
       labels,
-      datasets: [
-        {
-          label: 'Your Portfolio',
-          data: data.map(item => item.portfolio),
-          borderColor: 'rgb(15, 23, 42)',
-          backgroundColor: 'rgba(15, 23, 42, 0.1)',
-          borderWidth: 3,
-          pointRadius: 0,
-          pointHoverRadius: 6,
-          fill: false,
-          tension: 0.1,
-        },
-        {
-          label: 'SPY (S&P 500)',
-          data: data.map(item => item.spy),
-          borderColor: 'rgb(100, 116, 139)',
-          backgroundColor: 'rgba(100, 116, 139, 0.1)',
-          borderWidth: 2,
-          borderDash: [5, 5],
-          pointRadius: 0,
-          pointHoverRadius: 6,
-          fill: false,
-          tension: 0.1,
-        },
-      ],
+      datasets,
     }
   }
 
@@ -265,8 +343,26 @@ export default function GrowthChart() {
           </div>
         </div>
 
-        <div className="h-96 mb-6">
+        {/* Stock Search Bar */}
+        <div className="mb-6">
+          <StockSearchBar
+            customSymbols={customSymbols}
+            onAddSymbol={handleAddSymbol}
+            onRemoveSymbol={handleRemoveSymbol}
+            maxSymbols={5}
+          />
+        </div>
+
+        <div className="relative h-96 mb-6">
           <Line data={chartData} options={chartOptions} />
+          {customLoading && (
+            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
+              <div className="flex items-center space-x-2">
+                <div className="animate-spin h-4 w-4 border-2 border-slate-300 border-t-slate-600 rounded-full"></div>
+                <span className="text-sm text-slate-600">Loading overlay data...</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {metrics && (

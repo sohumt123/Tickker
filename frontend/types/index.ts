@@ -47,6 +47,24 @@ export interface ComparisonData {
   date: string
   portfolio: number
   spy: number
+  [key: string]: number | string // Support dynamic symbol overlay data
+}
+
+export interface StockSearchResult {
+  symbol: string
+  name: string
+  type: string
+  exchange: string
+  currency?: string
+  market_cap?: number
+  sector?: string
+}
+
+export interface CustomSymbol {
+  symbol: string
+  name: string
+  color: string
+  visible: boolean
 }
 
 export interface ApiResponse<T> {

@@ -5,6 +5,7 @@ import {
   PortfolioWeight, 
   PerformanceMetrics, 
   ComparisonData,
+  StockSearchResult,
   ApiResponse 
 } from '@/types'
 
@@ -66,6 +67,25 @@ export const portfolioApi = {
 
   getSpyComparison: async (): Promise<{ comparison: ComparisonData[] }> => {
     const response = await api.get('/comparison/spy')
+    return response.data
+  },
+
+  searchStocks: async (query: string): Promise<{ results: StockSearchResult[] }> => {
+    const response = await api.get(`/search/stocks?query=${encodeURIComponent(query)}`)
+    return response.data
+  },
+
+  getCustomComparison: async (
+    symbols: string[], 
+    startDate?: string, 
+    endDate?: string
+  ): Promise<{ comparison: ComparisonData[] }> => {
+    const params = new URLSearchParams()
+    params.append('symbols', symbols.join(','))
+    if (startDate) params.append('start_date', startDate)
+    if (endDate) params.append('end_date', endDate)
+    
+    const response = await api.get(`/comparison/custom?${params}`)
     return response.data
   },
 }

@@ -379,5 +379,133 @@ async def get_spy_comparison():
     
     return JSONResponse(content={"comparison": comparison})
 
+@app.get("/api/search/stocks")
+async def search_stocks(query: str):
+    """Search and validate stock symbols using yfinance"""
+    if not query or len(query.strip()) < 1:
+        return JSONResponse(content={"results": []})
+    
+    query = query.strip().upper()
+    
+    try:
+        # Try to get basic info for the symbol to validate it exists
+        ticker = yf.Ticker(query)
+        info = ticker.info
+        
+        # Check if we got valid data
+        if not info or info.get('regularMarketPrice') is None:
+            # Try to get recent history as fallback validation
+            hist = ticker.history(period="5d")
+            if hist.empty:
+                return JSONResponse(content={"results": []})
+        
+        # Extract relevant information
+        result = {
+            "symbol": query,
+            "name": info.get('longName', info.get('shortName', query)),
+            "type": "stock",  # Default to stock, could be enhanced
+            "exchange": info.get('exchange', ''),
+            "currency": info.get('currency', 'USD'),
+            "market_cap": info.get('marketCap'),
+            "sector": info.get('sector', ''),
+        }
+        
+        return JSONResponse(content={"results": [result]})
+    
+    except Exception as e:
+        print(f"Error searching for symbol {query}: {e}")
+        return JSONResponse(content={"results": []})
+
+@app.get("/api/comparison/custom")
+async def get_custom_comparison(symbols: str, start_date: str = None, end_date: str = None):
+    """Get normalized growth comparison data for custom symbols along with portfolio and SPY"""
+    if not portfolio_data["portfolio_history"]:
+        return JSONResponse(content={"comparison": []})
+    
+    # Parse symbols
+    symbol_list = [s.strip().upper() for s in symbols.split(',') if s.strip()]
+    if not symbol_list:
+        return JSONResponse(content={"comparison": []})
+    
+    # Get portfolio history for date range
+    history = portfolio_data["portfolio_history"]
+    if not history:
+        return JSONResponse(content={"comparison": []})
+    
+    # Filter by date range if provided
+    if start_date or end_date:
+        filtered_history = []
+        for day in history:
+            if start_date and day['date'] < start_date:
+                continue
+            if end_date and day['date'] > end_date:
+                continue
+            filtered_history.append(day)
+        history = filtered_history
+    
+    if not history:
+        return JSONResponse(content={"comparison": []})
+    
+    # Get date range from portfolio history
+    start_dt = datetime.strptime(history[0]['date'], '%Y-%m-%d')
+    end_dt = datetime.strptime(history[-1]['date'], '%Y-%m-%d')
+    
+    # Fetch custom symbol data
+    custom_data = {}
+    for symbol in symbol_list:
+        try:
+            prices = get_real_stock_data(symbol, start_dt, end_dt)
+            if prices:
+                custom_data[symbol] = prices
+        except Exception as e:
+            print(f"Error fetching data for {symbol}: {e}")
+    
+    # Build comparison data
+    comparison = []
+    initial_portfolio = history[0]['total_value']
+    initial_spy = history[0]['spy_price']
+    
+    # Get initial prices for custom symbols
+    initial_custom = {}
+    first_date = history[0]['date']
+    for symbol, prices in custom_data.items():
+        # Find the closest date to portfolio start
+        closest_price = None
+        for date in sorted(prices.keys()):
+            closest_price = prices[date]
+            if date >= first_date:
+                break
+        if closest_price:
+            initial_custom[symbol] = closest_price
+    
+    for day in history:
+        date = day['date']
+        
+        # Portfolio and SPY (existing logic)
+        portfolio_growth = (day['total_value'] / initial_portfolio) * 10000 if initial_portfolio > 0 else 10000
+        spy_growth = (day['spy_price'] / initial_spy) * 10000 if initial_spy > 0 else 10000
+        
+        comparison_point = {
+            'date': date,
+            'portfolio': round(portfolio_growth, 2),
+            'spy': round(spy_growth, 2)
+        }
+        
+        # Add custom symbols
+        for symbol in symbol_list:
+            if symbol in custom_data and symbol in initial_custom:
+                symbol_price = custom_data[symbol].get(date)
+                if symbol_price and initial_custom[symbol] > 0:
+                    symbol_growth = (symbol_price / initial_custom[symbol]) * 10000
+                    comparison_point[symbol.lower()] = round(symbol_growth, 2)
+                else:
+                    # Use previous value or skip
+                    if comparison and symbol.lower() in comparison[-1]:
+                        comparison_point[symbol.lower()] = comparison[-1][symbol.lower()]
+        
+        comparison.append(comparison_point)
+    
+    return JSONResponse(content={"comparison": comparison})
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
