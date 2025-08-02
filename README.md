@@ -1,6 +1,6 @@
-# Beli - Social Investment Platform
+- Social Investment Platform
 
-**Beli** is a social investment platform that combines portfolio analytics with community engagement. Upload your brokerage portfolio data to compare performance against benchmarks like SPY, while participating in investment groups where you compete, support each other, and highlight wins and losses. Think of it as the "beli" of investment apps - building community around investment journeys.
+This is a social investment platform that combines portfolio analytics with community engagement. Upload your brokerage portfolio data to compare performance against benchmarks like SPY, while participating in investment groups where you compete, support each other, and highlight wins and losses. Think of it as the "beli" of investment apps - building community around investment journeys.
 
 ![Portfolio Visualizer Screenshot](docs/screenshot.png)
 
@@ -94,7 +94,7 @@
 ## 📂 Project Structure
 
 ```
-Beli/
+This/
 ├── backend/                 # FastAPI backend
 │   ├── accurate_main.py    # Main API server (working backend)
 │   ├── venv/              # Python virtual environment
