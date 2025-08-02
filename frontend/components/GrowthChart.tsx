@@ -18,6 +18,7 @@ import { ComparisonData, CustomSymbol } from '@/types'
 import { formatCurrency, formatDate } from '@/utils/format'
 import LoadingSpinner from './LoadingSpinner'
 import StockSearchBar from './StockSearchBar'
+import BaselineDatePicker from './BaselineDatePicker'
 
 ChartJS.register(
   CategoryScale,
@@ -37,24 +38,46 @@ export default function GrowthChart() {
   const [timeRange, setTimeRange] = useState('1Y')
   const [customSymbols, setCustomSymbols] = useState<CustomSymbol[]>([])
   const [customLoading, setCustomLoading] = useState(false)
+  const [baselineDate, setBaselineDate] = useState<string>('')
+  const [portfolioStartDate, setPortfolioStartDate] = useState<string>('')
+  const [extendedLoading, setExtendedLoading] = useState(false)
 
   useEffect(() => {
     fetchData()
-  }, [timeRange])
+  }, [timeRange, baselineDate])
 
   useEffect(() => {
     if (customSymbols.length > 0) {
       fetchCustomData()
     }
-  }, [customSymbols, timeRange])
+  }, [customSymbols, timeRange, baselineDate])
 
   const fetchData = async () => {
     try {
       setLoading(true)
-      const result = await portfolioApi.getSpyComparison()
+      setError('')
+      
+      // Show extended loading if baseline is before portfolio start
+      if (baselineDate && portfolioStartDate && baselineDate < portfolioStartDate) {
+        setExtendedLoading(true)
+      }
+      
+      const result = await portfolioApi.getSpyComparison(baselineDate)
       
       if (result.comparison) {
         let filteredData = result.comparison
+        
+        // Set portfolio start date from first data point (for baseline picker)
+        if (result.comparison.length > 0 && !portfolioStartDate) {
+          // Find the first date with portfolio data > $10k (indicating real portfolio activity)
+          const firstPortfolioActivity = result.comparison.find(item => Math.abs(item.portfolio - 10000) > 0.01)
+          if (firstPortfolioActivity) {
+            setPortfolioStartDate(firstPortfolioActivity.date)
+            if (!baselineDate) {
+              setBaselineDate(firstPortfolioActivity.date)
+            }
+          }
+        }
         
         if (timeRange !== 'MAX') {
           const now = new Date()
@@ -73,9 +96,11 @@ export default function GrowthChart() {
         setData(filteredData)
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to load chart data')
+      console.error('Error fetching chart data:', err)
+      setError(err.message || 'Failed to load chart data. Please try again.')
     } finally {
       setLoading(false)
+      setExtendedLoading(false)
     }
   }
 
@@ -85,7 +110,7 @@ export default function GrowthChart() {
     try {
       setCustomLoading(true)
       const symbols = customSymbols.map(s => s.symbol)
-      const result = await portfolioApi.getCustomComparison(symbols)
+      const result = await portfolioApi.getCustomComparison(symbols, undefined, undefined, baselineDate)
       
       if (result.comparison) {
         let filteredData = result.comparison
@@ -124,6 +149,10 @@ export default function GrowthChart() {
     if (customSymbols.length === 1) {
       fetchData()
     }
+  }
+
+  const handleBaselineDateChange = (newBaselineDate: string) => {
+    setBaselineDate(newBaselineDate)
   }
 
   const getChartData = () => {
@@ -326,20 +355,30 @@ export default function GrowthChart() {
             <p className="text-slate-600">Compare your portfolio performance with SPY</p>
           </div>
           
-          <div className="flex bg-slate-100 p-1 rounded-lg mt-4 sm:mt-0">
-            {timeRanges.map((range) => (
-              <button
-                key={range}
-                onClick={() => setTimeRange(range)}
-                className={`px-3 py-2 text-sm font-medium rounded transition-colors duration-200 ${
-                  timeRange === range
-                    ? 'bg-white text-slate-900 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                {range}
-              </button>
-            ))}
+          <div className="flex items-center gap-4 mt-4 sm:mt-0">
+            {portfolioStartDate && (
+              <BaselineDatePicker
+                portfolioStartDate={portfolioStartDate}
+                baselineDate={baselineDate}
+                onBaselineDateChange={handleBaselineDateChange}
+              />
+            )}
+            
+            <div className="flex bg-slate-100 p-1 rounded-lg">
+              {timeRanges.map((range) => (
+                <button
+                  key={range}
+                  onClick={() => setTimeRange(range)}
+                  className={`px-3 py-2 text-sm font-medium rounded transition-colors duration-200 ${
+                    timeRange === range
+                      ? 'bg-white text-slate-900 shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {range}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -355,11 +394,13 @@ export default function GrowthChart() {
 
         <div className="relative h-96 mb-6">
           <Line data={chartData} options={chartOptions} />
-          {customLoading && (
+          {(customLoading || extendedLoading) && (
             <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
               <div className="flex items-center space-x-2">
                 <div className="animate-spin h-4 w-4 border-2 border-slate-300 border-t-slate-600 rounded-full"></div>
-                <span className="text-sm text-slate-600">Loading overlay data...</span>
+                <span className="text-sm text-slate-600">
+                  {extendedLoading ? 'Loading extended historical data...' : 'Loading overlay data...'}
+                </span>
               </div>
             </div>
           )}

@@ -65,8 +65,11 @@ export const portfolioApi = {
     return response.data
   },
 
-  getSpyComparison: async (): Promise<{ comparison: ComparisonData[] }> => {
-    const response = await api.get('/comparison/spy')
+  getSpyComparison: async (baselineDate?: string): Promise<{ comparison: ComparisonData[] }> => {
+    const params = new URLSearchParams()
+    if (baselineDate) params.append('baseline_date', baselineDate)
+    
+    const response = await api.get(`/comparison/spy?${params}`)
     return response.data
   },
 
@@ -78,12 +81,14 @@ export const portfolioApi = {
   getCustomComparison: async (
     symbols: string[], 
     startDate?: string, 
-    endDate?: string
+    endDate?: string,
+    baselineDate?: string
   ): Promise<{ comparison: ComparisonData[] }> => {
     const params = new URLSearchParams()
     params.append('symbols', symbols.join(','))
     if (startDate) params.append('start_date', startDate)
     if (endDate) params.append('end_date', endDate)
+    if (baselineDate) params.append('baseline_date', baselineDate)
     
     const response = await api.get(`/comparison/custom?${params}`)
     return response.data
