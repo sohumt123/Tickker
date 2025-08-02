@@ -1,18 +1,44 @@
-# Stock Portfolio Visualizer
+# Beli - Social Investment Platform
 
-A modern web application that compares your Fidelity brokerage portfolio performance against the S&P 500 (SPY) through interactive charts and comprehensive analytics.
+**Beli** is a social investment platform that combines portfolio analytics with community engagement. Upload your brokerage portfolio data to compare performance against benchmarks like SPY, while participating in investment groups where you compete, support each other, and highlight wins and losses. Think of it as the "beli" of investment apps - building community around investment journeys.
 
 ![Portfolio Visualizer Screenshot](docs/screenshot.png)
 
-## ✨ Features
+## ✨ Current Features
 
-- **📊 Growth Comparison**: Interactive "Growth of $10k" chart overlaying your portfolio vs SPY
-- **🥧 Portfolio Allocation**: Visual breakdown of current positions with weights and values  
-- **📈 Performance Metrics**: 1M, 3M, 6M, and 1Y comparison analytics vs SPY
-- **💼 Trade History**: Detailed transaction table with filtering and insights
-- **📱 Mobile Responsive**: Optimized for desktop, tablet, and mobile viewing
-- **🎨 Modern UI**: Clean, professional interface with smooth animations
-- **🔒 Secure**: No API keys committed, environment-based configuration
+### 📊 Portfolio Analytics
+- **Growth Comparison**: Interactive "Growth of $10k" chart overlaying your portfolio vs SPY
+- **Portfolio Allocation**: Visual breakdown of current positions with weights and values  
+- **Performance Metrics**: 1M, 3M, 6M, and 1Y comparison analytics vs SPY
+- **Trade History**: Detailed transaction table with filtering and insights
+- **Custom Overlays**: Compare against any stock symbol (AAPL, TSLA, etc.)
+- **Baseline Scenarios**: "What if I started investing on X date" analysis
+
+### 🎯 Technical Features
+- **Real Market Data**: Live Yahoo Finance integration with intelligent caching
+- **Mobile Responsive**: Optimized for desktop, tablet, and mobile viewing
+- **Modern UI**: Clean, professional interface with smooth animations
+- **Secure**: Privacy-focused with local data processing
+
+## 🚀 Coming Soon: Social Features
+
+### 👥 Investment Groups
+- Create and join investment communities
+- Group challenges and competitions
+- Leaderboards and performance rankings
+- Peer support and encouragement
+
+### 🏆 Highlights & Competition
+- Showcase biggest winners and losers
+- Monthly investment challenges
+- Achievement badges and streaks
+- Group vs group competitions
+
+### 📱 Social Engagement
+- Portfolio sharing with privacy controls
+- Investment thesis discussions
+- Educational content sharing
+- Mentorship matching
 
 ## 🚀 Quick Start
 
@@ -51,7 +77,8 @@ A modern web application that compares your Fidelity brokerage portfolio perform
    Terminal 1 (Backend):
    ```bash
    cd backend
-   uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   python accurate_main.py
    ```
    
    Terminal 2 (Frontend):
@@ -67,22 +94,18 @@ A modern web application that compares your Fidelity brokerage portfolio perform
 ## 📂 Project Structure
 
 ```
-Stock-Visualizer-Fidelity/
+Beli/
 ├── backend/                 # FastAPI backend
-│   ├── main.py             # API routes and server
-│   ├── portfolio_service.py # Portfolio data processing
-│   ├── price_service.py    # Stock price data fetching
-│   └── requirements.txt    # Python dependencies
+│   ├── accurate_main.py    # Main API server (working backend)
+│   ├── venv/              # Python virtual environment
+│   └── requirements.txt   # Python dependencies
 ├── frontend/               # Next.js frontend
 │   ├── app/               # App router pages
 │   ├── components/        # React components
 │   ├── utils/            # Utilities and API client
 │   └── types/            # TypeScript definitions
-├── data/                  # Data storage
-│   ├── .gitkeep          # Keep directory in git
-│   └── price_cache/      # Cached price data
-├── tests/                # Unit tests
-└── docs/                 # Documentation
+├── CLAUDE.md              # Development guidelines and roadmap
+└── .gitignore            # Git ignore configuration
 ```
 
 ## 📊 Usage
@@ -128,26 +151,17 @@ Stock-Visualizer-Fidelity/
 
 ### Stock Price Data Sources
 
-The app supports multiple data sources (in order of preference):
+The app uses **Yahoo Finance** integration for real-time market data:
 
-1. **Alpha Vantage** (recommended)
-   - Sign up at [alphavantage.co](https://www.alphavantage.co)
-   - Add `ALPHA_VANTAGE_API_KEY=your_key` to `.env`
-
-2. **Polygon.io** (backup)  
-   - Sign up at [polygon.io](https://polygon.io)
-   - Add `POLYGON_API_KEY=your_key` to `.env`
-
-3. **Mock Data** (development)
-   - Automatically used if no API keys provided
-   - Generates realistic price movements for testing
+- **Real Market Data**: Live price fetching via `yfinance` library
+- **Intelligent Caching**: In-memory price caching for performance
+- **Automatic Handling**: Weekends, holidays, and market closures handled automatically
+- **No API Keys Required**: Yahoo Finance data is freely accessible
 
 ### Environment Variables
 
 ```bash
-# .env file
-ALPHA_VANTAGE_API_KEY=your_alpha_vantage_key
-POLYGON_API_KEY=your_polygon_key
+# .env file (optional - for future social features)
 DATABASE_URL=sqlite:///./portfolio.db
 ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```
@@ -212,14 +226,32 @@ npm test
 6. Push to branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
 
-## 📋 Roadmap
+## 📋 Development Roadmap
 
+### Phase 1: Core Social Infrastructure (Q2 2024)
+- [ ] User authentication and profiles
+- [ ] Investment groups creation and management
+- [ ] Basic social feed for group activities
+- [ ] Portfolio sharing with privacy controls
+
+### Phase 2: Competition & Gamification (Q3 2024)
+- [ ] Performance leaderboards and rankings
+- [ ] Monthly investment challenges
+- [ ] Achievement badges and milestone tracking
+- [ ] Group vs group competitions
+
+### Phase 3: Community Features (Q4 2024)
+- [ ] Highlights system for wins/losses
+- [ ] Investment thesis sharing and discussions
+- [ ] Peer support and mentorship matching
+- [ ] Educational content and tips sharing
+
+### Phase 4: Advanced Features (2025)
 - [ ] Support for multiple brokerages (Schwab, E*TRADE, etc.)
 - [ ] Advanced analytics (Sharpe ratio, max drawdown, etc.)
 - [ ] Portfolio optimization suggestions
-- [ ] Export reports to PDF
-- [ ] Real-time price updates
-- [ ] Multi-portfolio comparison
+- [ ] Real-time price updates and notifications
+- [ ] Mobile app development
 
 ## ⚠️ Disclaimer
 
@@ -236,4 +268,8 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-Built with ❤️ using FastAPI, Next.js, and Chart.js
+Built with ❤️ using FastAPI, Next.js, Chart.js, and Yahoo Finance
+
+---
+
+*Ready to join the social investing revolution? Start by uploading your portfolio and see how you stack up against the market and your peers!*
