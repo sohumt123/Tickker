@@ -15,8 +15,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 # Global storage for processed data
@@ -77,19 +77,20 @@ def get_trading_day(date_str: str) -> str:
         return date_str
 
 def validate_baseline_date(baseline_date: str, portfolio_start_date: str) -> str:
-    """Validate and adjust baseline date, ensuring it's not after portfolio start"""
+    """Validate and adjust baseline date"""
     try:
         baseline_dt = datetime.strptime(baseline_date, '%Y-%m-%d')
         portfolio_start_dt = datetime.strptime(portfolio_start_date, '%Y-%m-%d')
         
-        # Don't allow baseline after portfolio start (would be confusing)
-        if baseline_dt > portfolio_start_dt:
-            return portfolio_start_date
-        
+        # Allow baseline before portfolio start for "what if" analysis
         # Don't allow baseline too far back (limit to 10 years for performance)
         ten_years_ago = datetime.now() - timedelta(days=10*365)
         if baseline_dt < ten_years_ago:
             return ten_years_ago.strftime('%Y-%m-%d')
+        
+        # Don't allow baseline too far in the future
+        if baseline_dt > datetime.now():
+            return portfolio_start_date
         
         # Get nearest trading day
         return get_trading_day(baseline_date)
@@ -215,15 +216,33 @@ async def root():
 
 @app.post("/api/upload")
 async def upload_csv(file: UploadFile = File(...)):
-    if not file.filename.endswith('.csv'):
+    if not file.filename or not file.filename.endswith('.csv'):
         raise HTTPException(status_code=400, detail="Only CSV files are allowed")
+    
+    if file.size and file.size > 50 * 1024 * 1024:  # 50MB limit
+        raise HTTPException(status_code=413, detail="File too large. Maximum size is 50MB")
     
     try:
         contents = await file.read()
+        if len(contents) == 0:
+            raise HTTPException(status_code=400, detail="Empty file uploaded")
+        
         df = pd.read_csv(pd.io.common.StringIO(contents.decode('utf-8')))
         
+        # Validate required columns exist
+        required_columns = ['Run Date', 'Action', 'Symbol']
+        missing_columns = [col for col in required_columns if col not in df.columns]
+        if missing_columns:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Missing required columns: {', '.join(missing_columns)}"
+            )
+        
         # Clean up the data
-        df = df.dropna(subset=['Run Date', 'Action', 'Symbol'])
+        df = df.dropna(subset=required_columns)
+        if df.empty:
+            raise HTTPException(status_code=400, detail="No valid transactions found in CSV")
+        
         df['Run Date'] = pd.to_datetime(df['Run Date'])
         df['Settlement Date'] = pd.to_datetime(df['Settlement Date'])
         
@@ -402,108 +421,103 @@ async def get_spy_comparison(baseline_date: str = None):
     else:
         baseline_date = portfolio_start_date
     
-    # If baseline is before portfolio start, we need extended SPY data
-    if baseline_date < portfolio_start_date:
-        baseline_dt = datetime.strptime(baseline_date, '%Y-%m-%d')
-        portfolio_start_dt = datetime.strptime(portfolio_start_date, '%Y-%m-%d')
-        
-        # Get extended SPY data from baseline date
-        spy_prices = get_real_stock_data("SPY", baseline_dt, datetime.now())
-        if not spy_prices:
-            return JSONResponse(content={"comparison": []})
-        
-        # Get baseline SPY price
-        baseline_spy_price = spy_prices.get(baseline_date)
-        if not baseline_spy_price:
-            # Find nearest available price
-            for date in sorted(spy_prices.keys()):
-                if date >= baseline_date:
-                    baseline_spy_price = spy_prices[date]
-                    break
-        
-        if not baseline_spy_price:
-            return JSONResponse(content={"comparison": []})
-        
-        comparison = []
-        
-        # Create date range from baseline to present
-        current_date = datetime.strptime(baseline_date, '%Y-%m-%d')
-        end_date = datetime.strptime(history[-1]['date'], '%Y-%m-%d')
-        
-        while current_date <= end_date:
-            date_str = current_date.strftime('%Y-%m-%d')
-            
-            # Portfolio logic
-            if date_str < portfolio_start_date:
-                # Before portfolio existed - flat at $10k
-                portfolio_value = 10000.0
-            else:
-                # Find matching portfolio record
-                portfolio_record = next((h for h in history if h['date'] == date_str), None)
-                if portfolio_record:
-                    initial_portfolio = history[0]['total_value']
-                    if initial_portfolio > 0:
-                        portfolio_growth = (portfolio_record['total_value'] / initial_portfolio) * 10000
-                        portfolio_value = round(portfolio_growth, 2)
-                    else:
-                        portfolio_value = 10000.0
-                else:
-                    # Use previous portfolio value or flat if before start
-                    if comparison:
-                        portfolio_value = comparison[-1]['portfolio']
-                    else:
-                        portfolio_value = 10000.0
-            
-            # SPY logic - always show growth from baseline
-            spy_price = spy_prices.get(date_str)
-            if spy_price:
-                spy_growth = (spy_price / baseline_spy_price) * 10000
-                spy_value = round(spy_growth, 2)
-            else:
-                # Use previous SPY value
-                if comparison:
-                    spy_value = comparison[-1]['spy']
-                else:
-                    spy_value = 10000.0
-            
-            comparison.append({
-                'date': date_str,
-                'portfolio': portfolio_value,
-                'spy': spy_value
-            })
-            
-            current_date += timedelta(days=1)
-        
-        return JSONResponse(content={"comparison": comparison})
+    # Always get extended data range to show proper comparison from baseline
+    baseline_dt = datetime.strptime(baseline_date, '%Y-%m-%d')
+    end_dt = datetime.strptime(history[-1]['date'], '%Y-%m-%d')
     
-    else:
-        # Normal case - baseline is same as portfolio start or later
-        initial_portfolio = history[0]['total_value']
-        initial_spy = history[0]['spy_price']
+    # Get SPY data from baseline date
+    spy_prices = get_real_stock_data("SPY", baseline_dt, datetime.now())
+    if not spy_prices:
+        return JSONResponse(content={"comparison": []})
+    
+    # Get baseline SPY price (what SPY was worth on baseline date)
+    baseline_spy_price = spy_prices.get(baseline_date)
+    if not baseline_spy_price:
+        # Find nearest available price
+        for date in sorted(spy_prices.keys()):
+            if date >= baseline_date:
+                baseline_spy_price = spy_prices[date]
+                break
+    
+    if not baseline_spy_price:
+        return JSONResponse(content={"comparison": []})
+    
+    # Get baseline portfolio composition (what portfolio would have been on baseline date)
+    baseline_portfolio_price = None
+    if baseline_date >= portfolio_start_date:
+        # Portfolio existed at baseline - find its value
+        portfolio_record = next((h for h in history if h['date'] >= baseline_date), None)
+        if portfolio_record:
+            baseline_portfolio_price = portfolio_record['total_value']
+    
+    # If portfolio didn't exist at baseline, we'll simulate it
+    if not baseline_portfolio_price:
+        baseline_portfolio_price = history[0]['total_value'] if history else 1.0
+    
+    comparison = []
+    
+    # Create date range from baseline to present
+    current_date = baseline_dt
+    while current_date <= end_dt:
+        date_str = current_date.strftime('%Y-%m-%d')
         
-        if initial_portfolio == 0 or initial_spy == 0:
-            return JSONResponse(content={"comparison": []})
+        # Skip weekends
+        if current_date.weekday() >= 5:
+            current_date += timedelta(days=1)
+            continue
         
-        comparison = []
-        for record in history:
-            portfolio_growth = (record['total_value'] / initial_portfolio) * 10000
-            spy_growth = (record['spy_price'] / initial_spy) * 10000
-            
-            comparison.append({
-                'date': record['date'],
-                'portfolio': round(portfolio_growth, 2),
-                'spy': round(spy_growth, 2)
-            })
+        # Portfolio logic: Show what $10k invested in "your portfolio strategy" would be worth
+        if date_str < portfolio_start_date:
+            # Before portfolio existed - flat at $10k
+            portfolio_value = 10000.0
+        else:
+            # Find matching portfolio record
+            portfolio_record = next((h for h in history if h['date'] == date_str), None)
+            if portfolio_record:
+                # Calculate growth from baseline: ($10k * current_value / baseline_value)
+                portfolio_growth = (portfolio_record['total_value'] / baseline_portfolio_price) * 10000
+                portfolio_value = round(portfolio_growth, 2)
+            else:
+                # Use previous portfolio value
+                if comparison:
+                    portfolio_value = comparison[-1]['portfolio']
+                else:
+                    portfolio_value = 10000.0
         
-        return JSONResponse(content={"comparison": comparison})
+        # SPY logic: Show what $10k invested in SPY at baseline would be worth
+        spy_price = spy_prices.get(date_str)
+        if spy_price:
+            spy_growth = (spy_price / baseline_spy_price) * 10000
+            spy_value = round(spy_growth, 2)
+        else:
+            # Use previous SPY value
+            if comparison:
+                spy_value = comparison[-1]['spy']
+            else:
+                spy_value = 10000.0
+        
+        comparison.append({
+            'date': date_str,
+            'portfolio': portfolio_value,
+            'spy': spy_value
+        })
+        
+        current_date += timedelta(days=1)
+    
+    return JSONResponse(content={"comparison": comparison})
 
 @app.get("/api/search/stocks")
 async def search_stocks(query: str):
     """Search and validate stock symbols using yfinance"""
-    if not query or len(query.strip()) < 1:
+    if not query or len(query.strip()) < 1 or len(query.strip()) > 10:
         return JSONResponse(content={"results": []})
     
     query = query.strip().upper()
+    
+    # Basic validation for stock symbol format
+    import re
+    if not re.match(r'^[A-Z0-9.-]+$', query):
+        return JSONResponse(content={"results": []})
     
     try:
         # Try to get basic info for the symbol to validate it exists
@@ -588,18 +602,15 @@ async def get_custom_comparison(symbols: str, baseline_date: str = None, start_d
         except Exception as e:
             print(f"Error fetching data for {symbol}: {e}")
     
-    # Get SPY data if baseline is before portfolio start
-    spy_prices = {}
-    if baseline_date < portfolio_start_date:
-        spy_prices = get_real_stock_data("SPY", start_dt, end_dt)
+    # Always get SPY data for proper baseline comparison
+    spy_prices = get_real_stock_data("SPY", start_dt, end_dt)
     
-    # Get baseline prices for all symbols
-    baseline_portfolio_value = 10000.0  # Portfolio is always flat before start
+    # Get baseline prices for all symbols (what they were worth on baseline date)
     baseline_spy_price = None
     baseline_custom_prices = {}
     
     # Get SPY baseline price
-    if baseline_date < portfolio_start_date and spy_prices:
+    if spy_prices:
         baseline_spy_price = spy_prices.get(baseline_date)
         if not baseline_spy_price:
             for date in sorted(spy_prices.keys()):
@@ -608,6 +619,18 @@ async def get_custom_comparison(symbols: str, baseline_date: str = None, start_d
                     break
     elif display_history:
         baseline_spy_price = display_history[0]['spy_price']
+    
+    # Get baseline portfolio value (for normalization)
+    baseline_portfolio_price = None
+    if baseline_date >= portfolio_start_date:
+        # Portfolio existed at baseline - find its value
+        portfolio_record = next((h for h in display_history if h['date'] >= baseline_date), None)
+        if portfolio_record:
+            baseline_portfolio_price = portfolio_record['total_value']
+    
+    # If portfolio didn't exist at baseline, use first available value for proportional scaling
+    if not baseline_portfolio_price:
+        baseline_portfolio_price = display_history[0]['total_value'] if display_history else 1.0
     
     # Get custom symbol baseline prices
     for symbol in symbol_list:
@@ -638,50 +661,50 @@ async def get_custom_comparison(symbols: str, baseline_date: str = None, start_d
             'spy': 10000.0         # Default
         }
         
-        # Portfolio logic
+        # Portfolio logic: Show what $10k invested in "your portfolio strategy" at baseline would be worth
         if date_str < portfolio_start_date:
             # Before portfolio existed - flat at $10k
             comparison_point['portfolio'] = 10000.0
         else:
             # Find matching portfolio record
             portfolio_record = next((h for h in display_history if h['date'] == date_str), None)
-            if portfolio_record:
-                initial_portfolio = display_history[0]['total_value']
-                if initial_portfolio > 0:
-                    portfolio_growth = (portfolio_record['total_value'] / initial_portfolio) * 10000
-                    comparison_point['portfolio'] = round(portfolio_growth, 2)
-                else:
-                    comparison_point['portfolio'] = 10000.0
+            if portfolio_record and baseline_portfolio_price > 0:
+                # Calculate growth from baseline: ($10k * current_value / baseline_value)
+                portfolio_growth = (portfolio_record['total_value'] / baseline_portfolio_price) * 10000
+                comparison_point['portfolio'] = round(portfolio_growth, 2)
             else:
                 # Use previous portfolio value
                 if comparison:
                     comparison_point['portfolio'] = comparison[-1]['portfolio']
+                else:
+                    comparison_point['portfolio'] = 10000.0
         
-        # SPY logic
-        if baseline_date < portfolio_start_date and spy_prices and baseline_spy_price:
-            # Use extended SPY data
+        # SPY logic: Show what $10k invested in SPY at baseline would be worth
+        spy_price = None
+        if spy_prices:
             spy_price = spy_prices.get(date_str)
-            if spy_price and baseline_spy_price > 0:
-                spy_growth = (spy_price / baseline_spy_price) * 10000
-                comparison_point['spy'] = round(spy_growth, 2)
-            else:
-                if comparison:
-                    comparison_point['spy'] = comparison[-1]['spy']
         else:
             # Use portfolio history SPY data
             portfolio_record = next((h for h in display_history if h['date'] == date_str), None)
-            if portfolio_record and baseline_spy_price and baseline_spy_price > 0:
-                spy_growth = (portfolio_record['spy_price'] / baseline_spy_price) * 10000
-                comparison_point['spy'] = round(spy_growth, 2)
-            else:
-                if comparison:
-                    comparison_point['spy'] = comparison[-1]['spy']
+            if portfolio_record:
+                spy_price = portfolio_record['spy_price']
         
-        # Custom symbols logic
+        if spy_price and baseline_spy_price and baseline_spy_price > 0:
+            spy_growth = (spy_price / baseline_spy_price) * 10000
+            comparison_point['spy'] = round(spy_growth, 2)
+        else:
+            # Use previous SPY value
+            if comparison:
+                comparison_point['spy'] = comparison[-1]['spy']
+            else:
+                comparison_point['spy'] = 10000.0
+        
+        # Custom symbols logic: Show what $10k invested in each symbol at baseline would be worth
         for symbol in symbol_list:
             if symbol in baseline_custom_prices:
                 symbol_price = custom_data[symbol].get(date_str)
                 if symbol_price and baseline_custom_prices[symbol] > 0:
+                    # Calculate growth from baseline: ($10k * current_price / baseline_price)
                     symbol_growth = (symbol_price / baseline_custom_prices[symbol]) * 10000
                     comparison_point[symbol.lower()] = round(symbol_growth, 2)
                 else:

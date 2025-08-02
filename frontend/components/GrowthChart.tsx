@@ -18,7 +18,7 @@ import { ComparisonData, CustomSymbol } from '@/types'
 import { formatCurrency, formatDate } from '@/utils/format'
 import LoadingSpinner from './LoadingSpinner'
 import StockSearchBar from './StockSearchBar'
-import BaselineDatePicker from './BaselineDatePicker'
+import BaselineScrollSelector from './BaselineScrollSelector'
 
 ChartJS.register(
   CategoryScale,
@@ -52,6 +52,25 @@ export default function GrowthChart() {
     }
   }, [customSymbols, timeRange, baselineDate])
 
+  // Calculate baseline date based on time range
+  const calculateBaselineDateFromTimeRange = (range: string): string => {
+    if (range === 'MAX' || !portfolioStartDate) {
+      return portfolioStartDate || ''
+    }
+
+    const now = new Date()
+    const monthsBack = {
+      '1M': 1,
+      '3M': 3,
+      '6M': 6,
+      '1Y': 12,
+      '2Y': 24,
+    }[range] || 12
+
+    const baselineDate = new Date(now.getTime() - (monthsBack * 30 * 24 * 60 * 60 * 1000))
+    return baselineDate.toISOString().split('T')[0]
+  }
+
   const fetchData = async () => {
     try {
       setLoading(true)
@@ -74,25 +93,13 @@ export default function GrowthChart() {
           if (firstPortfolioActivity) {
             setPortfolioStartDate(firstPortfolioActivity.date)
             if (!baselineDate) {
-              setBaselineDate(firstPortfolioActivity.date)
+              const initialBaselineDate = calculateBaselineDateFromTimeRange(timeRange)
+              setBaselineDate(initialBaselineDate || firstPortfolioActivity.date)
             }
           }
         }
         
-        if (timeRange !== 'MAX') {
-          const now = new Date()
-          const monthsBack = {
-            '1M': 1,
-            '3M': 3,
-            '6M': 6,
-            '1Y': 12,
-            '2Y': 24,
-          }[timeRange] || 12
-          
-          const cutoffDate = new Date(now.getTime() - (monthsBack * 30 * 24 * 60 * 60 * 1000))
-          filteredData = result.comparison.filter(item => new Date(item.date) >= cutoffDate)
-        }
-        
+        // Backend handles the full baseline comparison, no need to filter here
         setData(filteredData)
       }
     } catch (err: any) {
@@ -113,23 +120,8 @@ export default function GrowthChart() {
       const result = await portfolioApi.getCustomComparison(symbols, undefined, undefined, baselineDate)
       
       if (result.comparison) {
-        let filteredData = result.comparison
-        
-        if (timeRange !== 'MAX') {
-          const now = new Date()
-          const monthsBack = {
-            '1M': 1,
-            '3M': 3,
-            '6M': 6,
-            '1Y': 12,
-            '2Y': 24,
-          }[timeRange] || 12
-          
-          const cutoffDate = new Date(now.getTime() - (monthsBack * 30 * 24 * 60 * 60 * 1000))
-          filteredData = result.comparison.filter(item => new Date(item.date) >= cutoffDate)
-        }
-        
-        setData(filteredData)
+        // Backend handles the full baseline comparison, no need to filter here
+        setData(result.comparison)
       }
     } catch (err: any) {
       setError(err.message || 'Failed to load custom comparison data')
@@ -152,6 +144,13 @@ export default function GrowthChart() {
   }
 
   const handleBaselineDateChange = (newBaselineDate: string) => {
+    setBaselineDate(newBaselineDate)
+  }
+
+  const handleTimeRangeChange = (newRange: string) => {
+    setTimeRange(newRange)
+    // Automatically set baseline date based on time range
+    const newBaselineDate = calculateBaselineDateFromTimeRange(newRange)
     setBaselineDate(newBaselineDate)
   }
 
@@ -262,11 +261,14 @@ export default function GrowthChart() {
         ticks: {
           maxTicksLimit: 8,
           callback: function(value: any, index: number, ticks: any): string {
-            const date = ticks[index]?.label || value
-            return new Date(date).toLocaleDateString('en-US', { 
-              month: 'short', 
-              year: '2-digit' 
-            })
+            const labels = this.chart?.data?.labels
+            if (labels && labels[index]) {
+              return new Date(labels[index]).toLocaleDateString('en-US', { 
+                month: 'short', 
+                year: '2-digit' 
+              })
+            }
+            return ''
           },
         },
       },
@@ -356,11 +358,12 @@ export default function GrowthChart() {
           </div>
           
           <div className="flex items-center gap-4 mt-4 sm:mt-0">
-            {portfolioStartDate && (
-              <BaselineDatePicker
+            {portfolioStartDate && baselineDate && (
+              <BaselineScrollSelector
                 portfolioStartDate={portfolioStartDate}
                 baselineDate={baselineDate}
                 onBaselineDateChange={handleBaselineDateChange}
+                timeRange={timeRange}
               />
             )}
             
@@ -368,7 +371,7 @@ export default function GrowthChart() {
               {timeRanges.map((range) => (
                 <button
                   key={range}
-                  onClick={() => setTimeRange(range)}
+                  onClick={() => handleTimeRangeChange(range)}
                   className={`px-3 py-2 text-sm font-medium rounded transition-colors duration-200 ${
                     timeRange === range
                       ? 'bg-white text-slate-900 shadow-sm'
