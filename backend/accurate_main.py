@@ -27,6 +27,46 @@ portfolio_data = {
     "price_cache": {}
 }
 
+def _parse_number(value: Any) -> float:
+    """Parse numbers that may contain commas, dollar signs, or parentheses negatives."""
+    try:
+        if pd.isna(value):
+            return 0.0
+        if isinstance(value, (int, float)):
+            return float(value)
+        s = str(value).strip()
+        if s == "":
+            return 0.0
+        # Parentheses indicate negative numbers in many broker CSVs
+        negative = False
+        if s.startswith("(") and s.endswith(")"):
+            negative = True
+            s = s[1:-1]
+        # Remove currency/commas/whitespace
+        s = s.replace("$", "").replace(",", "").replace("+", "")
+        num = float(s)
+        return -num if negative else num
+    except Exception:
+        return 0.0
+
+def _parse_date(value: Any) -> datetime:
+    """Best-effort date parsing for both Fidelity and Schwab formats.
+    Always returns a valid datetime; falls back to now() if parsing fails.
+    """
+    if isinstance(value, datetime):
+        return value
+    try:
+        ts = pd.to_datetime(value, errors="coerce", infer_datetime_format=True)
+        # If parsing failed, ts will be NaT
+        if ts is pd.NaT or pd.isna(ts):
+            raise ValueError("Invalid date")
+        # Convert pandas Timestamp/array-like to python datetime
+        if hasattr(ts, "to_pydatetime"):
+            return ts.to_pydatetime()
+        return datetime.fromtimestamp(pd.Timestamp(ts).timestamp())
+    except Exception:
+        return datetime.now()
+
 def get_real_stock_data(symbol: str, start_date: datetime, end_date: datetime) -> Dict[str, float]:
     """Get real historical stock prices using yfinance"""
     try:
@@ -219,52 +259,73 @@ async def upload_csv(file: UploadFile = File(...)):
     if not file.filename or not file.filename.endswith('.csv'):
         raise HTTPException(status_code=400, detail="Only CSV files are allowed")
     
-    if file.size and file.size > 50 * 1024 * 1024:  # 50MB limit
-        raise HTTPException(status_code=413, detail="File too large. Maximum size is 50MB")
-    
     try:
         contents = await file.read()
         if len(contents) == 0:
             raise HTTPException(status_code=400, detail="Empty file uploaded")
         
-        df = pd.read_csv(pd.io.common.StringIO(contents.decode('utf-8')))
-        
-        # Validate required columns exist
-        required_columns = ['Run Date', 'Action', 'Symbol']
-        missing_columns = [col for col in required_columns if col not in df.columns]
-        if missing_columns:
+        # Read with all columns as strings to preserve formatting (e.g., $1,234.56)
+        df = pd.read_csv(pd.io.common.StringIO(contents.decode('utf-8')), dtype=str).fillna("")
+
+        # Detect schema
+        is_fidelity = all(col in df.columns for col in ['Run Date', 'Action', 'Symbol'])
+        is_schwab = all(col in df.columns for col in ['Date', 'Action', 'Symbol']) and (
+            'Amount' in df.columns or 'Amount ($)' in df.columns
+        )
+
+        if not (is_fidelity or is_schwab):
             raise HTTPException(
-                status_code=400, 
-                detail=f"Missing required columns: {', '.join(missing_columns)}"
+                status_code=400,
+                detail=(
+                    "Unsupported CSV format. Expected Fidelity columns ['Run Date','Action','Symbol'] "
+                    "or Schwab columns ['Date','Action','Symbol','Amount']."
+                ),
             )
-        
-        # Clean up the data
-        df = df.dropna(subset=required_columns)
-        if df.empty:
-            raise HTTPException(status_code=400, detail="No valid transactions found in CSV")
-        
-        df['Run Date'] = pd.to_datetime(df['Run Date'])
-        df['Settlement Date'] = pd.to_datetime(df['Settlement Date'])
-        
-        # Process transactions
-        transactions = []
+
+        transactions: List[Dict[str, Any]] = []
         symbols = set()
-        
-        for _, row in df.iterrows():
-            if pd.notna(row['Symbol']) and row['Symbol'] != '':
-                # Use Settlement Date if available, otherwise Run Date
-                date = row['Settlement Date'] if pd.notna(row['Settlement Date']) else row['Run Date']
-                
+
+        if is_fidelity:
+            for _, row in df.iterrows():
+                symbol = str(row.get('Symbol', '')).strip()
+                if symbol == "":
+                    continue
+                run_date = row.get('Run Date', '')
+                settle_date = row.get('Settlement Date', '') if 'Settlement Date' in df.columns else ""
+                date_dt = _parse_date(settle_date or run_date)
                 transaction = {
-                    'date': date.strftime('%Y-%m-%d'),
-                    'action': str(row['Action']),
-                    'symbol': str(row['Symbol']),
-                    'quantity': float(row['Quantity']) if pd.notna(row['Quantity']) else 0,
-                    'price': float(row['Price ($)']) if pd.notna(row['Price ($)']) else 0,
-                    'amount': float(row['Amount ($)']) if pd.notna(row['Amount ($)']) else 0,
+                    'date': date_dt.strftime('%Y-%m-%d'),
+                    'action': str(row.get('Action', '')).strip(),
+                    'symbol': symbol,
+                    'quantity': _parse_number(row.get('Quantity', '')),
+                    'price': _parse_number(row.get('Price ($)', '')),
+                    'amount': _parse_number(row.get('Amount ($)', '')),
                 }
                 transactions.append(transaction)
-                symbols.add(str(row['Symbol']))
+                symbols.add(symbol)
+        else:  # Schwab
+            # Normalize possible column name variants
+            amount_col = 'Amount' if 'Amount' in df.columns else 'Amount ($)'
+            price_col = 'Price' if 'Price' in df.columns else 'Price ($)'
+            qty_col = 'Quantity' if 'Quantity' in df.columns else 'Qty'
+
+            for _, row in df.iterrows():
+                symbol = str(row.get('Symbol', '')).strip()
+                # Keep cash movements too for completeness (symbol may be empty)
+                action = str(row.get('Action', '')).strip()
+                date_dt = _parse_date(row.get('Date', ''))
+                transaction = {
+                    'date': date_dt.strftime('%Y-%m-%d'),
+                    'action': action,
+                    'symbol': symbol,
+                    'quantity': _parse_number(row.get(qty_col, '')),
+                    'price': _parse_number(row.get(price_col, '')),
+                    'amount': _parse_number(row.get(amount_col, '')),
+                }
+                # Only index symbols that look like tickers
+                if symbol:
+                    symbols.add(symbol)
+                transactions.append(transaction)
         
         # Store the data globally
         portfolio_data["transactions"] = transactions
@@ -276,14 +337,21 @@ async def upload_csv(file: UploadFile = File(...)):
         # Rebuild portfolio history with REAL prices
         rebuild_portfolio_history()
         
+        # Compute date range from parsed transactions
+        try:
+            dates = [datetime.strptime(t['date'], '%Y-%m-%d') for t in transactions]
+            start_date = min(dates).strftime('%Y-%m-%d') if dates else None
+            end_date = max(dates).strftime('%Y-%m-%d') if dates else None
+        except Exception:
+            start_date = None
+            end_date = None
+
         return JSONResponse(content={
             "message": "CSV processed successfully with REAL stock data",
             "transactions_count": len(transactions),
             "symbols_found": list(symbols),
-            "date_range": {
-                "start": df['Run Date'].min().strftime('%Y-%m-%d'),
-                "end": df['Run Date'].max().strftime('%Y-%m-%d')
-            }
+            "date_range": {"start": start_date, "end": end_date},
+            "detected_format": "Fidelity" if is_fidelity else "Schwab",
         })
     
     except Exception as e:
