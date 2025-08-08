@@ -9,6 +9,8 @@ import os
 import yfinance as yf
 import uvicorn
 from sqlmodel import SQLModel, Field, Session, create_engine, select
+import random
+import string
 from passlib.context import CryptContext
 from jose import jwt, JWTError
 from pydantic import BaseModel, EmailStr
@@ -84,6 +86,35 @@ class PortfolioHistoryRecord(SQLModel, table=True):
     total_value: float
     spy_price: float | None = None
     positions_json: str = Field(default="[]")
+
+
+class UserProfile(SQLModel, table=True):
+    __tablename__ = "user_profiles"
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(index=True)
+    display_name: str | None = None
+    is_public: bool = Field(default=False)
+    share_performance_only: bool = Field(default=False)
+    anonymize_symbols: bool = Field(default=False)
+
+
+class Group(SQLModel, table=True):
+    __tablename__ = "groups"
+    id: int | None = Field(default=None, primary_key=True)
+    name: str
+    code: str = Field(index=True)
+    owner_id: int = Field(index=True)
+    is_public: bool = Field(default=True)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class GroupMember(SQLModel, table=True):
+    __tablename__ = "group_members"
+    id: int | None = Field(default=None, primary_key=True)
+    group_id: int = Field(index=True)
+    user_id: int = Field(index=True)
+    role: str = Field(default="member")
+    joined_at: datetime = Field(default_factory=datetime.utcnow)
 
 
 class RegisterRequest(BaseModel):
@@ -370,9 +401,34 @@ def rebuild_portfolio_history():
     portfolio_data["portfolio_history"] = portfolio_history
     print(f"Built portfolio history with {len(portfolio_history)} days of REAL data")
 
+
+def _get_or_create_profile(session: Session, user_id: int) -> UserProfile:
+    profile = session.exec(select(UserProfile).where(UserProfile.user_id == user_id)).first()
+    if not profile:
+        profile = UserProfile(user_id=user_id)
+        session.add(profile)
+        session.commit()
+        session.refresh(profile)
+    return profile
+
 @app.get("/")
 async def root():
     return {"message": "Stock Portfolio Visualizer API with REAL DATA", "version": "2.0.0"}
+
+class ProfileUpdate(BaseModel):
+    display_name: str | None = None
+    is_public: bool | None = None
+    share_performance_only: bool | None = None
+    anonymize_symbols: bool | None = None
+
+
+class GroupCreate(BaseModel):
+    name: str
+    is_public: bool = True
+
+
+class GroupJoin(BaseModel):
+    code: str
 
 @app.post("/api/auth/register", response_model=UserResponse)
 async def register(payload: RegisterRequest, session: Session = Depends(get_session)):
@@ -987,5 +1043,357 @@ async def get_custom_comparison(symbols: str, baseline_date: str = None, start_d
     
     return JSONResponse(content={"comparison": comparison})
 
+@app.get("/api/social/profiles")
+async def list_public_profiles(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    profiles = session.exec(select(UserProfile).where(UserProfile.is_public == True)).all()
+    users = {u.id: u for u in session.exec(select(User)).all()}
+    data = []
+    for p in profiles:
+        u = users.get(p.user_id)
+        if not u:
+            continue
+        data.append({
+            "user_id": p.user_id,
+            "display_name": p.display_name or (u.name or u.email.split("@")[0]),
+            "share_performance_only": p.share_performance_only,
+            "anonymize_symbols": p.anonymize_symbols,
+        })
+    return JSONResponse(content={"profiles": data})
+
+
+@app.get("/api/social/profile")
+async def get_my_profile(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    p = _get_or_create_profile(session, current_user.id)
+    return {
+        "display_name": p.display_name or (current_user.name or current_user.email.split("@")[0]),
+        "is_public": p.is_public,
+        "share_performance_only": p.share_performance_only,
+        "anonymize_symbols": p.anonymize_symbols,
+    }
+
+
+@app.put("/api/social/profile")
+async def update_my_profile(payload: ProfileUpdate, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    p = _get_or_create_profile(session, current_user.id)
+    if payload.display_name is not None:
+        p.display_name = payload.display_name
+    if payload.is_public is not None:
+        p.is_public = payload.is_public
+    if payload.share_performance_only is not None:
+        p.share_performance_only = payload.share_performance_only
+    if payload.anonymize_symbols is not None:
+        p.anonymize_symbols = payload.anonymize_symbols
+    session.add(p)
+    session.commit()
+    session.refresh(p)
+    return {"ok": True}
+
+
+def _authorize_view(session: Session, viewer_id: int, target_user_id: int) -> UserProfile | None:
+    if viewer_id == target_user_id:
+        return _get_or_create_profile(session, target_user_id)
+    profile = session.exec(select(UserProfile).where(UserProfile.user_id == target_user_id)).first()
+    if not profile or not profile.is_public:
+        raise HTTPException(status_code=403, detail="User profile is private")
+    return profile
+
+
+@app.get("/api/social/performance")
+async def social_performance(user_id: int, baseline_date: str | None = None, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    profile = _authorize_view(session, current_user.id, user_id)
+    rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == user_id)).all()
+    if not rows:
+        return JSONResponse(content={"comparison": []})
+    history = sorted([{ "date": r.date, "total_value": r.total_value, "spy_price": r.spy_price } for r in rows], key=lambda x: x["date"]) 
+    portfolio_start_date = history[0]['date']
+    if baseline_date:
+        baseline_date = validate_baseline_date(baseline_date, portfolio_start_date)
+    else:
+        baseline_date = portfolio_start_date
+    baseline_value = next((h['total_value'] for h in history if h['date'] >= baseline_date), history[0]['total_value'])
+    data = []
+    for h in history:
+        if h['date'] < baseline_date:
+            continue
+        value = round((h['total_value'] / baseline_value) * 10000, 2) if baseline_value > 0 else 10000.0
+        data.append({"date": h['date'], "portfolio": value})
+    return JSONResponse(content={"comparison": data})
+
+
+@app.get("/api/social/weights")
+async def social_weights(user_id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    profile = _authorize_view(session, current_user.id, user_id)
+    if profile.share_performance_only:
+        return JSONResponse(content={"weights": []})
+    rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == user_id)).all()
+    if not rows:
+        return JSONResponse(content={"weights": []})
+    latest = max(rows, key=lambda r: r.date)
+    positions = json.loads(latest.positions_json or "[]")
+    if profile.anonymize_symbols:
+        for idx, p in enumerate(positions, start=1):
+            p['label'] = f"Holding {idx}"
+            p.pop('symbol', None)
+    return JSONResponse(content={"weights": positions, "as_of": latest.date})
+
+
+@app.get("/api/social/comparison")
+async def social_comparison(user_ids: str, baseline_date: str | None = None, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    ids = []
+    for s in user_ids.split(','):
+        s = s.strip()
+        if not s:
+            continue
+        try:
+            ids.append(int(s))
+        except ValueError:
+            continue
+    if not ids:
+        return JSONResponse(content={"series": {}})
+    series: dict[int, list[dict]] = {}
+    for uid in ids:
+        _authorize_view(session, current_user.id, uid)
+        rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == uid)).all()
+        if not rows:
+            series[uid] = []
+            continue
+        hist = sorted([{ "date": r.date, "total_value": r.total_value } for r in rows], key=lambda x: x["date"]) 
+        start = hist[0]['date']
+        base = baseline_date or start
+        base_value = next((h['total_value'] for h in hist if h['date'] >= base), hist[0]['total_value'])
+        points = []
+        for h in hist:
+            if h['date'] < base:
+                continue
+            v = round((h['total_value'] / base_value) * 10000, 2) if base_value > 0 else 10000.0
+            points.append({"date": h['date'], "value": v})
+        series[uid] = points
+    return JSONResponse(content={"series": series})
+
+
+# =====================
+# Groups
+# =====================
+
+def _generate_group_code(length: int = 6) -> str:
+    alphabet = string.ascii_uppercase + string.digits
+    return "".join(random.choice(alphabet) for _ in range(length))
+
+
+@app.post("/api/groups")
+async def create_group(payload: GroupCreate, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    code = _generate_group_code()
+    # Ensure unique code
+    while session.exec(select(Group).where(Group.code == code)).first() is not None:
+        code = _generate_group_code()
+    g = Group(name=payload.name, code=code, owner_id=current_user.id, is_public=payload.is_public)
+    session.add(g)
+    session.commit()
+    session.refresh(g)
+    # auto-join as owner
+    session.add(GroupMember(group_id=g.id, user_id=current_user.id, role="owner"))
+    session.commit()
+    return {"id": g.id, "name": g.name, "code": g.code, "is_public": g.is_public}
+
+
+@app.post("/api/groups/join")
+async def join_group(payload: GroupJoin, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    g = session.exec(select(Group).where(Group.code == payload.code.upper())).first()
+    if not g:
+        raise HTTPException(status_code=404, detail="Group not found")
+    existing = session.exec(select(GroupMember).where((GroupMember.group_id == g.id) & (GroupMember.user_id == current_user.id))).first()
+    if existing:
+        return {"ok": True, "id": g.id}
+    session.add(GroupMember(group_id=g.id, user_id=current_user.id))
+    session.commit()
+    return {"ok": True, "id": g.id}
+
+
+@app.get("/api/groups")
+async def my_groups(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    memberships = session.exec(select(GroupMember).where(GroupMember.user_id == current_user.id)).all()
+    group_ids = [m.group_id for m in memberships]
+    groups = []
+    if group_ids:
+        for gid in group_ids:
+            g = session.exec(select(Group).where(Group.id == gid)).first()
+            if g:
+                groups.append({"id": g.id, "name": g.name, "code": g.code, "is_public": g.is_public})
+    return {"groups": groups}
+
+
+@app.get("/api/groups/{group_id}/leaderboard")
+async def group_leaderboard(group_id: int, baseline_date: str | None = None, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    # Ensure membership
+    _ensure_group_membership(session, group_id, current_user.id)
+    members = session.exec(select(GroupMember).where(GroupMember.group_id == group_id)).all()
+    leaderboard = []
+    for m in members:
+        # Within a group, show all members irrespective of public profile settings
+        user = session.exec(select(User).where(User.id == m.user_id)).first()
+        profile = _get_or_create_profile(session, m.user_id)
+        rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == m.user_id)).all()
+        if not rows:
+            continue
+        hist = sorted([{ "date": r.date, "total_value": r.total_value } for r in rows], key=lambda x: x["date"]) 
+        start = hist[0]['date']
+        base = baseline_date or start
+        base_value = next((h['total_value'] for h in hist if h['date'] >= base), hist[0]['total_value'])
+        last_value = hist[-1]['total_value']
+        ret = ((last_value - base_value) / base_value) * 100 if base_value > 0 else 0.0
+        display_name = (profile.display_name or user.name or user.email.split("@")[0]) if user else f"User {m.user_id}"
+        leaderboard.append({"user_id": m.user_id, "name": display_name, "return_pct": round(ret, 2)})
+    leaderboard.sort(key=lambda x: x['return_pct'], reverse=True)
+    return {"leaderboard": leaderboard}
+
+
+@app.get("/api/groups/{group_id}")
+async def get_group(group_id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    membership = session.exec(select(GroupMember).where((GroupMember.group_id == group_id) & (GroupMember.user_id == current_user.id))).first()
+    if not membership:
+        raise HTTPException(status_code=403, detail="Not in group")
+    g = session.exec(select(Group).where(Group.id == group_id)).first()
+    if not g:
+        raise HTTPException(status_code=404, detail="Group not found")
+    member_rows = session.exec(select(GroupMember).where(GroupMember.group_id == group_id)).all()
+    members = []
+    for m in member_rows:
+        u = session.exec(select(User).where(User.id == m.user_id)).first()
+        profile = _get_or_create_profile(session, m.user_id)
+        display_name = (profile.display_name or (u.name if u else None) or (u.email.split("@")[0] if u else None)) or "User"
+        is_public = bool(profile.is_public)
+        members.append({"user_id": m.user_id, "name": display_name, "is_public": is_public})
+    return {"id": g.id, "name": g.name, "code": g.code, "is_public": g.is_public, "members": members}
+
+
+# ---- New: Group-scoped insights (override personal privacy within the group) ----
+
+def _ensure_group_membership(session: Session, group_id: int, user_id: int) -> None:
+    membership = session.exec(select(GroupMember).where((GroupMember.group_id == group_id) & (GroupMember.user_id == user_id))).first()
+    if not membership:
+        raise HTTPException(status_code=403, detail="Not in group")
+
+
+def _compute_cost_basis(session: Session, user_id: int) -> dict[str, dict[str, float]]:
+    tx_rows = session.exec(select(TransactionRecord).where(TransactionRecord.user_id == user_id)).all()
+    cost_basis: dict[str, dict[str, float]] = {}
+    for r in tx_rows:
+        symbol = r.symbol
+        if not symbol or symbol == 'Cash':
+            continue
+        if symbol not in cost_basis:
+            cost_basis[symbol] = {'total_cost': 0.0, 'total_shares': 0.0}
+        if 'BOUGHT' in r.action or 'Buy' in r.action:
+            cost_basis[symbol]['total_cost'] += abs(r.amount)
+            cost_basis[symbol]['total_shares'] += r.quantity
+        elif 'SOLD' in r.action or 'Sell' in r.action:
+            if cost_basis[symbol]['total_shares'] > 0:
+                avg_cost_per_share = cost_basis[symbol]['total_cost'] / max(cost_basis[symbol]['total_shares'], 1e-9)
+                sold_cost = avg_cost_per_share * abs(r.quantity)
+                cost_basis[symbol]['total_cost'] -= sold_cost
+                cost_basis[symbol]['total_shares'] -= abs(r.quantity)
+        elif 'REINVESTMENT' in r.action:
+            cost_basis[symbol]['total_cost'] += abs(r.amount)
+            cost_basis[symbol]['total_shares'] += r.quantity
+    return cost_basis
+
+
+def _compute_badges(session: Session, user_id: int, positions: list[dict]) -> dict:
+    # Largest trade by absolute amount
+    tx_rows = session.exec(select(TransactionRecord).where(TransactionRecord.user_id == user_id)).all()
+    largest_trade = None
+    if tx_rows:
+        largest = max(tx_rows, key=lambda t: abs(t.amount or 0))
+        largest_trade = {
+            "symbol": largest.symbol or "Cash",
+            "action": largest.action,
+            "amount": round(float(largest.amount or 0), 2),
+            "date": largest.date,
+        }
+
+    # Best/Worst symbol by gain % using cost basis vs latest value
+    cost_basis = _compute_cost_basis(session, user_id)
+    perf_list: list[tuple[str, float]] = []
+    for p in positions:
+        sym = p.get('symbol')
+        if not sym:
+            continue
+        basis = cost_basis.get(sym)
+        if not basis or basis['total_cost'] <= 0:
+            continue
+        gain_pct = ((p.get('value', 0.0) - basis['total_cost']) / basis['total_cost']) * 100.0
+        perf_list.append((sym, gain_pct))
+    best_symbol = None
+    worst_symbol = None
+    if perf_list:
+        best_symbol = {
+            "symbol": max(perf_list, key=lambda x: x[1])[0],
+            "gain_pct": round(max(perf_list, key=lambda x: x[1])[1], 2),
+        }
+        worst_symbol = {
+            "symbol": min(perf_list, key=lambda x: x[1])[0],
+            "gain_pct": round(min(perf_list, key=lambda x: x[1])[1], 2),
+        }
+    return {
+        "largest_trade": largest_trade,
+        "best_symbol": best_symbol,
+        "worst_symbol": worst_symbol,
+    }
+
+
+@app.get("/api/groups/{group_id}/members/details")
+async def group_members_details(group_id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    _ensure_group_membership(session, group_id, current_user.id)
+    members = session.exec(select(GroupMember).where(GroupMember.group_id == group_id)).all()
+    data = []
+    for m in members:
+        user = session.exec(select(User).where(User.id == m.user_id)).first()
+        # Latest snapshot
+        rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == m.user_id)).all()
+        if not rows:
+            data.append({"user_id": m.user_id, "name": user.name or user.email.split("@")[0], "weights": [], "badges": {}})
+            continue
+        latest = max(rows, key=lambda r: r.date)
+        positions = json.loads(latest.positions_json or "[]")
+        total_value = latest.total_value or 0.0
+        # enrich with weight pct
+        enriched = []
+        for p in positions:
+            pct = (p.get('value', 0.0) / total_value * 100.0) if total_value > 0 else 0.0
+            enriched.append({
+                "symbol": p.get('symbol', ''),
+                "shares": p.get('shares', 0.0),
+                "value": p.get('value', 0.0),
+                "weight": round(pct, 2),
+            })
+        enriched.sort(key=lambda x: x['weight'], reverse=True)
+        badges = _compute_badges(session, m.user_id, positions)
+        display_name = user.name or user.email.split("@")[0]
+        data.append({"user_id": m.user_id, "name": display_name, "weights": enriched, "badges": badges})
+    return {"members": data}
+
+
+@app.get("/api/groups/{group_id}/comparison")
+async def group_comparison(group_id: int, baseline_date: str | None = None, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    _ensure_group_membership(session, group_id, current_user.id)
+    members = session.exec(select(GroupMember).where(GroupMember.group_id == group_id)).all()
+    series: dict[int, list[dict]] = {}
+    for m in members:
+        rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == m.user_id)).all()
+        if not rows:
+            series[m.user_id] = []
+            continue
+        hist = sorted([{ "date": r.date, "total_value": r.total_value } for r in rows], key=lambda x: x["date"]) 
+        start = hist[0]['date']
+        base = baseline_date or start
+        base_value = next((h['total_value'] for h in hist if h['date'] >= base), hist[0]['total_value'])
+        points = []
+        for h in hist:
+            if h['date'] < base:
+                continue
+            v = round((h['total_value'] / base_value) * 10000, 2) if base_value > 0 else 10000.0
+            points.append({"date": h['date'], "value": v})
+        series[m.user_id] = points
+    return {"series": series}
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

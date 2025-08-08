@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Upload, TrendingUp, PieChart, Activity, BarChart3 } from 'lucide-react'
-import api, { authApi } from '@/utils/api'
+import api, { authApi, groupApi } from '@/utils/api'
 import FileUpload from '@/components/FileUpload'
 import GrowthChart from '@/components/GrowthChart'
 import PortfolioWeights from '@/components/PortfolioWeights'
@@ -203,6 +203,67 @@ export default function Home() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-6 rounded-lg border p-4">
+          <h2 className="text-lg font-medium mb-3">Groups (beta)</h2>
+          <div className="flex flex-wrap gap-2 mb-3">
+            <button
+              className="px-3 py-2 text-sm border rounded"
+              onClick={async () => {
+                const name = prompt('Group name?') || ''
+                if (!name) return
+                try {
+                  const g = await groupApi.create(name, true)
+                  alert(`Created group ${g.name}. Invite code: ${g.code}`)
+                } catch (e) {
+                  alert('Failed to create group')
+                }
+              }}
+            >Create group</button>
+            <button
+              className="px-3 py-2 text-sm border rounded"
+              onClick={async () => {
+                const code = prompt('Enter invite code') || ''
+                if (!code) return
+                try {
+                  await groupApi.join(code)
+                  alert('Joined group')
+                } catch (e) {
+                  alert('Failed to join group')
+                }
+              }}
+            >Join via code</button>
+            <button
+              className="px-3 py-2 text-sm border rounded"
+              onClick={async () => {
+                try {
+                  const { groups } = await groupApi.mine()
+                  if (!groups.length) return alert('No groups yet')
+                  const lines = groups.map(g => `${g.id}: ${g.name} (code ${g.code})`).join('\n')
+                  alert(lines)
+                } catch (e) {
+                  alert('Failed to load groups')
+                }
+              }}
+            >My groups</button>
+            <button
+              className="px-3 py-2 text-sm border rounded"
+              onClick={async () => {
+                try {
+                  const groupId = Number(prompt('Group ID for leaderboard?') || '0')
+                  if (!groupId) return
+                  const { leaderboard } = await groupApi.leaderboard(groupId)
+                  if (!leaderboard.length) return alert('No data')
+                  const lines = leaderboard.map((r, i) => `#${i+1} ${r.name}: ${r.return_pct}%`).join('\n')
+                  alert(lines)
+                } catch (e) {
+                  alert('Failed to load leaderboard')
+                }
+              }}
+            >Leaderboard</button>
+            <a href="/groups" className="px-3 py-2 text-sm border rounded">Open groups page</a>
+          </div>
+          <p className="text-xs text-slate-500">Invite others using your group code. Leaderboard ranks by return since baseline.</p>
+        </div>
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <LoadingSpinner />

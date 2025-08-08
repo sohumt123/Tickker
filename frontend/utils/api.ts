@@ -124,4 +124,60 @@ export const authApi = {
   }
 }
 
+export const groupApi = {
+  create: async (name: string, isPublic: boolean = true) => {
+    const res = await api.post('/groups', { name, is_public: isPublic })
+    return res.data as { id: number; name: string; code: string; is_public: boolean }
+  },
+  join: async (code: string) => {
+    const res = await api.post('/groups/join', { code })
+    return res.data as { ok: boolean; id: number }
+  },
+  mine: async () => {
+    const res = await api.get('/groups')
+    return res.data as { groups: { id: number; name: string; code: string; is_public: boolean }[] }
+  },
+  leaderboard: async (groupId: number, baselineDate?: string) => {
+    const params = new URLSearchParams()
+    if (baselineDate) params.append('baseline_date', baselineDate)
+    const res = await api.get(`/groups/${groupId}/leaderboard?${params}`)
+    return res.data as { leaderboard: { user_id: number; name: string; return_pct: number }[] }
+  },
+  details: async (groupId: number) => {
+    const res = await api.get(`/groups/${groupId}`)
+    return res.data as { id: number; name: string; code: string; is_public: boolean; members: { user_id: number; name: string; is_public: boolean }[] }
+  },
+  membersDetails: async (groupId: number) => {
+    const res = await api.get(`/groups/${groupId}/members/details`)
+    return res.data as { members: { user_id: number; name: string; weights: { symbol: string; weight: number; value: number; shares: number }[]; badges: any }[] }
+  },
+  groupComparison: async (groupId: number, baselineDate?: string) => {
+    const params = new URLSearchParams()
+    if (baselineDate) params.append('baseline_date', baselineDate)
+    const res = await api.get(`/groups/${groupId}/comparison?${params}`)
+    return res.data as { series: Record<number, { date: string; value: number }[]> }
+  }
+}
+
+export const socialApi = {
+  listPublicProfiles: async () => {
+    const res = await api.get('/social/profiles')
+    return res.data as { profiles: { user_id: number; display_name: string }[] }
+  },
+  getPerformance: async (userId: number) => {
+    const res = await api.get(`/social/performance?user_id=${userId}`)
+    return res.data as { history: { date: string; value: number }[] }
+  },
+  getWeights: async (userId: number) => {
+    const res = await api.get(`/social/weights?user_id=${userId}`)
+    return res.data as { weights: { symbol: string; weight: number }[] }
+  },
+  getComparison: async (userIds: number[]) => {
+    const params = new URLSearchParams()
+    params.append('user_ids', userIds.join(','))
+    const res = await api.get(`/social/comparison?${params}`)
+    return res.data as { series: { user_id: number; name: string; points: { date: string; value: number }[] }[] }
+  },
+}
+
 export default api
