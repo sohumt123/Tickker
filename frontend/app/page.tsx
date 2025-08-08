@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Upload, TrendingUp, PieChart, Activity, BarChart3 } from 'lucide-react'
+import api, { authApi } from '@/utils/api'
 import FileUpload from '@/components/FileUpload'
 import GrowthChart from '@/components/GrowthChart'
 import PortfolioWeights from '@/components/PortfolioWeights'
@@ -13,15 +14,17 @@ export default function Home() {
   const [hasData, setHasData] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [activeTab, setActiveTab] = useState('overview')
+  const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
     checkExistingData()
+    // Attempt to fetch current user if token exists
+    authApi.me().then(setUser).catch(() => setUser(null))
   }, [])
 
   const checkExistingData = async () => {
     try {
-      const response = await fetch('/api/portfolio/history')
-      const data = await response.json()
+      const { data } = await api.get('/portfolio/history')
       if (data.history && data.history.length > 0) {
         setHasData(true)
       }
@@ -48,6 +51,21 @@ export default function Home() {
     { id: 'trades', label: 'Trades', icon: Activity },
     { id: 'performance', label: 'Performance', icon: BarChart3 },
   ]
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center space-y-4">
+          <h1 className="text-3xl font-bold">Welcome to Tickker</h1>
+          <p className="text-slate-600">Please sign in to upload your CSV and view your portfolio.</p>
+          <div className="space-x-2">
+            <a href="/login" className="px-4 py-2 border rounded-lg">Sign in</a>
+            <a href="/signup" className="px-4 py-2 bg-slate-900 text-white rounded-lg">Create account</a>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (!hasData) {
     return (
@@ -110,6 +128,48 @@ export default function Home() {
             </div>
             
             <div className="flex items-center space-x-4">
+              {user ? (
+                <span className="text-sm text-slate-600">Hi, {user.name || user.email}</span>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={async () => {
+                      const email = prompt('Email') || ''
+                      const password = prompt('Password') || ''
+                      if (!email || !password) return
+                      try {
+                        await authApi.login(email, password)
+                        const me = await authApi.me()
+                        setUser(me)
+                      } catch (e) {
+                        alert('Login failed')
+                      }
+                    }}
+                    className="px-3 py-2 text-sm border rounded-lg hover:bg-slate-100"
+                  >
+                    Sign in
+                  </button>
+                  <button
+                    onClick={async () => {
+                      const email = prompt('Email') || ''
+                      const password = prompt('Password (min 6 chars)') || ''
+                      const name = prompt('Name (optional)') || ''
+                      if (!email || !password) return
+                      try {
+                        await authApi.register(email, password, name)
+                        await authApi.login(email, password)
+                        const me = await authApi.me()
+                        setUser(me)
+                      } catch (e) {
+                        alert('Registration failed')
+                      }
+                    }}
+                    className="px-3 py-2 text-sm border rounded-lg bg-slate-900 text-white hover:opacity-90"
+                  >
+                    Create account
+                  </button>
+                </div>
+              )}
               <button
                 onClick={handleNewUpload}
                 className="flex items-center px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors duration-200"

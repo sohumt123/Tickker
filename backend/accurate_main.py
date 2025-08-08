@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import pandas as pd
@@ -8,6 +8,12 @@ from datetime import datetime, timedelta
 import os
 import yfinance as yf
 import uvicorn
+from sqlmodel import SQLModel, Field, Session, create_engine, select
+from passlib.context import CryptContext
+from jose import jwt, JWTError
+from pydantic import BaseModel, EmailStr
+from fastapi.security import OAuth2PasswordBearer
+from dotenv import load_dotenv
 
 app = FastAPI(title="Stock Portfolio Visualizer", version="1.0.0")
 
@@ -19,6 +25,9 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization"],
 )
 
+# Load environment variables
+load_dotenv()
+
 # Global storage for processed data
 portfolio_data = {
     "transactions": [],
@@ -26,6 +35,117 @@ portfolio_data = {
     "symbols": [],
     "price_cache": {}
 }
+
+# =====================
+# Auth & Persistence
+# =====================
+
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./portfolio.db")
+# For SQLite, allow access across threads in the ASGI server
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(DATABASE_URL, echo=False, connect_args={"check_same_thread": False})
+else:
+    engine = create_engine(DATABASE_URL, echo=False)
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
+
+SECRET_KEY = os.getenv("JWT_SECRET", "dev-secret-change-me")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
+
+
+class User(SQLModel, table=True):
+    __tablename__ = "users"
+    id: int | None = Field(default=None, primary_key=True)
+    email: str = Field(index=True)
+    name: str | None = None
+    password_hash: str
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class TransactionRecord(SQLModel, table=True):
+    __tablename__ = "transactions"
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(index=True)
+    date: str
+    action: str
+    symbol: str
+    quantity: float
+    price: float
+    amount: float
+
+
+class PortfolioHistoryRecord(SQLModel, table=True):
+    __tablename__ = "portfolio_history"
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(index=True)
+    date: str
+    total_value: float
+    spy_price: float | None = None
+    positions_json: str = Field(default="[]")
+
+
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    password: str
+    name: str | None = None
+
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class UserResponse(BaseModel):
+    id: int
+    email: EmailStr
+    name: str | None = None
+    created_at: datetime
+
+
+def create_db_and_tables() -> None:
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session() -> Session:
+    with Session(engine) as session:
+        yield session
+
+
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
+    to_encode = data.copy()
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+
+async def get_current_user(token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)) -> User:
+    credentials_exception = HTTPException(status_code=401, detail="Could not validate credentials")
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str | None = payload.get("sub")
+        if email is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    user = session.exec(select(User).where(User.email == email)).first()
+    if not user:
+        raise credentials_exception
+    return user
+
+
+@app.on_event("startup")
+def on_startup_event():
+    create_db_and_tables()
 
 def _parse_number(value: Any) -> float:
     """Parse numbers that may contain commas, dollar signs, or parentheses negatives."""
@@ -56,7 +176,7 @@ def _parse_date(value: Any) -> datetime:
     if isinstance(value, datetime):
         return value
     try:
-        ts = pd.to_datetime(value, errors="coerce", infer_datetime_format=True)
+        ts = pd.to_datetime(value, errors="coerce")
         # If parsing failed, ts will be NaT
         if ts is pd.NaT or pd.isna(ts):
             raise ValueError("Invalid date")
@@ -254,8 +374,33 @@ def rebuild_portfolio_history():
 async def root():
     return {"message": "Stock Portfolio Visualizer API with REAL DATA", "version": "2.0.0"}
 
+@app.post("/api/auth/register", response_model=UserResponse)
+async def register(payload: RegisterRequest, session: Session = Depends(get_session)):
+    existing = session.exec(select(User).where(User.email == payload.email)).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    user = User(email=str(payload.email).lower(), name=payload.name or "", password_hash=get_password_hash(payload.password))
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return UserResponse(id=user.id, email=user.email, name=user.name, created_at=user.created_at)
+
+
+@app.post("/api/auth/login")
+async def login(payload: LoginRequest, session: Session = Depends(get_session)):
+    user = session.exec(select(User).where(User.email == str(payload.email).lower())).first()
+    if not user or not verify_password(payload.password, user.password_hash):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    token = create_access_token({"sub": user.email})
+    return {"access_token": token, "token_type": "bearer", "user": {"id": user.id, "email": user.email, "name": user.name}}
+
+
+@app.get("/api/me", response_model=UserResponse)
+async def me(current_user: User = Depends(get_current_user)):
+    return UserResponse(id=current_user.id, email=current_user.email, name=current_user.name, created_at=current_user.created_at)
+
 @app.post("/api/upload")
-async def upload_csv(file: UploadFile = File(...)):
+async def upload_csv(file: UploadFile = File(...), current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     if not file.filename or not file.filename.endswith('.csv'):
         raise HTTPException(status_code=400, detail="Only CSV files are allowed")
     
@@ -327,15 +472,47 @@ async def upload_csv(file: UploadFile = File(...)):
                     symbols.add(symbol)
                 transactions.append(transaction)
         
-        # Store the data globally
+        # Store the data globally (in-memory for current session)
         portfolio_data["transactions"] = transactions
         portfolio_data["symbols"] = list(symbols)
+
+        # Persist raw transactions to DB for this user
+        # Clear old records for idempotency
+        session.exec(select(TransactionRecord).where(TransactionRecord.user_id == current_user.id))
+        session.query(TransactionRecord).filter(TransactionRecord.user_id == current_user.id).delete()
+        session.commit()
+        to_insert = [
+            TransactionRecord(
+                user_id=current_user.id,
+                date=t['date'],
+                action=t['action'],
+                symbol=t['symbol'],
+                quantity=float(t['quantity'] or 0),
+                price=float(t['price'] or 0),
+                amount=float(t['amount'] or 0),
+            ) for t in transactions
+        ]
+        session.add_all(to_insert)
+        session.commit()
         
         # Clear cache for fresh data
         portfolio_data["price_cache"] = {}
         
         # Rebuild portfolio history with REAL prices
         rebuild_portfolio_history()
+
+        # Persist portfolio history snapshots
+        session.query(PortfolioHistoryRecord).filter(PortfolioHistoryRecord.user_id == current_user.id).delete()
+        session.commit()
+        for h in portfolio_data["portfolio_history"]:
+            session.add(PortfolioHistoryRecord(
+                user_id=current_user.id,
+                date=h['date'],
+                total_value=h['total_value'],
+                spy_price=h.get('spy_price'),
+                positions_json=json.dumps(h.get('positions', [])),
+            ))
+        session.commit()
         
         # Compute date range from parsed transactions
         try:
@@ -358,43 +535,48 @@ async def upload_csv(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Error processing CSV: {str(e)}")
 
 @app.get("/api/portfolio/history")
-async def get_portfolio_history():
-    if not portfolio_data["portfolio_history"]:
-        return JSONResponse(content={"history": []})
-    
-    return JSONResponse(content={"history": portfolio_data["portfolio_history"]})
+async def get_portfolio_history(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == current_user.id)).all()
+    history = [
+        {
+            "date": r.date,
+            "total_value": r.total_value,
+            "spy_price": r.spy_price,
+            "positions": json.loads(r.positions_json or "[]"),
+        }
+        for r in rows
+    ]
+    return JSONResponse(content={"history": history})
 
 @app.get("/api/portfolio/weights")
-async def get_portfolio_weights():
-    if not portfolio_data["portfolio_history"]:
+async def get_portfolio_weights(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == current_user.id)).all()
+    if not rows:
         return JSONResponse(content={"weights": []})
-    
-    # Get latest portfolio state
-    latest = portfolio_data["portfolio_history"][-1]
-    positions = latest.get('positions', [])
-    total_value = latest.get('total_value', 0)
-    
-    # Calculate cost basis for each position from transactions
-    cost_basis = {}
-    for trans in portfolio_data["transactions"]:
-        symbol = trans['symbol']
+    latest = max(rows, key=lambda r: r.date)
+    positions = json.loads(latest.positions_json or "[]")
+    total_value = latest.total_value
+
+    # Calculate cost basis for each position from this user's transactions
+    tx_rows = session.exec(select(TransactionRecord).where(TransactionRecord.user_id == current_user.id)).all()
+    cost_basis: dict[str, dict[str, float]] = {}
+    for r in tx_rows:
+        symbol = r.symbol
         if symbol and symbol != 'Cash':
             if symbol not in cost_basis:
-                cost_basis[symbol] = {'total_cost': 0, 'total_shares': 0}
-            
-            if 'BOUGHT' in trans['action'] or 'Buy' in trans['action']:
-                cost_basis[symbol]['total_cost'] += abs(trans['amount'])
-                cost_basis[symbol]['total_shares'] += trans['quantity']
-            elif 'SOLD' in trans['action'] or 'Sell' in trans['action']:
-                # For sales, reduce cost basis proportionally
+                cost_basis[symbol] = {'total_cost': 0.0, 'total_shares': 0.0}
+            if 'BOUGHT' in r.action or 'Buy' in r.action:
+                cost_basis[symbol]['total_cost'] += abs(r.amount)
+                cost_basis[symbol]['total_shares'] += r.quantity
+            elif 'SOLD' in r.action or 'Sell' in r.action:
                 if cost_basis[symbol]['total_shares'] > 0:
                     avg_cost_per_share = cost_basis[symbol]['total_cost'] / cost_basis[symbol]['total_shares']
-                    sold_cost = avg_cost_per_share * abs(trans['quantity'])
+                    sold_cost = avg_cost_per_share * abs(r.quantity)
                     cost_basis[symbol]['total_cost'] -= sold_cost
-                    cost_basis[symbol]['total_shares'] -= abs(trans['quantity'])
-            elif 'REINVESTMENT' in trans['action']:
-                cost_basis[symbol]['total_cost'] += abs(trans['amount'])
-                cost_basis[symbol]['total_shares'] += trans['quantity']
+                    cost_basis[symbol]['total_shares'] -= abs(r.quantity)
+            elif 'REINVESTMENT' in r.action:
+                cost_basis[symbol]['total_cost'] += abs(r.amount)
+                cost_basis[symbol]['total_shares'] += r.quantity
     
     weights = []
     for pos in positions:
@@ -421,20 +603,30 @@ async def get_portfolio_weights():
     return JSONResponse(content={"weights": weights})
 
 @app.get("/api/portfolio/trades")
-async def get_recent_trades():
-    if not portfolio_data["transactions"]:
-        return JSONResponse(content={"trades": []})
-    
-    # Return most recent 20 trades
-    recent = sorted(portfolio_data["transactions"], key=lambda x: x['date'], reverse=True)[:20]
+async def get_recent_trades(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    rows = session.exec(select(TransactionRecord).where(TransactionRecord.user_id == current_user.id)).all()
+    recent = sorted([
+        {
+            'date': r.date,
+            'action': r.action,
+            'symbol': r.symbol,
+            'quantity': r.quantity,
+            'price': r.price,
+            'amount': r.amount,
+        } for r in rows
+    ], key=lambda x: x['date'], reverse=True)[:20]
     return JSONResponse(content={"trades": recent})
 
 @app.get("/api/performance")
-async def get_performance_metrics():
-    if not portfolio_data["portfolio_history"]:
+async def get_performance_metrics(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == current_user.id)).all()
+    if not rows:
         return JSONResponse(content={"metrics": {}})
-    
-    df = pd.DataFrame(portfolio_data["portfolio_history"])
+    history = [
+        {"date": r.date, "total_value": r.total_value, "spy_price": r.spy_price}
+        for r in rows
+    ]
+    df = pd.DataFrame(history)
     df['date'] = pd.to_datetime(df['date'])
     df = df.sort_values('date')
     
@@ -473,13 +665,14 @@ async def get_performance_metrics():
     return JSONResponse(content={"metrics": metrics})
 
 @app.get("/api/comparison/spy")
-async def get_spy_comparison(baseline_date: str = None):
-    if not portfolio_data["portfolio_history"]:
+async def get_spy_comparison(baseline_date: str = None, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == current_user.id)).all()
+    if not rows:
         return JSONResponse(content={"comparison": []})
-    
-    history = portfolio_data["portfolio_history"]
-    if not history:
-        return JSONResponse(content={"comparison": []})
+    history = [
+        {"date": r.date, "total_value": r.total_value, "spy_price": r.spy_price}
+        for r in rows
+    ]
     
     portfolio_start_date = history[0]['date']
     
@@ -617,9 +810,10 @@ async def search_stocks(query: str):
         return JSONResponse(content={"results": []})
 
 @app.get("/api/comparison/custom")
-async def get_custom_comparison(symbols: str, baseline_date: str = None, start_date: str = None, end_date: str = None):
+async def get_custom_comparison(symbols: str, baseline_date: str = None, start_date: str = None, end_date: str = None, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     """Get normalized growth comparison data for custom symbols along with portfolio and SPY"""
-    if not portfolio_data["portfolio_history"]:
+    rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == current_user.id)).all()
+    if not rows:
         return JSONResponse(content={"comparison": []})
     
     # Parse symbols
@@ -628,7 +822,13 @@ async def get_custom_comparison(symbols: str, baseline_date: str = None, start_d
         return JSONResponse(content={"comparison": []})
     
     # Get portfolio history
-    history = portfolio_data["portfolio_history"]
+    history = [
+        {
+            'date': r.date,
+            'total_value': r.total_value,
+            'spy_price': r.spy_price,
+        } for r in rows
+    ]
     if not history:
         return JSONResponse(content={"comparison": []})
     

@@ -6,3 +6,10 @@ pandas
 numpy
 requests
 yfinance
+sqlalchemy
+sqlmodel
+passlib[bcrypt]
+python-jose
+email-validator
+psycopg[binary]
+alembic

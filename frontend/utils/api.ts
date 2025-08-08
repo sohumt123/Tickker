@@ -17,6 +17,14 @@ const api = axios.create({
   },
 })
 
+// Load token from sessionStorage on the client (per-tab auth)
+if (typeof window !== 'undefined') {
+  const token = window.sessionStorage.getItem('tickker_token')
+  if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  }
+}
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -93,6 +101,27 @@ export const portfolioApi = {
     const response = await api.get(`/comparison/custom?${params}`)
     return response.data
   },
+}
+
+export const authApi = {
+  register: async (email: string, password: string, name?: string) => {
+    const res = await api.post('/auth/register', { email, password, name })
+    return res.data
+  },
+  login: async (email: string, password: string) => {
+    const res = await api.post('/auth/login', { email, password })
+    if (res.data?.access_token) {
+      api.defaults.headers.common['Authorization'] = `Bearer ${res.data.access_token}`
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.setItem('tickker_token', res.data.access_token)
+      }
+    }
+    return res.data
+  },
+  me: async () => {
+    const res = await api.get('/me')
+    return res.data
+  }
 }
 
 export default api
