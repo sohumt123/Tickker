@@ -41,3 +41,49 @@ INFO:     127.0.0.1:61094 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61096 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61099 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61102 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61348 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61349 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61352 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61356 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61353 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61357 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61362 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61363 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61366 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61369 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61383 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61384 - "GET /api/me HTTP/1.1" 200 OK
+Fetching real data for SPY from 2025-04-07 to 2025-08-09
+Got 86 days of data for SPY
+INFO:     127.0.0.1:61389 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61390 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61392 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61394 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61398 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61400 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+Fetching real data for SPY from 2025-04-08 to 2025-08-09
+Got 85 days of data for SPY
+INFO:     127.0.0.1:61403 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61412 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61414 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61416 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61418 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61421 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61422 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61427 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61428 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61431 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61440 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61442 - "GET /api/groups HTTP/1.1" 200 OK
+/Users/ishanahluwalia/Tickker - App/Stock-Visualizer-Fidelity/backend/accurate_main.py:1427: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  today = datetime.utcnow().strftime('%Y-%m-%d')
+INFO:     127.0.0.1:61452 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61453 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61455 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61459 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61460 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61461 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61465 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61467 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61470 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61473 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
