@@ -5,85 +5,121 @@
         [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
         
   @app.on_event("startup")
-INFO:     Started server process [80572]
+INFO:     Started server process [83128]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     127.0.0.1:60938 - "GET /openapi.json HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60952 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62010 - "GET /openapi.json HTTP/1.1" 200 OK
 /Users/ishanahluwalia/Tickker - App/Stock-Visualizer-Fidelity/backend/accurate_main.py:1427: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
   today = datetime.utcnow().strftime('%Y-%m-%d')
-INFO:     127.0.0.1:60979 - "GET /api/groups/2 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60980 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60983 - "GET /api/groups/2 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60984 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60987 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60988 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60994 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60993 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61001 - "GET /api/social/feed HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61002 - "GET /api/social/recommendations HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61003 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61009 - "GET /api/social/feed HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61010 - "GET /api/social/recommendations HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61012 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61021 - "POST /api/groups/2/notes HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61024 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61046 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61048 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61080 - "GET /api/groups/2 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61082 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61085 - "GET /api/groups/2 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61086 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61088 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61090 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61094 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61096 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61099 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61102 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61348 - "GET /api/groups/2 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61349 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61352 - "GET /api/groups/2 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61356 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61353 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61357 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61362 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61363 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61366 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61369 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61383 - "GET /api/portfolio/history HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61384 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62030 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62029 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62035 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62037 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62036 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62038 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62042 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62044 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62067 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62068 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62071 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62073 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62086 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62087 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62092 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62091 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62094 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62095 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62099 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62101 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/ishanahluwalia/Tickker - App/Stock-Visualizer-Fidelity/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+/Users/ishanahluwalia/Tickker - App/Stock-Visualizer-Fidelity/backend/accurate_main.py:224: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+INFO:     127.0.0.1:62114 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62124 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62126 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62129 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62131 - "GET /api/portfolio/history HTTP/1.1" 200 OK
 Fetching real data for SPY from 2025-04-07 to 2025-08-09
 Got 86 days of data for SPY
-INFO:     127.0.0.1:61389 - "GET /api/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61390 - "GET /api/portfolio/history HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61392 - "GET /api/comparison/spy HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61394 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61398 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61400 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62134 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62135 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62143 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62145 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
 Fetching real data for SPY from 2025-04-08 to 2025-08-09
 Got 85 days of data for SPY
-INFO:     127.0.0.1:61403 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61412 - "GET /api/portfolio/history HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61414 - "GET /api/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61416 - "GET /api/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61418 - "GET /api/portfolio/history HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61421 - "GET /api/comparison/spy HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61422 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61427 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61428 - "GET /api/comparison/spy HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61431 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61440 - "GET /api/groups HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61442 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62148 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
 /Users/ishanahluwalia/Tickker - App/Stock-Visualizer-Fidelity/backend/accurate_main.py:1427: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
   today = datetime.utcnow().strftime('%Y-%m-%d')
-INFO:     127.0.0.1:61452 - "GET /api/groups/2 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61453 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61455 - "GET /api/groups/2 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61459 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61460 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61461 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61465 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61467 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61470 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61473 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62152 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62153 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62160 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62163 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62161 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62165 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62171 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62169 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62174 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62178 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62180 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62183 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62195 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62197 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62202 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62204 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62208 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62211 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62207 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62212 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62216 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62218 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62221 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62225 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62227 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62230 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62238 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62239 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62242 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62245 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62249 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62252 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62256 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62260 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62287 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62289 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62292 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62293 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62297 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62295 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62301 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62303 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62306 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62315 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62317 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62323 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62324 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62326 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62328 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62330 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62332 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62336 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62338 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62341 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62351 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62352 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62355 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62356 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62358 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62360 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62364 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62366 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62369 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62379 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62380 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62382 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62384 - "GET /api/me HTTP/1.1" 401 Unauthorized

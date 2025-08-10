@@ -1,118 +1,33 @@
    ▲ Next.js 14.0.3
    - Local:        http://localhost:3000
 
- ✓ Ready in 1334ms
+ ✓ Ready in 1141ms
  ○ Compiling / ...
- ✓ Compiled / in 1155ms (708 modules)
+ ✓ Compiled / in 1226ms (690 modules)
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 167ms (320 modules)
+ ✓ Compiled in 352ms (310 modules)
+ ✓ Compiled /groups/[id] in 400ms (696 modules)
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
-(node:74589) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+(node:83560) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
- ✓ Compiled /login in 240ms (700 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /login in 132ms (702 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 139ms (322 modules)
+ ✓ Compiled in 390ms (716 modules)
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 69ms (322 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 113ms (322 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 59ms (322 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 139ms (714 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 256ms (714 modules)
+ ✓ Compiled /groups in 118ms (708 modules)
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 108ms (322 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 77ms (322 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 327ms (714 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled /groups in 151ms (706 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled /groups/[id] in 281ms (720 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 112ms (330 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 76ms (330 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 659ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 117ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 228ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 252ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 193ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 153ms (355 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 175ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 354ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled /groups in 104ms (430 modules)
+ ✓ Compiled in 303ms (722 modules)
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 304ms (785 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 179ms (785 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 185ms (785 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 224ms (785 modules)
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
  ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 249ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 138ms (355 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 157ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 144ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 250ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled /groups in 54ms (430 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 319ms (781 modules)
- ✓ Compiled in 426ms (781 modules)
- ✓ Compiled in 171ms (781 modules)
- ✓ Compiled in 247ms (781 modules)
- ✓ Compiled in 124ms (781 modules)
- ✓ Compiled in 346ms (781 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 195ms (355 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 151ms (355 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 92ms (355 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 353ms (790 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 282ms (790 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 216ms (790 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
- ✓ Compiled in 263ms (790 modules)
- ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
-[?25h

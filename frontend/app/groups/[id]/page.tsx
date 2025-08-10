@@ -21,6 +21,7 @@ export default function GroupDetailPage() {
   const [memberWeights, setMemberWeights] = useState<Record<number, { symbol: string; weight: number; value?: number; shares?: number }[]>>({})
   const [badges, setBadges] = useState<Record<number, any>>({})
   const [comparison, setComparison] = useState<Record<number, { date: string; value: number }[]>>({})
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
 
   useEffect(() => {
     if (!groupId) return
@@ -58,8 +59,6 @@ export default function GroupDetailPage() {
   if (loading) return <div className="p-6">Loading...</div>
   if (error) return <div className="p-6 text-red-600">{error}</div>
   if (!group) return <div className="p-6">Group not found</div>
-
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
