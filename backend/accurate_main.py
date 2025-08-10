@@ -1659,11 +1659,19 @@ async def add_group_note(group_id: int, payload: GroupNotePayload, current_user:
 
 
 @app.get("/api/groups/{group_id}/notes")
-async def list_group_notes(group_id: int, symbol: str | None = None, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+async def list_group_notes(
+    group_id: int,
+    symbol: str | None = None,
+    user_id: int | None = None,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+):
     _ensure_group_membership(session, group_id, current_user.id)
     q = select(GroupNote).where(GroupNote.group_id == group_id)
     if symbol:
         q = q.where(GroupNote.symbol == symbol.upper())
+    if user_id:
+        q = q.where(GroupNote.user_id == user_id)
     rows = session.exec(q).all()
     users = {u.id: u for u in session.exec(select(User)).all()}
     data = [{
