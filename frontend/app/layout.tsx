@@ -29,6 +29,7 @@ export default function RootLayout({
               <div className="hidden sm:flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
                 <a href="/" className="hover:text-primary-700 dark:hover:text-primary-400">Portfolio</a>
                 <a href="/groups" className="hover:text-primary-700 dark:hover:text-primary-400">Groups</a>
+                <a href="/rag" className="hover:text-primary-700 dark:hover:text-primary-400">Research</a>
                 <AuthButton />
                 <ThemeToggle />
               </div>

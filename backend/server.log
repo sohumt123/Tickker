@@ -123,3 +123,82 @@ INFO:     127.0.0.1:62379 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthoriz
 INFO:     127.0.0.1:62380 - "GET /api/me HTTP/1.1" 401 Unauthorized
 INFO:     127.0.0.1:62382 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
 INFO:     127.0.0.1:62384 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62686 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62687 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62690 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62691 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62699 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62700 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62703 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62704 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62716 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62718 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62721 - "GET /api/portfolio/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62722 - "GET /api/me HTTP/1.1" 401 Unauthorized
+/Users/ishanahluwalia/Tickker - App/Stock-Visualizer-Fidelity/backend/accurate_main.py:224: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+INFO:     127.0.0.1:62735 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62745 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62746 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62748 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62750 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62752 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62754 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62759 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62760 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62763 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62774 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62775 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62778 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62779 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62783 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62781 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62787 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62789 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62792 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
+Fetching real data for SPY from 2025-07-11 to 2025-08-09
+Got 21 days of data for SPY
+INFO:     127.0.0.1:62795 - "GET /api/comparison/spy?baseline_date=2025-07-11 HTTP/1.1" 200 OK
+Fetching real data for SPY from 2025-05-12 to 2025-08-09
+Got 62 days of data for SPY
+INFO:     127.0.0.1:62799 - "GET /api/comparison/spy?baseline_date=2025-05-12 HTTP/1.1" 200 OK
+Fetching real data for SPY from 2025-02-11 to 2025-08-09
+Got 124 days of data for SPY
+INFO:     127.0.0.1:62802 - "GET /api/comparison/spy?baseline_date=2025-02-11 HTTP/1.1" 200 OK
+Fetching real data for SPY from 2024-08-15 to 2025-08-09
+Got 246 days of data for SPY
+INFO:     127.0.0.1:62805 - "GET /api/comparison/spy?baseline_date=2024-08-15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62816 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62818 - "GET /api/groups HTTP/1.1" 200 OK
+/Users/ishanahluwalia/Tickker - App/Stock-Visualizer-Fidelity/backend/accurate_main.py:1427: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  today = datetime.utcnow().strftime('%Y-%m-%d')
+INFO:     127.0.0.1:62824 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62825 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62828 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62829 - "GET /api/groups/2/leaderboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62833 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62831 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62838 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62839 - "GET /api/groups/2/comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62842 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62847 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62848 - "GET /api/groups/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62851 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62856 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62857 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62860 - "GET /api/groups/2/notes?symbol=AAPL HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62863 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62866 - "GET /api/groups/2/members/details HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62912 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62914 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62921 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62923 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62929 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62930 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62932 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62934 - "GET /api/portfolio/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62938 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62937 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62942 - "GET /api/portfolio/weights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62944 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62947 - "GET /api/comparison/spy?baseline_date=2025-04-08 HTTP/1.1" 200 OK
