@@ -25,19 +25,24 @@ export default function GroupsPage() {
   if (error) return <div className="p-6 text-red-600">{error}</div>
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-4">
-      <h1 className="text-2xl font-semibold">My Groups</h1>
+    <div className="max-w-5xl mx-auto p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">My Groups</h1>
+        <a href="/" className="text-sm px-3 py-1 border rounded hover:bg-slate-50">← Back</a>
+      </div>
       {groups.length === 0 ? (
-        <p className="text-slate-600">You are not in any groups yet. Create or join one from the home page.</p>
+        <div className="card p-6">
+          <p className="text-slate-600">You are not in any groups yet. Create or join one from the home page.</p>
+        </div>
       ) : (
-        <ul className="divide-y rounded border">
+        <ul className="grid md:grid-cols-2 gap-4">
           {groups.map(g => (
-            <li key={g.id} className="p-4 flex items-center justify-between hover:bg-slate-50">
+            <li key={g.id} className="card p-4 flex items-center justify-between">
               <div>
                 <div className="font-medium">{g.name}</div>
                 <div className="text-xs text-slate-500">Invite code: {g.code}</div>
               </div>
-              <a className="text-sm px-3 py-1 border rounded" href={`/groups/${g.id}`}>Open</a>
+              <a className="text-sm px-3 py-1.5 border rounded hover:bg-slate-50" href={`/groups/${g.id}`}>Open</a>
             </li>
           ))}
         </ul>
@@ -45,5 +50,7 @@ export default function GroupsPage() {
     </div>
   )
 }
+
+
 
 

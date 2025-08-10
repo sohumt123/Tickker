@@ -117,6 +117,73 @@ class GroupMember(SQLModel, table=True):
     joined_at: datetime = Field(default_factory=datetime.utcnow)
 
 
+# =====================
+# Social+ Models (lists, notes, votes, actions, streaks)
+# =====================
+
+class StockListItem(SQLModel, table=True):
+    __tablename__ = "stock_list_items"
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(index=True)
+    symbol: str = Field(index=True)
+    list_type: str = Field(index=True)  # owned | watch | wishlist
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class StockNote(SQLModel, table=True):
+    __tablename__ = "stock_notes"
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(index=True)
+    symbol: str = Field(index=True)
+    content: str
+    labels_json: str = Field(default="[]")
+    screenshot_url: str | None = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class PreferenceVote(SQLModel, table=True):
+    __tablename__ = "preference_votes"
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(index=True)
+    symbol_a: str
+    symbol_b: str
+    winner: str  # symbol_a | symbol_b
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class SocialAction(SQLModel, table=True):
+    __tablename__ = "social_actions"
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(index=True)
+    type: str = Field(index=True)  # buy | sell | upload | note | join_group | create_group | add_watch | add_wishlist
+    symbol: str | None = None
+    quantity: float | None = None
+    amount: float | None = None
+    note: str | None = None
+    group_id: int | None = Field(default=None, index=True)
+    created_at: datetime = Field(default_factory=datetime.utcnow, index=True)
+
+
+class StreakRecord(SQLModel, table=True):
+    __tablename__ = "streaks"
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(index=True)
+    kind: str = Field(index=True)  # trade | visit
+    current_streak: int = Field(default=0)
+    longest_streak: int = Field(default=0)
+    last_date: str | None = None  # YYYY-MM-DD
+
+
+class GroupNote(SQLModel, table=True):
+    __tablename__ = "group_notes"
+    id: int | None = Field(default=None, primary_key=True)
+    group_id: int = Field(index=True)
+    user_id: int = Field(index=True)
+    symbol: str = Field(index=True)
+    rating: int  # 1-10
+    content: str
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
 class RegisterRequest(BaseModel):
     email: EmailStr
     password: str
@@ -537,6 +604,9 @@ async def upload_csv(file: UploadFile = File(...), current_user: User = Depends(
         session.exec(select(TransactionRecord).where(TransactionRecord.user_id == current_user.id))
         session.query(TransactionRecord).filter(TransactionRecord.user_id == current_user.id).delete()
         session.commit()
+        # Social feed action for upload
+        session.add(SocialAction(user_id=current_user.id, type="upload"))
+        session.commit()
         to_insert = [
             TransactionRecord(
                 user_id=current_user.id,
@@ -671,6 +741,14 @@ async def get_recent_trades(current_user: User = Depends(get_current_user), sess
             'amount': r.amount,
         } for r in rows
     ], key=lambda x: x['date'], reverse=True)[:20]
+    # Log actions and streaks
+    for r in rows[-5:]:
+        if r.action:
+            action_type = 'buy' if ('BUY' in r.action.upper()) else ('sell' if 'SELL' in r.action.upper() else 'other')
+            if action_type != 'other':
+                session.add(SocialAction(user_id=current_user.id, type=action_type, symbol=r.symbol, quantity=r.quantity, amount=r.amount))
+                _increment_streak(session, current_user.id, 'trade')
+    session.commit()
     return JSONResponse(content={"trades": recent})
 
 @app.get("/api/performance")
@@ -1244,6 +1322,10 @@ async def group_leaderboard(group_id: int, baseline_date: str | None = None, cur
         display_name = (profile.display_name or user.name or user.email.split("@")[0]) if user else f"User {m.user_id}"
         leaderboard.append({"user_id": m.user_id, "name": display_name, "return_pct": round(ret, 2)})
     leaderboard.sort(key=lambda x: x['return_pct'], reverse=True)
+    # Record social action for visit
+    session.add(SocialAction(user_id=current_user.id, type="visit_leaderboard", group_id=group_id))
+    _increment_streak(session, current_user.id, 'visit')
+    session.commit()
     return {"leaderboard": leaderboard}
 
 
@@ -1341,6 +1423,35 @@ def _compute_badges(session: Session, user_id: int, positions: list[dict]) -> di
     }
 
 
+def _increment_streak(session: Session, user_id: int, kind: str) -> None:
+    today = datetime.utcnow().strftime('%Y-%m-%d')
+    record = session.exec(select(StreakRecord).where((StreakRecord.user_id == user_id) & (StreakRecord.kind == kind))).first()
+    if not record:
+        record = StreakRecord(user_id=user_id, kind=kind, current_streak=1, longest_streak=1, last_date=today)
+        session.add(record)
+        session.commit()
+        return
+    # if last event was yesterday, increment; if today, no-op; else reset
+    try:
+        last_dt = datetime.strptime(record.last_date or today, '%Y-%m-%d')
+        delta = (datetime.strptime(today, '%Y-%m-%d') - last_dt).days
+        if delta == 0:
+            return
+        elif delta == 1:
+            record.current_streak += 1
+        else:
+            record.current_streak = 1
+        record.longest_streak = max(record.longest_streak, record.current_streak)
+        record.last_date = today
+        session.add(record)
+        session.commit()
+    except Exception:
+        record.current_streak = max(1, record.current_streak)
+        record.last_date = today
+        session.add(record)
+        session.commit()
+
+
 @app.get("/api/groups/{group_id}/members/details")
 async def group_members_details(group_id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     _ensure_group_membership(session, group_id, current_user.id)
@@ -1395,5 +1506,183 @@ async def group_comparison(group_id: int, baseline_date: str | None = None, curr
             points.append({"date": h['date'], "value": v})
         series[m.user_id] = points
     return {"series": series}
+
+
+# =====================
+# Social: Lists, Notes, Preferences, Feed, Streaks, Recommendations, Group Notes/Ratings
+# =====================
+
+class ListPayload(BaseModel):
+    symbol: str
+    list_type: str  # owned | watch | wishlist
+
+
+@app.post("/api/social/list")
+async def add_to_list(payload: ListPayload, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    item = StockListItem(user_id=current_user.id, symbol=payload.symbol.upper(), list_type=payload.list_type)
+    session.add(item)
+    session.add(SocialAction(user_id=current_user.id, type=f"add_{payload.list_type}", symbol=payload.symbol.upper()))
+    session.commit()
+    return {"ok": True}
+
+
+@app.get("/api/social/list")
+async def get_lists(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    items = session.exec(select(StockListItem).where(StockListItem.user_id == current_user.id)).all()
+    out: dict[str, list[str]] = {"owned": [], "watch": [], "wishlist": []}
+    for i in items:
+        out.setdefault(i.list_type, []).append(i.symbol)
+    return {"lists": out}
+
+
+class NotePayload(BaseModel):
+    symbol: str
+    content: str
+    labels: list[str] | None = None
+    screenshot_url: str | None = None
+
+
+@app.post("/api/social/notes")
+async def add_note(payload: NotePayload, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    note = StockNote(
+        user_id=current_user.id,
+        symbol=payload.symbol.upper(),
+        content=payload.content,
+        labels_json=json.dumps(payload.labels or []),
+        screenshot_url=payload.screenshot_url,
+    )
+    session.add(note)
+    session.add(SocialAction(user_id=current_user.id, type="note", symbol=payload.symbol.upper(), note="added note"))
+    session.commit()
+    return {"ok": True}
+
+
+@app.get("/api/social/notes")
+async def list_notes(symbol: str | None = None, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    query = select(StockNote).where(StockNote.user_id == current_user.id)
+    if symbol:
+        query = query.where(StockNote.symbol == symbol.upper())
+    notes = session.exec(query).all()
+    return {"notes": [
+        {"id": n.id, "symbol": n.symbol, "content": n.content, "labels": json.loads(n.labels_json or "[]"), "screenshot_url": n.screenshot_url, "created_at": n.created_at.isoformat()} for n in notes
+    ]}
+
+
+class VotePayload(BaseModel):
+    symbol_a: str
+    symbol_b: str
+    winner: str
+
+
+@app.post("/api/social/preferences")
+async def add_preference_vote(payload: VotePayload, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    vote = PreferenceVote(user_id=current_user.id, symbol_a=payload.symbol_a.upper(), symbol_b=payload.symbol_b.upper(), winner=payload.winner.upper())
+    session.add(vote)
+    session.commit()
+    return {"ok": True}
+
+
+@app.get("/api/social/preferences/score")
+async def preference_scores(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    votes = session.exec(select(PreferenceVote).where(PreferenceVote.user_id == current_user.id)).all()
+    score: dict[str, int] = {}
+    for v in votes:
+        score[v.winner] = score.get(v.winner, 0) + 1
+        loser = v.symbol_b if v.winner == v.symbol_a else v.symbol_a
+        score[loser] = score.get(loser, 0)
+    ranked = sorted([{"symbol": s, "score": sc} for s, sc in score.items()], key=lambda x: x[1], reverse=True)
+    return {"rankings": ranked}
+
+
+@app.get("/api/social/feed")
+async def social_feed(limit: int = 25, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    actions = session.exec(select(SocialAction).order_by(SocialAction.created_at.desc()).limit(limit)).all()
+    users = {u.id: u for u in session.exec(select(User)).all()}
+    feed = []
+    for a in actions:
+        u = users.get(a.user_id)
+        feed.append({
+            "user": (u.name or u.email.split("@")[0]) if u else f"User {a.user_id}",
+            "type": a.type,
+            "symbol": a.symbol,
+            "quantity": a.quantity,
+            "amount": a.amount,
+            "note": a.note,
+            "group_id": a.group_id,
+            "created_at": a.created_at.isoformat()
+        })
+    return {"feed": feed}
+
+
+@app.get("/api/social/streaks")
+async def get_streaks(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    rows = session.exec(select(StreakRecord).where(StreakRecord.user_id == current_user.id)).all()
+    return {"streaks": [
+        {"kind": r.kind, "current": r.current_streak, "longest": r.longest_streak, "last_date": r.last_date}
+        for r in rows
+    ]}
+
+
+@app.get("/api/social/recommendations")
+async def recommendations(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    # Very simple heuristic recommendation: most-voted symbols not yet owned, or top performers among peers
+    votes = session.exec(select(PreferenceVote).where(PreferenceVote.user_id == current_user.id)).all()
+    voted_symbols = {v.winner for v in votes}
+    # Symbols owned (latest snapshot)
+    rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == current_user.id)).all()
+    owned = set()
+    if rows:
+        latest = max(rows, key=lambda r: r.date)
+        for p in json.loads(latest.positions_json or "[]"):
+            if p.get('symbol'):
+                owned.add(p['symbol'])
+    candidates = list(voted_symbols - owned)
+    return {"picks": candidates[:5]}
+
+
+class GroupNotePayload(BaseModel):
+    symbol: str
+    rating: int
+    content: str
+
+
+@app.post("/api/groups/{group_id}/notes")
+async def add_group_note(group_id: int, payload: GroupNotePayload, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    _ensure_group_membership(session, group_id, current_user.id)
+    r = int(payload.rating)
+    if r < 1 or r > 10:
+        raise HTTPException(status_code=400, detail="Rating must be 1-10")
+    note = GroupNote(group_id=group_id, user_id=current_user.id, symbol=payload.symbol.upper(), rating=r, content=payload.content)
+    session.add(note)
+    session.commit()
+    return {"ok": True, "id": note.id}
+
+
+@app.get("/api/groups/{group_id}/notes")
+async def list_group_notes(group_id: int, symbol: str | None = None, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    _ensure_group_membership(session, group_id, current_user.id)
+    q = select(GroupNote).where(GroupNote.group_id == group_id)
+    if symbol:
+        q = q.where(GroupNote.symbol == symbol.upper())
+    rows = session.exec(q).all()
+    users = {u.id: u for u in session.exec(select(User)).all()}
+    data = [{
+        "id": n.id,
+        "symbol": n.symbol,
+        "rating": n.rating,
+        "content": n.content,
+        "author": users.get(n.user_id).name if users.get(n.user_id) else f"User {n.user_id}",
+        "created_at": n.created_at.isoformat(),
+    } for n in rows]
+    # Aggregated summary per symbol
+    summary: dict[str, dict] = {}
+    for n in rows:
+        s = summary.setdefault(n.symbol, {"count": 0, "avg": 0.0})
+        s["count"] += 1
+        s["avg"] += n.rating
+    for sym, s in summary.items():
+        if s["count"]:
+            s["avg"] = round(s["avg"] / s["count"], 2)
+    return {"notes": data, "summary": summary}
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -156,6 +156,16 @@ export const groupApi = {
     if (baselineDate) params.append('baseline_date', baselineDate)
     const res = await api.get(`/groups/${groupId}/comparison?${params}`)
     return res.data as { series: Record<number, { date: string; value: number }[]> }
+  },
+  addGroupNote: async (groupId: number, symbol: string, rating: number, content: string) => {
+    const res = await api.post(`/groups/${groupId}/notes`, { symbol, rating, content })
+    return res.data as { ok: boolean; id: number }
+  },
+  listGroupNotes: async (groupId: number, symbol?: string) => {
+    const params = new URLSearchParams()
+    if (symbol) params.append('symbol', symbol)
+    const res = await api.get(`/groups/${groupId}/notes?${params}`)
+    return res.data as { notes: any[]; summary: Record<string, { count: number; avg: number }> }
   }
 }
 
@@ -163,6 +173,26 @@ export const socialApi = {
   listPublicProfiles: async () => {
     const res = await api.get('/social/profiles')
     return res.data as { profiles: { user_id: number; display_name: string }[] }
+  },
+  addToList: async (payload: { symbol: string; list_type: 'owned'|'watch'|'wishlist' }) => {
+    const res = await api.post('/social/list', payload)
+    return res.data as { ok: boolean }
+  },
+  addNote: async (payload: { symbol: string; content: string; labels?: string[] }) => {
+    const res = await api.post('/social/notes', payload)
+    return res.data as { ok: boolean }
+  },
+  vote: async (payload: { symbol_a: string; symbol_b: string; winner: string }) => {
+    const res = await api.post('/social/preferences', payload)
+    return res.data as { ok: boolean }
+  },
+  feed: async () => {
+    const res = await api.get('/social/feed')
+    return res.data as { feed: any[] }
+  },
+  recommendations: async () => {
+    const res = await api.get('/social/recommendations')
+    return res.data as { picks: string[] }
   },
   getPerformance: async (userId: number) => {
     const res = await api.get(`/social/performance?user_id=${userId}`)

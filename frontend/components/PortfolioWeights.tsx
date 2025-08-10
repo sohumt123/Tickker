@@ -40,18 +40,18 @@ export default function PortfolioWeights() {
     if (!weights.length) return null
 
     const colors = [
-      '#0f172a', // slate-900
-      '#334155', // slate-700
-      '#64748b', // slate-500
-      '#94a3b8', // slate-400
-      '#cbd5e1', // slate-300
-      '#e2e8f0', // slate-200
+      '#4f46e5', // primary-600
+      '#d946ef', // fuchsia-500
+      '#06b6d4', // accent-500
       '#22c55e', // success-500
-      '#ef4444', // danger-500
+      '#f59e0b', // amber-500
+      '#ef4444', // red-500
       '#3b82f6', // blue-500
       '#8b5cf6', // violet-500
-      '#f59e0b', // amber-500
-      '#ec4899', // pink-500
+      '#10b981', // emerald-500
+      '#e879f9', // fuchsia-400
+      '#22d3ee', // cyan-400
+      '#a5b4fc', // indigo-300
     ]
 
     return {
@@ -169,7 +169,7 @@ export default function PortfolioWeights() {
               const color = colors[index % colors.length]
 
               return (
-                <div key={weight.symbol} className="flex items-center justify-between p-3 rounded-lg bg-slate-50">
+                <div key={weight.symbol} className="flex items-center justify-between p-3 rounded-lg bg-primary-50 border border-primary-100">
                   <div className="flex items-center">
                     <div 
                       className="w-4 h-4 rounded-full mr-3"

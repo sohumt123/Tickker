@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Upload, TrendingUp, PieChart, Activity, BarChart3 } from 'lucide-react'
+import { Upload, TrendingUp, Users } from 'lucide-react'
 import api, { authApi, groupApi } from '@/utils/api'
 import FileUpload from '@/components/FileUpload'
 import GrowthChart from '@/components/GrowthChart'
@@ -47,20 +47,20 @@ export default function Home() {
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: TrendingUp },
-    { id: 'weights', label: 'Allocation', icon: PieChart },
-    { id: 'trades', label: 'Trades', icon: Activity },
-    { id: 'performance', label: 'Performance', icon: BarChart3 },
   ]
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold">Welcome to Tickker</h1>
-          <p className="text-slate-600">Please sign in to upload your CSV and view your portfolio.</p>
-          <div className="space-x-2">
-            <a href="/login" className="px-4 py-2 border rounded-lg">Sign in</a>
-            <a href="/signup" className="px-4 py-2 bg-slate-900 text-white rounded-lg">Create account</a>
+      <div className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center px-4">
+        <div className="text-center space-y-5 max-w-xl">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-600 text-white">
+            <TrendingUp size={32} />
+          </div>
+          <h1 className="text-4xl font-bold text-gradient">Invest together, learn faster.</h1>
+          <p className="text-slate-600">Sign in to upload your CSV and visualize performance, allocations, and group leaderboards.</p>
+          <div className="flex items-center justify-center gap-2">
+            <a href="/login" className="btn-secondary">Sign in</a>
+            <a href="/signup" className="btn-primary">Create account</a>
           </div>
         </div>
       </div>
@@ -104,7 +104,7 @@ export default function Home() {
             
             <div className="text-center p-6">
               <div className="w-12 h-12 bg-slate-100 text-slate-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <PieChart size={24} />
+                <TrendingUp size={24} />
               </div>
               <h3 className="font-semibold mb-2">Track Performance</h3>
               <p className="text-sm text-slate-600">Monitor allocation and metrics</p>
@@ -117,166 +117,19 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200/50 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center mr-3">
-                <TrendingUp size={20} />
-              </div>
-              <h1 className="text-xl font-bold text-slate-900">Portfolio Visualizer</h1>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              {user ? (
-                <span className="text-sm text-slate-600">Hi, {user.name || user.email}</span>
-              ) : (
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={async () => {
-                      const email = prompt('Email') || ''
-                      const password = prompt('Password') || ''
-                      if (!email || !password) return
-                      try {
-                        await authApi.login(email, password)
-                        const me = await authApi.me()
-                        setUser(me)
-                      } catch (e) {
-                        alert('Login failed')
-                      }
-                    }}
-                    className="px-3 py-2 text-sm border rounded-lg hover:bg-slate-100"
-                  >
-                    Sign in
-                  </button>
-                  <button
-                    onClick={async () => {
-                      const email = prompt('Email') || ''
-                      const password = prompt('Password (min 6 chars)') || ''
-                      const name = prompt('Name (optional)') || ''
-                      if (!email || !password) return
-                      try {
-                        await authApi.register(email, password, name)
-                        await authApi.login(email, password)
-                        const me = await authApi.me()
-                        setUser(me)
-                      } catch (e) {
-                        alert('Registration failed')
-                      }
-                    }}
-                    className="px-3 py-2 text-sm border rounded-lg bg-slate-900 text-white hover:opacity-90"
-                  >
-                    Create account
-                  </button>
-                </div>
-              )}
-              <button
-                onClick={handleNewUpload}
-                className="flex items-center px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors duration-200"
-              >
-                <Upload size={16} className="mr-2" />
-                Upload New CSV
-              </button>
-              
-              <nav className="flex space-x-1">
-                {tabs.map((tab) => {
-                  const Icon = tab.icon
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                        activeTab === tab.id
-                          ? 'bg-slate-900 text-white'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                      }`}
-                    >
-                      <Icon size={16} className="mr-2" />
-                      {tab.label}
-                    </button>
-                  )
-                })}
-              </nav>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6 rounded-lg border p-4">
-          <h2 className="text-lg font-medium mb-3">Groups (beta)</h2>
-          <div className="flex flex-wrap gap-2 mb-3">
-            <button
-              className="px-3 py-2 text-sm border rounded"
-              onClick={async () => {
-                const name = prompt('Group name?') || ''
-                if (!name) return
-                try {
-                  const g = await groupApi.create(name, true)
-                  alert(`Created group ${g.name}. Invite code: ${g.code}`)
-                } catch (e) {
-                  alert('Failed to create group')
-                }
-              }}
-            >Create group</button>
-            <button
-              className="px-3 py-2 text-sm border rounded"
-              onClick={async () => {
-                const code = prompt('Enter invite code') || ''
-                if (!code) return
-                try {
-                  await groupApi.join(code)
-                  alert('Joined group')
-                } catch (e) {
-                  alert('Failed to join group')
-                }
-              }}
-            >Join via code</button>
-            <button
-              className="px-3 py-2 text-sm border rounded"
-              onClick={async () => {
-                try {
-                  const { groups } = await groupApi.mine()
-                  if (!groups.length) return alert('No groups yet')
-                  const lines = groups.map(g => `${g.id}: ${g.name} (code ${g.code})`).join('\n')
-                  alert(lines)
-                } catch (e) {
-                  alert('Failed to load groups')
-                }
-              }}
-            >My groups</button>
-            <button
-              className="px-3 py-2 text-sm border rounded"
-              onClick={async () => {
-                try {
-                  const groupId = Number(prompt('Group ID for leaderboard?') || '0')
-                  if (!groupId) return
-                  const { leaderboard } = await groupApi.leaderboard(groupId)
-                  if (!leaderboard.length) return alert('No data')
-                  const lines = leaderboard.map((r, i) => `#${i+1} ${r.name}: ${r.return_pct}%`).join('\n')
-                  alert(lines)
-                } catch (e) {
-                  alert('Failed to load leaderboard')
-                }
-              }}
-            >Leaderboard</button>
-            <a href="/groups" className="px-3 py-2 text-sm border rounded">Open groups page</a>
-          </div>
-          <p className="text-xs text-slate-500">Invite others using your group code. Leaderboard ranks by return since baseline.</p>
-        </div>
+      <main className="py-8 w-full">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <LoadingSpinner />
           </div>
         ) : (
           <div className="animate-fade-in">
-            {activeTab === 'overview' && <GrowthChart />}
-            {activeTab === 'weights' && <PortfolioWeights />}
-            {activeTab === 'trades' && <RecentTrades />}
-            {activeTab === 'performance' && <PerformanceMetrics />}
+            <GrowthChart />
+            <div className="mt-6" />
+            <PortfolioWeights />
           </div>
         )}
-      </main>
+       </main>
     </div>
   )
 }

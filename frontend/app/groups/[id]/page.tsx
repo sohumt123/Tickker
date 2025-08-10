@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { groupApi, socialApi } from '@/utils/api'
 import GroupComparisonChart from '@/components/GroupComparisonChart'
+import CopyButton from '@/components/CopyButton'
+import Avatar from '@/components/Avatar'
+import GroupNotes from '@/components/GroupNotes'
 
 export default function GroupDetailPage() {
   const params = useParams() as { id?: string }
@@ -55,21 +58,24 @@ export default function GroupDetailPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
-      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur mb-2 border-b">
+      <div className="sticky top-0 z-10 bg-gradient-to-r from-primary-50 via-fuchsia-50 to-accent-50 backdrop-blur mb-2 border-b">
         <div className="flex items-center justify-between py-3">
           <div className="flex items-center gap-3">
             <a href="/" className="text-sm px-3 py-1 border rounded hover:bg-slate-50">← Home</a>
             <a href="/groups" className="text-sm px-3 py-1 border rounded hover:bg-slate-50">All groups</a>
           </div>
-          <div className="text-right">
-            <h1 className="text-xl font-semibold">{group.name}</h1>
-            <p className="text-xs text-slate-500">Invite code: {group.code}</p>
+          <div className="flex items-center gap-3">
+            <div className="text-right">
+              <h1 className="text-xl font-semibold">{group.name}</h1>
+              <p className="text-xs text-slate-500">Invite code: <span className="font-mono">{group.code}</span></p>
+            </div>
+            <CopyButton value={group.code} small />
           </div>
         </div>
       </div>
 
-      <section className="rounded border p-4">
-        <h2 className="text-lg font-medium mb-2">Leaderboard</h2>
+      <section className="card p-4">
+        <h2 className="text-lg font-medium mb-2 text-primary-700">Leaderboard</h2>
         {leaderboard.length === 0 ? (
           <p className="text-slate-600">No rankings yet.</p>
         ) : (
@@ -79,7 +85,8 @@ export default function GroupDetailPage() {
                 <div className="flex items-center gap-3">
                   <span className="w-7 text-center text-slate-500">#{idx + 1}</span>
                   <div className="flex items-center gap-2">
-                    <span className="inline-block h-6 px-2 rounded-full text-xs bg-slate-900 text-white">{row.name}</span>
+                    <Avatar name={row.name} size={28} />
+                    <span className="font-medium">{row.name}</span>
                   </div>
                 </div>
                 <div className={`text-sm font-medium ${row.return_pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>{row.return_pct}%</div>
@@ -89,8 +96,8 @@ export default function GroupDetailPage() {
         )}
       </section>
 
-      <section className="rounded border p-4">
-        <h2 className="text-lg font-medium mb-2">Members</h2>
+      <section className="card p-4">
+        <h2 className="text-lg font-medium mb-2 text-primary-700">Members</h2>
         {group.members.length === 0 ? (
           <p className="text-slate-600">No members</p>
         ) : (
@@ -100,7 +107,10 @@ export default function GroupDetailPage() {
               return (
                 <li key={m.user_id} className="border rounded p-3 space-y-3 bg-white">
                   <div className="flex items-center justify-between">
-                    <div className="font-medium">{m.name}</div>
+                    <div className="flex items-center gap-2">
+                      <Avatar name={m.name} size={28} />
+                      <div className="font-medium">{m.name}</div>
+                    </div>
                     <div className="text-xs text-slate-500">member</div>
                   </div>
                   {badges[m.user_id] && (
@@ -139,7 +149,7 @@ export default function GroupDetailPage() {
       </section>
 
       <section className="rounded border p-4">
-        <h2 className="text-lg font-medium mb-2">Group Comparison (normalized)</h2>
+        <h2 className="text-lg font-medium mb-2 text-primary-700">Group Comparison (normalized)</h2>
         {Object.keys(comparison).length === 0 ? (
           <p className="text-slate-600">No data</p>
         ) : (
@@ -149,6 +159,8 @@ export default function GroupDetailPage() {
           </div>
         )}
       </section>
+
+      <GroupNotes groupId={groupId} />
     </div>
   )
 }

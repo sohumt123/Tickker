@@ -172,7 +172,7 @@ export default function RecentTrades() {
               id="limit"
               value={limit}
               onChange={(e) => setLimit(Number(e.target.value))}
-              className="input-field w-20"
+              className="input-field w-24"
             >
               <option value={10}>10</option>
               <option value={20}>20</option>

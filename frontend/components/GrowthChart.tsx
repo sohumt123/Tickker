@@ -164,8 +164,8 @@ export default function GrowthChart() {
       {
         label: 'Your Portfolio',
         data: data.map(item => item.portfolio),
-        borderColor: 'rgb(15, 23, 42)',
-        backgroundColor: 'rgba(15, 23, 42, 0.1)',
+        borderColor: 'rgb(79, 70, 229)',
+        backgroundColor: 'rgba(79, 70, 229, 0.12)',
         borderWidth: 3,
         pointRadius: 0,
         pointHoverRadius: 6,
@@ -175,8 +175,8 @@ export default function GrowthChart() {
       {
         label: 'SPY (S&P 500)',
         data: data.map(item => item.spy),
-        borderColor: 'rgb(100, 116, 139)',
-        backgroundColor: 'rgba(100, 116, 139, 0.1)',
+        borderColor: 'rgb(148, 163, 184)',
+        backgroundColor: 'rgba(148, 163, 184, 0.18)',
         borderWidth: 2,
         borderDash: [5, 5],
         pointRadius: 0,
@@ -229,14 +229,15 @@ export default function GrowthChart() {
             size: 14,
             weight: '500',
           },
+          color: 'rgb(148,163,184)',
         },
       },
       tooltip: {
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        borderColor: 'rgb(226, 232, 240)',
+        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+        borderColor: 'rgb(51, 65, 85)',
         borderWidth: 1,
-        titleColor: 'rgb(15, 23, 42)',
-        bodyColor: 'rgb(51, 65, 85)',
+        titleColor: 'rgb(226,232,240)',
+        bodyColor: 'rgb(203,213,225)',
         padding: 12,
         cornerRadius: 8,
         displayColors: false,
@@ -260,6 +261,7 @@ export default function GrowthChart() {
         },
         ticks: {
           maxTicksLimit: 8,
+          color: 'rgb(148,163,184)',
           callback: function(value: any, index: number, ticks: any): string {
             const labels = this.chart?.data?.labels
             if (labels && labels[index]) {
@@ -278,6 +280,7 @@ export default function GrowthChart() {
           color: 'rgba(148, 163, 184, 0.1)',
         },
         ticks: {
+          color: 'rgb(148,163,184)',
           callback: function(value: any) {
             return formatCurrency(value)
           },
@@ -367,15 +370,15 @@ export default function GrowthChart() {
               />
             )}
             
-            <div className="flex bg-slate-100 p-1 rounded-lg">
+          <div className="flex bg-primary-50 p-1 rounded-lg border border-primary-200">
               {timeRanges.map((range) => (
                 <button
                   key={range}
                   onClick={() => handleTimeRangeChange(range)}
-                  className={`px-3 py-2 text-sm font-medium rounded transition-colors duration-200 ${
+                className={`px-3 py-2 text-sm font-medium rounded transition-colors duration-200 ${
                     timeRange === range
-                      ? 'bg-white text-slate-900 shadow-sm'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-primary-600 text-white shadow-sm'
+                      : 'text-primary-700 hover:bg-primary-100'
                   }`}
                 >
                   {range}
