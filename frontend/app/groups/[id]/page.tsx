@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { groupApi, socialApi } from '@/utils/api'
+import { groupApi } from '@/utils/api'
 import GroupComparisonChart from '@/components/GroupComparisonChart'
 import CopyButton from '@/components/CopyButton'
 import Avatar from '@/components/Avatar'
 import GroupNotes from '@/components/GroupNotes'
 import GroupDirectory from '@/components/GroupDirectory'
 import MemberPanel from '@/components/MemberPanel'
-// removed duplicate import
 
 export default function GroupDetailPage() {
   const params = useParams() as { id?: string }
