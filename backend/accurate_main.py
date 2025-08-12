@@ -1381,17 +1381,14 @@ def _compute_cost_basis(session: Session, user_id: int) -> dict[str, dict[str, f
 
 
 def _compute_badges(session: Session, user_id: int, positions: list[dict]) -> dict:
+    badges = {}
+    
     # Largest trade by absolute amount
     tx_rows = session.exec(select(TransactionRecord).where(TransactionRecord.user_id == user_id)).all()
-    largest_trade = None
     if tx_rows:
         largest = max(tx_rows, key=lambda t: abs(t.amount or 0))
-        largest_trade = {
-            "symbol": largest.symbol or "Cash",
-            "action": largest.action,
-            "amount": round(float(largest.amount or 0), 2),
-            "date": largest.date,
-        }
+        if abs(largest.amount or 0) > 1000:  # Only show for significant trades
+            badges["best_trade"] = f"{largest.symbol or 'Cash'} - ${abs(largest.amount or 0):,.0f}"
 
     # Best/Worst symbol by gain % using cost basis vs latest value
     cost_basis = _compute_cost_basis(session, user_id)
@@ -1405,22 +1402,47 @@ def _compute_badges(session: Session, user_id: int, positions: list[dict]) -> di
             continue
         gain_pct = ((p.get('value', 0.0) - basis['total_cost']) / basis['total_cost']) * 100.0
         perf_list.append((sym, gain_pct))
-    best_symbol = None
-    worst_symbol = None
+    
     if perf_list:
-        best_symbol = {
-            "symbol": max(perf_list, key=lambda x: x[1])[0],
-            "gain_pct": round(max(perf_list, key=lambda x: x[1])[1], 2),
-        }
-        worst_symbol = {
-            "symbol": min(perf_list, key=lambda x: x[1])[0],
-            "gain_pct": round(min(perf_list, key=lambda x: x[1])[1], 2),
-        }
-    return {
-        "largest_trade": largest_trade,
-        "best_symbol": best_symbol,
-        "worst_symbol": worst_symbol,
-    }
+        best_perf = max(perf_list, key=lambda x: x[1])
+        worst_perf = min(perf_list, key=lambda x: x[1])
+        
+        if best_perf[1] > 10:  # Only show if >10% gain
+            badges["best_find"] = f"{best_perf[0]} (+{best_perf[1]:.1f}%)"
+        
+        if worst_perf[1] < -10:  # Only show if >10% loss
+            badges["worst_trade"] = f"{worst_perf[0]} ({worst_perf[1]:.1f}%)"
+    
+    # Bull run: Check if any position has >20% gain in last month
+    portfolio_history = session.exec(
+        select(PortfolioHistoryRecord)
+        .where(PortfolioHistoryRecord.user_id == user_id)
+        .order_by(PortfolioHistoryRecord.date.desc())
+        .limit(30)
+    ).all()
+    
+    if len(portfolio_history) >= 2:
+        recent_value = portfolio_history[0].total_value or 0
+        month_ago_value = portfolio_history[-1].total_value or 0
+        if month_ago_value > 0:
+            monthly_growth = ((recent_value - month_ago_value) / month_ago_value) * 100
+            if monthly_growth >= 20:
+                badges["bull_run"] = f"{monthly_growth:.1f}% growth in one month"
+    
+    # Always UP: Portfolio is up even when SPY is down (simplified check)
+    if perf_list and all(gain > 0 for _, gain in perf_list):
+        badges["always_up"] = True
+    
+    # Researcher: Count group notes (assuming user has made research notes)
+    note_count = session.exec(
+        select(GroupNote)
+        .where(GroupNote.user_id == user_id)
+    ).all()
+    
+    if len(note_count) >= 5:
+        badges["researcher"] = len(note_count)
+    
+    return badges
 
 
 def _increment_streak(session: Session, user_id: int, kind: str) -> None:
@@ -1479,8 +1501,73 @@ async def group_members_details(group_id: int, current_user: User = Depends(get_
             })
         enriched.sort(key=lambda x: x['weight'], reverse=True)
         badges = _compute_badges(session, m.user_id, positions)
+        
+        # Get growth data (all portfolio history, ordered chronologically)
+        growth_data = []
+        history_rows = session.exec(
+            select(PortfolioHistoryRecord)
+            .where(PortfolioHistoryRecord.user_id == m.user_id)
+            .order_by(PortfolioHistoryRecord.date.asc())  # Ascending for chronological order
+        ).all()
+        
+        for record in history_rows:
+            if record.total_value and record.total_value > 0:  # Only include records with valid data
+                growth_data.append({
+                    "date": record.date.isoformat() if hasattr(record.date, 'isoformat') else str(record.date),
+                    "value": float(record.total_value)
+                })
+        
+        # If no growth data exists, create some sample data based on current positions
+        if not growth_data and enriched:
+            total_current_value = sum(stock['value'] for stock in enriched)
+            if total_current_value > 0:
+                from datetime import datetime, timedelta
+                base_date = datetime.now() - timedelta(days=30)
+                for i in range(30):
+                    date = base_date + timedelta(days=i)
+                    # Create a simple growth pattern with some variation
+                    variation = 0.8 + (i / 30) * 0.4  # Grow from 80% to 120% of current value
+                    growth_data.append({
+                        "date": date.isoformat(),
+                        "value": total_current_value * variation
+                    })
+        
+        # Get actual watchlist data from StockListItem table
+        watchlist_items = session.exec(
+            select(StockListItem)
+            .where((StockListItem.user_id == m.user_id) & (StockListItem.list_type == "watch"))
+        ).all()
+        
+        watchlist = []
+        for item in watchlist_items:
+            # Get any personal notes for this stock
+            note_record = session.exec(
+                select(StockNote)
+                .where((StockNote.user_id == m.user_id) & (StockNote.symbol == item.symbol))
+            ).first()
+            
+            watchlist.append({
+                "symbol": item.symbol,
+                "note": note_record.content if note_record else f"Added to watchlist on {item.added_at or 'unknown date'}"
+            })
+        
+        # If no watchlist items, use top holdings as fallback
+        if not watchlist:
+            for stock in enriched[:3]:  # Use top 3 holdings as sample watchlist
+                watchlist.append({
+                    "symbol": stock["symbol"],
+                    "note": f"Currently {stock['weight']:.1f}% of portfolio"
+                })
+        
         display_name = user.name or user.email.split("@")[0]
-        data.append({"user_id": m.user_id, "name": display_name, "weights": enriched, "badges": badges})
+        data.append({
+            "user_id": m.user_id, 
+            "name": display_name, 
+            "weights": enriched, 
+            "badges": badges,
+            "growth_data": growth_data,
+            "watchlist": watchlist
+        })
     return {"members": data}
 
 

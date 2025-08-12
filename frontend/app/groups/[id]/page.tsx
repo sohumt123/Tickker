@@ -32,6 +32,12 @@ export default function GroupDetailPage() {
         ])
         setGroup(g)
         setLeaderboard(lb.leaderboard)
+        
+        // Auto-select the first member from leaderboard if none selected
+        if (lb.leaderboard.length > 0 && !selectedUserId) {
+          setSelectedUserId(lb.leaderboard[0].user_id)
+        }
+        
         // Fetch group-scoped details (full visibility) and group comparison
         const [details, comp] = await Promise.all([
           groupApi.membersDetails(groupId),
@@ -60,16 +66,16 @@ export default function GroupDetailPage() {
   if (!group) return <div className="p-6">Group not found</div>
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
-      <div className="sticky top-0 z-10 bg-gradient-to-r from-primary-50 via-fuchsia-50 to-accent-50 backdrop-blur mb-2 border-b">
-        <div className="flex items-center justify-between py-3">
+    <div className="h-screen flex flex-col bg-slate-50">
+      <div className="sticky top-0 z-10 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div className="flex items-center justify-between py-4 px-6">
           <div className="flex items-center gap-3">
-            <a href="/" className="text-sm px-3 py-1 border rounded hover:bg-slate-50">← Home</a>
-            <a href="/groups" className="text-sm px-3 py-1 border rounded hover:bg-slate-50">All groups</a>
+            <a href="/" className="text-sm px-3 py-1.5 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors">← Home</a>
+            <a href="/groups" className="text-sm px-3 py-1.5 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors">All groups</a>
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right">
-              <h1 className="text-xl font-semibold">{group.name}</h1>
+              <h1 className="text-xl font-semibold text-slate-800">{group.name}</h1>
               <p className="text-xs text-slate-500">Invite code: <span className="font-mono">{group.code}</span></p>
             </div>
             <CopyButton value={group.code} small />
@@ -77,48 +83,91 @@ export default function GroupDetailPage() {
         </div>
       </div>
 
-      <section className="card p-4">
-        <h2 className="text-lg font-medium mb-2 text-primary-700">Leaderboard</h2>
-        {leaderboard.length === 0 ? (
-          <p className="text-slate-600">No rankings yet.</p>
-        ) : (
-          <ol className="space-y-2">
-            {leaderboard.map((row, idx) => (
-              <li key={row.user_id} className="flex items-center justify-between border rounded px-3 py-2 bg-gradient-to-r from-white to-slate-50">
-                <div className="flex items-center gap-3">
-                  <span className="w-7 text-center text-slate-500">#{idx + 1}</span>
-                  <div className="flex items-center gap-2">
-                    <Avatar name={row.name} size={28} />
-                    <span className="font-medium">{row.name}</span>
-                  </div>
+      <div className="flex-1 grid grid-cols-12 gap-6 p-6 min-h-0">
+        {/* Left Side - Leaderboard */}
+        <div className="col-span-5">
+          <section className="bg-white rounded-xl border border-slate-200 shadow-sm h-full flex flex-col">
+            <div className="p-4 border-b border-slate-200">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-slate-800">{group.name}</h2>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-slate-600">Timeframe:</span>
+                  <select className="px-3 py-1 border border-slate-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                    <option value="all-time">All Time</option>
+                  </select>
                 </div>
-                <div className={`text-sm font-medium ${row.return_pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>{row.return_pct}%</div>
-              </li>
-            ))}
-          </ol>
-        )}
-      </section>
-
-      <section className="card p-0">
-        <div className="flex">
-          <GroupDirectory groupId={groupId} onSelect={(uid) => setSelectedUserId(uid)} />
-          <MemberPanel groupId={groupId} userId={selectedUserId} />
+              </div>
+            </div>
+            
+            <div className="p-4 flex-1 overflow-y-auto">
+              <h3 className="text-md font-medium mb-4 text-slate-700">Weekly LeaderBoard</h3>
+              {leaderboard.length === 0 ? (
+                <div className="text-center py-8 text-slate-500">
+                  <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Avatar name="?" size={32} />
+                  </div>
+                  <p className="text-sm">No rankings yet</p>
+                  <p className="text-xs">Upload portfolios to see leaderboard</p>
+                </div>
+              ) : (
+                <ol className="space-y-3">
+                  {leaderboard.map((row, idx) => (
+                    <li key={row.user_id}>
+                      <button
+                        onClick={() => setSelectedUserId(row.user_id)}
+                        className={`w-full flex items-center justify-between p-4 border rounded-lg transition-all duration-200 text-left ${
+                          selectedUserId === row.user_id 
+                            ? 'border-primary-300 bg-primary-50 shadow-md' 
+                            : 'border-slate-200 bg-gradient-to-r from-white via-slate-50 to-white hover:shadow-md hover:border-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
+                            selectedUserId === row.user_id 
+                              ? 'bg-primary-200 text-primary-800' 
+                              : 'bg-slate-100 text-slate-600'
+                          }`}>
+                            #{idx + 1}
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Avatar name={row.name} size={36} />
+                            <div>
+                              <span className={`font-semibold ${
+                                selectedUserId === row.user_id ? 'text-primary-900' : 'text-slate-800'
+                              }`}>{row.name}</span>
+                              {idx === 0 && (
+                                <div className="text-xs text-yellow-600 font-medium">🏆 Top Performer</div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className={`text-lg font-bold ${row.return_pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {row.return_pct >= 0 ? '+' : ''}{row.return_pct}%
+                          </div>
+                          <div className="text-xs text-slate-500">
+                            {row.return_pct >= 0 ? 'Gain' : 'Loss'}
+                          </div>
+                        </div>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
+          </section>
         </div>
-      </section>
 
-      <section className="rounded border p-4">
-        <h2 className="text-lg font-medium mb-2 text-primary-700">Group Comparison (normalized)</h2>
-        {Object.keys(comparison).length === 0 ? (
-          <p className="text-slate-600">No data</p>
-        ) : (
-          <div className="space-y-2">
-            <GroupComparisonChart series={comparison} members={group.members} />
-            <div className="text-xs text-slate-600">Each line represents $10k invested at each member's baseline.</div>
-          </div>
-        )}
-      </section>
-
-      <GroupNotes groupId={groupId} />
+        {/* Right Side - Member Portfolio */}
+        <div className="col-span-7">
+          <section className="bg-white rounded-xl border border-slate-200 shadow-sm h-full">
+            <MemberPanel groupId={groupId} userId={selectedUserId} />
+          </section>
+        </div>
+      </div>
     </div>
   )
 }
