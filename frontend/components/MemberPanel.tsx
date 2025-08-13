@@ -148,47 +148,78 @@ export default function MemberPanel({ groupId, userId }: { groupId: number; user
           <div className="space-y-3">
             {memberData?.badges && Object.keys(memberData.badges).length > 0 ? (
               <>
-                {memberData.badges.best_trade && (
-                  <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
-                    <Star className="text-green-600" size={16} />
-                    <div>
-                      <div className="font-medium text-green-800">Best Trade</div>
-                      <div className="text-xs text-green-600">{memberData.badges.best_trade}</div>
+                {/* New Enhanced Badges */}
+                {memberData.badges.first_step && (
+                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                      🎯
                     </div>
-                  </div>
-                )}
-                
-                {memberData.badges.worst_trade && (
-                  <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
-                    <Star className="text-red-600" size={16} />
-                    <div>
-                      <div className="font-medium text-red-800">Worst Trade</div>
-                      <div className="text-xs text-red-600">{memberData.badges.worst_trade}</div>
+                    <div className="flex-1">
+                      <div className="font-medium text-green-800">{memberData.badges.first_step.name}</div>
+                      <div className="text-xs text-green-600">{memberData.badges.first_step.description}</div>
+                      {memberData.badges.first_step.symbol && (
+                        <div className="text-xs text-green-500 mt-1">First trade: {memberData.badges.first_step.symbol}</div>
+                      )}
                     </div>
                   </div>
                 )}
                 
                 {memberData.badges.bull_run && (
-                  <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <TrendingUp className="text-blue-600" size={16} />
-                    <div>
-                      <div className="font-medium text-blue-800">Bull Run</div>
-                      <div className="text-xs text-blue-600">{memberData.badges.bull_run}</div>
+                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                      🚀
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-medium text-blue-800">{memberData.badges.bull_run.name}</div>
+                      <div className="text-xs text-blue-600">{memberData.badges.bull_run.description}</div>
+                    </div>
+                  </div>
+                )}
+                
+                {memberData.badges.trendsetter && (
+                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                      ⭐
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-medium text-purple-800">{memberData.badges.trendsetter.name}</div>
+                      <div className="text-xs text-purple-600">{memberData.badges.trendsetter.description}</div>
+                    </div>
+                  </div>
+                )}
+                
+                {memberData.badges.sector_samurai && (
+                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg border border-orange-200">
+                    <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                      ⚔️
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-medium text-orange-800">{memberData.badges.sector_samurai.name}</div>
+                      <div className="text-xs text-orange-600">{memberData.badges.sector_samurai.description}</div>
+                      {memberData.badges.sector_samurai.sectors && (
+                        <div className="text-xs text-orange-500 mt-1">
+                          Sectors: {memberData.badges.sector_samurai.sectors.slice(0, 3).join(', ')}
+                          {memberData.badges.sector_samurai.sectors.length > 3 && '...'}
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
                 
                 {memberData.badges.always_up && (
-                  <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                    <Award className="text-purple-600" size={16} />
-                    <div>
-                      <div className="font-medium text-purple-800">Always UP</div>
-                      <div className="text-xs text-purple-600">Portfolio is up even when SPY is down</div>
+                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
+                    <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
+                      📈
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-medium text-emerald-800">{memberData.badges.always_up.name}</div>
+                      <div className="text-xs text-emerald-600">{memberData.badges.always_up.description}</div>
                     </div>
                   </div>
                 )}
                 
-                {memberData.badges.best_find && (
+                {/* Legacy badges with updated styling */}
+                {memberData.badges.best_find && typeof memberData.badges.best_find === 'string' && (
                   <div className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
                     <Star className="text-yellow-600" size={16} />
                     <div>
@@ -200,20 +231,29 @@ export default function MemberPanel({ groupId, userId }: { groupId: number; user
                 
                 {memberData.badges.researcher && (
                   <div className="flex items-center gap-3 p-3 bg-indigo-50 rounded-lg border border-indigo-200">
-                    <Award className="text-indigo-600" size={16} />
-                    <div>
-                      <div className="font-medium text-indigo-800">Researcher</div>
-                      <div className="text-xs text-indigo-600">{memberData.badges.researcher} most rated stocks</div>
+                    <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+                      🔬
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-medium text-indigo-800">
+                        {typeof memberData.badges.researcher === 'object' ? memberData.badges.researcher.name : 'Researcher'}
+                      </div>
+                      <div className="text-xs text-indigo-600">
+                        {typeof memberData.badges.researcher === 'object' 
+                          ? memberData.badges.researcher.description 
+                          : `${memberData.badges.researcher} research contributions`}
+                      </div>
                     </div>
                   </div>
                 )}
               </>
             ) : (
               <div className="text-center py-8">
-                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 transform rotate-45">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Award className="text-slate-400" size={24} />
                 </div>
                 <p className="text-sm text-slate-500">No badges earned yet</p>
+                <p className="text-xs text-slate-400 mt-1">Complete trades and grow your portfolio to unlock achievements!</p>
               </div>
             )}
           </div>

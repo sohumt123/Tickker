@@ -83,9 +83,9 @@ export default function GroupDetailPage() {
         </div>
       </div>
 
-      <div className="flex-1 grid grid-cols-12 gap-6 p-6 min-h-0">
+      <div className="flex-1 grid grid-cols-12 gap-4 p-6 min-h-0">
         {/* Left Side - Leaderboard */}
-        <div className="col-span-5">
+        <div className="col-span-4">
           <section className="bg-white rounded-xl border border-slate-200 shadow-sm h-full flex flex-col">
             <div className="p-4 border-b border-slate-200">
               <div className="flex items-center justify-between">
@@ -118,38 +118,35 @@ export default function GroupDetailPage() {
                     <li key={row.user_id}>
                       <button
                         onClick={() => setSelectedUserId(row.user_id)}
-                        className={`w-full flex items-center justify-between p-4 border rounded-lg transition-all duration-200 text-left ${
+                        className={`w-full flex items-center justify-between p-3 border rounded-lg transition-all duration-200 text-left ${
                           selectedUserId === row.user_id 
                             ? 'border-primary-300 bg-primary-50 shadow-md' 
                             : 'border-slate-200 bg-gradient-to-r from-white via-slate-50 to-white hover:shadow-md hover:border-slate-300'
                         }`}
                       >
-                        <div className="flex items-center gap-4">
-                          <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                          <div className={`flex items-center justify-center w-6 h-6 rounded-full font-bold text-xs ${
                             selectedUserId === row.user_id 
                               ? 'bg-primary-200 text-primary-800' 
                               : 'bg-slate-100 text-slate-600'
                           }`}>
-                            #{idx + 1}
+                            {idx + 1}
                           </div>
-                          <div className="flex items-center gap-3">
-                            <Avatar name={row.name} size={36} />
-                            <div>
-                              <span className={`font-semibold ${
+                          <div className="flex items-center gap-2 min-w-0 flex-1">
+                            <Avatar name={row.name} size={28} />
+                            <div className="min-w-0 flex-1">
+                              <div className={`font-medium text-sm truncate ${
                                 selectedUserId === row.user_id ? 'text-primary-900' : 'text-slate-800'
-                              }`}>{row.name}</span>
+                              }`}>{row.name}</div>
                               {idx === 0 && (
-                                <div className="text-xs text-yellow-600 font-medium">🏆 Top Performer</div>
+                                <div className="text-xs text-yellow-600 font-medium">🏆</div>
                               )}
                             </div>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className={`text-lg font-bold ${row.return_pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        <div className="text-right shrink-0 ml-2">
+                          <div className={`text-sm font-bold ${row.return_pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                             {row.return_pct >= 0 ? '+' : ''}{row.return_pct}%
-                          </div>
-                          <div className="text-xs text-slate-500">
-                            {row.return_pct >= 0 ? 'Gain' : 'Loss'}
                           </div>
                         </div>
                       </button>
@@ -162,7 +159,7 @@ export default function GroupDetailPage() {
         </div>
 
         {/* Right Side - Member Portfolio */}
-        <div className="col-span-7">
+        <div className="col-span-8">
           <section className="bg-white rounded-xl border border-slate-200 shadow-sm h-full">
             <MemberPanel groupId={groupId} userId={selectedUserId} />
           </section>
