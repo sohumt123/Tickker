@@ -18,3 +18,4 @@ backend/portfolio.db
 
 # OS
 .DS_Store
+video/node_modules/

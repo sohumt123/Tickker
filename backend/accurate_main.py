@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from contextlib import asynccontextmanager
 import pandas as pd
 from typing import List, Dict, Any
 import json
@@ -17,7 +18,17 @@ from pydantic import BaseModel, EmailStr
 from fastapi.security import OAuth2PasswordBearer
 from dotenv import load_dotenv
 
-app = FastAPI(title="Stock Portfolio Visualizer", version="1.0.0")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    print("🚀 Starting Tickker Backend...")
+    create_db_and_tables()
+    print("🎯 Backend ready for connections!")
+    yield
+    # Shutdown (if needed)
+    print("👋 Shutting down backend...")
+
+app = FastAPI(title="Stock Portfolio Visualizer", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -43,11 +54,21 @@ portfolio_data = {
 # =====================
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./portfolio.db")
-# For SQLite, allow access across threads in the ASGI server
+# For SQLite, allow access across threads in the ASGI server with optimizations
 if DATABASE_URL.startswith("sqlite"):
-    engine = create_engine(DATABASE_URL, echo=False, connect_args={"check_same_thread": False})
+    engine = create_engine(
+        DATABASE_URL, 
+        echo=False, 
+        connect_args={
+            "check_same_thread": False,
+            "timeout": 20,
+            "isolation_level": None  # Autocommit mode for better performance
+        },
+        pool_pre_ping=True,
+        pool_recycle=3600
+    )
 else:
-    engine = create_engine(DATABASE_URL, echo=False)
+    engine = create_engine(DATABASE_URL, echo=False, pool_pre_ping=True)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
@@ -203,7 +224,12 @@ class UserResponse(BaseModel):
 
 
 def create_db_and_tables() -> None:
-    SQLModel.metadata.create_all(engine)
+    try:
+        SQLModel.metadata.create_all(engine)
+        print("✅ Database tables initialized successfully")
+    except Exception as e:
+        print(f"❌ Database initialization error: {e}")
+        raise
 
 
 def get_session() -> Session:
@@ -241,9 +267,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme), session: Session
     return user
 
 
-@app.on_event("startup")
-def on_startup_event():
-    create_db_and_tables()
 
 def _parse_number(value: Any) -> float:
     """Parse numbers that may contain commas, dollar signs, or parentheses negatives."""
@@ -1693,4 +1716,11 @@ async def list_group_notes(
             s["avg"] = round(s["avg"] / s["count"], 2)
     return {"notes": data, "summary": summary}
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    print("📊 Starting Tickker Portfolio Backend Server...")
+    uvicorn.run(
+        app, 
+        host="0.0.0.0", 
+        port=8000, 
+        reload=False,  # Disable reload for faster startup
+        access_log=False  # Disable access logs for better performance
+    )
