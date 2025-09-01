@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { groupApi, socialApi } from '@/utils/api'
-import { TrendingUp, Award, Eye, Star } from 'lucide-react'
+import { TrendingUp, Award } from 'lucide-react'
 import GroupNotes from './GroupNotes'
-import MemberGrowthChart from './MemberGrowthChart'
 
 interface MemberData {
   user_id: number
@@ -22,10 +21,12 @@ interface MemberData {
   growth_data?: { date: string; value: number }[]
 }
 
-export default function MemberPanel({ groupId, userId }: { groupId: number; userId: number | null }) {
+export default function MemberPanel({ groupId, userId, week }: { groupId: number; userId: number | null; week?: string }) {
   const [memberData, setMemberData] = useState<MemberData | null>(null)
   const [loading, setLoading] = useState(false)
   const [selectedMemberName, setSelectedMemberName] = useState<string>('')
+  const [weeklySymbols, setWeeklySymbols] = useState<{ symbol: string; pct: number }[]>([])
+  const [weeklyBadges, setWeeklyBadges] = useState<{ key: string; label: string; emoji?: string; context?: string }[]>([])
 
   useEffect(() => {
     if (!userId) return
@@ -40,8 +41,8 @@ export default function MemberPanel({ groupId, userId }: { groupId: number; user
             name: member.name,
             weights: member.weights || [],
             badges: member.badges || {},
-            watchlist: member.watchlist || [],
-            growth_data: member.growth_data || []
+            watchlist: (member as any).watchlist || [],
+            growth_data: (member as any).growth_data || []
           })
           setSelectedMemberName(member.name)
         }
@@ -50,6 +51,22 @@ export default function MemberPanel({ groupId, userId }: { groupId: number; user
       }
     })()
   }, [groupId, userId])
+
+  useEffect(() => {
+    if (!userId || !week) return
+    (async () => {
+      try {
+        const res = await groupApi.weeklyMemberSymbols(groupId, userId, week)
+        const list = (res.symbols || []).map((s: any) => ({ symbol: s.symbol, pct: s.pct }))
+        setWeeklySymbols(list)
+        const wb = (res as any).weekly_badges?.badges || []
+        setWeeklyBadges(wb)
+      } catch {
+        setWeeklySymbols([])
+        setWeeklyBadges([])
+      }
+    })()
+  }, [groupId, userId, week])
 
   if (!userId) return (
     <div className="flex-1 p-6 text-slate-600 text-center">
@@ -82,182 +99,53 @@ export default function MemberPanel({ groupId, userId }: { groupId: number; user
       {/* Scrollable Content */}
       <div className="flex-1 p-6 overflow-y-auto space-y-6 bg-gradient-to-br from-slate-50 to-white">
 
-        {/* Stock Growth Chart Section */}
-      <section className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="text-primary-600" size={20} />
-          <h3 className="text-lg font-semibold text-slate-800">Chart of Stock Growth</h3>
-        </div>
-        <MemberGrowthChart 
-          data={memberData?.growth_data || []} 
-          memberName={selectedMemberName}
-        />
-      </section>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Watch List Stocks */}
+        {/* Weekly Symbol Changes */}
         <section className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-4">
-            <Eye className="text-primary-600" size={20} />
-            <h3 className="text-lg font-semibold text-slate-800">Watch List Stocks</h3>
-          </div>
-          <div className="space-y-3">
-            <p className="text-sm text-slate-600 mb-3">
-              Stocks {selectedMemberName} has on their watchlist with notes they have associated with them
-            </p>
-            
-            {memberData?.weights && memberData.weights.length > 0 ? (
-              <div className="space-y-2">
-                {memberData.weights.slice(0, 6).map((stock) => (
-                  <div key={stock.symbol} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                        <span className="text-xs font-bold text-primary-700">{stock.symbol.charAt(0)}</span>
-                      </div>
-                      <div>
-                        <div className="font-medium text-slate-800">{stock.symbol}</div>
-                        <div className="text-xs text-slate-500">{stock.weight.toFixed(1)}% allocation</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-medium text-slate-700">${stock.value?.toLocaleString() || 'N/A'}</div>
-                      <div className="text-xs text-slate-500">{stock.shares || 0} shares</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8 text-slate-500">
-                <Eye className="mx-auto mb-2 opacity-50" size={24} />
-                <p className="text-sm">No watchlist data available</p>
-              </div>
+            <TrendingUp className="text-primary-600" size={20} />
+            <h3 className="text-lg font-semibold text-slate-800">Weekly Symbol Changes</h3>
+            {week && (
+              <span className="ml-auto text-xs text-slate-500">Week: {week}</span>
             )}
           </div>
+          {weeklySymbols.length === 0 ? (
+            <div className="text-sm text-slate-500">No symbols to show</div>
+          ) : (
+            <ul className="divide-y divide-slate-200">
+              {weeklySymbols.map((s) => (
+                <li key={s.symbol} className="flex items-center justify-between py-2">
+                  <span className="font-medium text-slate-800">{s.symbol}</span>
+                  <span className={`text-sm font-semibold ${s.pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {s.pct >= 0 ? '+' : ''}{s.pct.toFixed(2)}%
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
-
-        {/* Badges Section */}
+        {/* Weekly Badges */}
         <section className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-4">
             <Award className="text-primary-600" size={20} />
-            <h3 className="text-lg font-semibold text-slate-800">Badges</h3>
+            <h3 className="text-lg font-semibold text-slate-800">Weekly Badges</h3>
           </div>
-          <div className="text-sm text-slate-600 mb-4">
-            The badges {selectedMemberName} has earned
-          </div>
-          
-          <div className="space-y-3">
-            {memberData?.badges && Object.keys(memberData.badges).length > 0 ? (
-              <>
-                {/* New Enhanced Badges */}
-                {memberData.badges.first_step && (
-                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
-                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                      🎯
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-green-800">{memberData.badges.first_step.name}</div>
-                      <div className="text-xs text-green-600">{memberData.badges.first_step.description}</div>
-                      {memberData.badges.first_step.symbol && (
-                        <div className="text-xs text-green-500 mt-1">First trade: {memberData.badges.first_step.symbol}</div>
-                      )}
-                    </div>
-                  </div>
-                )}
-                
-                {memberData.badges.bull_run && (
-                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                      🚀
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-blue-800">{memberData.badges.bull_run.name}</div>
-                      <div className="text-xs text-blue-600">{memberData.badges.bull_run.description}</div>
-                    </div>
-                  </div>
-                )}
-                
-                {memberData.badges.trendsetter && (
-                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
-                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                      ⭐
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-purple-800">{memberData.badges.trendsetter.name}</div>
-                      <div className="text-xs text-purple-600">{memberData.badges.trendsetter.description}</div>
-                    </div>
-                  </div>
-                )}
-                
-                {memberData.badges.sector_samurai && (
-                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg border border-orange-200">
-                    <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                      ⚔️
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-orange-800">{memberData.badges.sector_samurai.name}</div>
-                      <div className="text-xs text-orange-600">{memberData.badges.sector_samurai.description}</div>
-                      {memberData.badges.sector_samurai.sectors && (
-                        <div className="text-xs text-orange-500 mt-1">
-                          Sectors: {memberData.badges.sector_samurai.sectors.slice(0, 3).join(', ')}
-                          {memberData.badges.sector_samurai.sectors.length > 3 && '...'}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-                
-                {memberData.badges.always_up && (
-                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
-                    <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
-                      📈
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-emerald-800">{memberData.badges.always_up.name}</div>
-                      <div className="text-xs text-emerald-600">{memberData.badges.always_up.description}</div>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Legacy badges with updated styling */}
-                {memberData.badges.best_find && typeof memberData.badges.best_find === 'string' && (
-                  <div className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                    <Star className="text-yellow-600" size={16} />
-                    <div>
-                      <div className="font-medium text-yellow-800">Best Find</div>
-                      <div className="text-xs text-yellow-600">{memberData.badges.best_find}</div>
-                    </div>
-                  </div>
-                )}
-                
-                {memberData.badges.researcher && (
-                  <div className="flex items-center gap-3 p-3 bg-indigo-50 rounded-lg border border-indigo-200">
-                    <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                      🔬
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-indigo-800">
-                        {typeof memberData.badges.researcher === 'object' ? memberData.badges.researcher.name : 'Researcher'}
-                      </div>
-                      <div className="text-xs text-indigo-600">
-                        {typeof memberData.badges.researcher === 'object' 
-                          ? memberData.badges.researcher.description 
-                          : `${memberData.badges.researcher} research contributions`}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Award className="text-slate-400" size={24} />
-                </div>
-                <p className="text-sm text-slate-500">No badges earned yet</p>
-                <p className="text-xs text-slate-400 mt-1">Complete trades and grow your portfolio to unlock achievements!</p>
-              </div>
-            )}
-          </div>
+          {weeklyBadges.length === 0 ? (
+            <div className="text-sm text-slate-500">No weekly badges yet</div>
+          ) : (
+            <ul className="space-y-2">
+              {weeklyBadges.map((b, i) => (
+                <li key={i} className="flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200 text-sm text-slate-700">
+                  <span className="shrink-0">{b.emoji || '🏅'}</span>
+                  <span className="font-medium">{b.label}</span>
+                  {b.context && <span className="text-slate-500">— {b.context}</span>}
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
+
       </div>
 
         <GroupNotes groupId={groupId} />

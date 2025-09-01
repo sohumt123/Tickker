@@ -6,7 +6,8 @@ import {
   PerformanceMetrics, 
   ComparisonData,
   StockSearchResult,
-  ApiResponse 
+  ApiResponse,
+  PerformanceResponse
 } from '@/types'
 
 const api = axios.create({
@@ -70,7 +71,17 @@ export const portfolioApi = {
 
   getPerformanceMetrics: async (): Promise<{ metrics: PerformanceMetrics }> => {
     const response = await api.get('/performance')
-    return response.data
+    return response.data as PerformanceResponse
+  },
+
+  getContributionAdjustedReturn: async () => {
+    const response = await api.get('/performance/net')
+    return response.data as PerformanceResponse['net']
+  },
+
+  getDepositAveragedReturn: async () => {
+    const response = await api.get('/performance')
+    return (response.data as PerformanceResponse).deposit_avg
   },
 
   getSpyComparison: async (baselineDate?: string): Promise<{ comparison: ComparisonData[] }> => {
@@ -99,6 +110,11 @@ export const portfolioApi = {
     if (baselineDate) params.append('baseline_date', baselineDate)
     
     const response = await api.get(`/comparison/custom?${params}`)
+    return response.data
+  },
+
+  debugTWR: async (): Promise<any> => {
+    const response = await api.get('/debug/twr')
     return response.data
   },
 }
@@ -156,6 +172,34 @@ export const groupApi = {
     if (baselineDate) params.append('baseline_date', baselineDate)
     const res = await api.get(`/groups/${groupId}/comparison?${params}`)
     return res.data as { series: Record<number, { date: string; value: number }[]> }
+  },
+  weeklyMemberSymbols: async (groupId: number, userId: number, week: string) => {
+    const params = new URLSearchParams()
+    params.append('user_id', String(userId))
+    params.append('week', week)
+    const res = await api.get(`/groups/${groupId}/weekly/member_symbols?${params}`)
+    return res.data as { user_id: number; week: string; symbols: { symbol: string; start: string; end: string; start_close: number; end_close: number; pct: number }[]; weekly_badges?: { badges: { key: string; label: string; emoji?: string; context?: string }[]; biggest_gainer?: { symbol: string; pct: number }; biggest_loser?: { symbol: string; pct: number } } }
+  },
+  weeklySummary: async (groupId: number, week: string) => {
+    const params = new URLSearchParams()
+    params.append('week', week)
+    const res = await api.get(`/groups/${groupId}/weekly/summary?${params}`)
+    return res.data as { symbol_changes: Record<string, { start: string; end: string; start_close: number; end_close: number; pct: number }>; users: Record<number, any> }
+  },
+  weeklyLeaderboard: async (groupId: number, week: string) => {
+    const params = new URLSearchParams()
+    params.append('week', week)
+    const res = await api.get(`/groups/${groupId}/weekly/leaderboard?${params}`)
+    return res.data as { week: string; leaderboard: { user_id: number; twr_pct: number; gain_usd: number; weekly_badges?: { badges: { key: string; label: string; emoji?: string; context?: string }[] } }[] }
+  },
+  weeklyUpload: async (groupId: number, week: string, file: File, replace: boolean = false) => {
+    const form = new FormData()
+    form.append('file', file)
+    const params = new URLSearchParams()
+    params.append('week', week)
+    if (replace) params.append('replace', 'true')
+    const res = await api.post(`/groups/${groupId}/weekly/upload?${params}`, form, { headers: { 'Content-Type': 'multipart/form-data' } })
+    return res.data as { ok: boolean; count: number }
   },
   addGroupNote: async (groupId: number, symbol: string, rating: number, content: string) => {
     const res = await api.post(`/groups/${groupId}/notes`, { symbol, rating, content })

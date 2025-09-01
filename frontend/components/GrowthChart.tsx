@@ -14,7 +14,7 @@ import {
   Filler,
 } from 'chart.js'
 import { portfolioApi } from '@/utils/api'
-import { ComparisonData, CustomSymbol } from '@/types'
+import { ComparisonData, CustomSymbol, TWRStats } from '@/types'
 import { formatCurrency, formatDate } from '@/utils/format'
 import LoadingSpinner from './LoadingSpinner'
 import StockSearchBar from './StockSearchBar'
@@ -41,6 +41,9 @@ export default function GrowthChart() {
   const [baselineDate, setBaselineDate] = useState<string>('')
   const [portfolioStartDate, setPortfolioStartDate] = useState<string>('')
   const [extendedLoading, setExtendedLoading] = useState(false)
+  const [twrStats, setTwrStats] = useState<TWRStats | null>(null)
+  const [netStats, setNetStats] = useState<any>(null)
+  const [depositAvg, setDepositAvg] = useState<{ avg_return_pct: number } | null>(null)
 
   useEffect(() => {
     fetchData()
@@ -81,15 +84,20 @@ export default function GrowthChart() {
         setExtendedLoading(true)
       }
       
-      const result = await portfolioApi.getSpyComparison(baselineDate)
+      // Fetch comparison data, TWR, net return, and deposit-averaged return
+      const [comparisonResult, performanceResult, netResult] = await Promise.all([
+        portfolioApi.getSpyComparison(baselineDate),
+        portfolioApi.getPerformanceMetrics(),
+        portfolioApi.getContributionAdjustedReturn(),
+      ])
       
-      if (result.comparison) {
-        let filteredData = result.comparison
+      if (comparisonResult.comparison) {
+        let filteredData = comparisonResult.comparison
         
         // Set portfolio start date from first data point (for baseline picker)
-        if (result.comparison.length > 0 && !portfolioStartDate) {
+        if (comparisonResult.comparison.length > 0 && !portfolioStartDate) {
           // Find the first date with portfolio data > $10k (indicating real portfolio activity)
-          const firstPortfolioActivity = result.comparison.find(item => Math.abs(item.portfolio - 10000) > 0.01)
+          const firstPortfolioActivity = comparisonResult.comparison.find(item => Math.abs(item.portfolio - 10000) > 0.01)
           if (firstPortfolioActivity) {
             setPortfolioStartDate(firstPortfolioActivity.date)
             if (!baselineDate) {
@@ -101,6 +109,19 @@ export default function GrowthChart() {
         
         // Backend handles the full baseline comparison, no need to filter here
         setData(filteredData)
+      }
+      
+      // Set TWR and deposit-averaged stats from performance metrics
+      if ((performanceResult as any).twr) {
+        setTwrStats((performanceResult as any).twr)
+      }
+      if ((performanceResult as any).deposit_avg) {
+        setDepositAvg((performanceResult as any).deposit_avg)
+      }
+
+      // Set contribution-adjusted net return stats
+      if (netResult) {
+        setNetStats(netResult)
       }
     } catch (err: any) {
       console.error('Error fetching chart data:', err)
@@ -189,7 +210,7 @@ export default function GrowthChart() {
     // Add custom symbol datasets
     customSymbols.forEach((symbol) => {
       if (symbol.visible) {
-        const symbolData = data.map(item => item[symbol.symbol.toLowerCase()] as number || null)
+        const symbolData = data.map(item => item[symbol.symbol.toLowerCase()] as number || 0)
         
         datasets.push({
           label: `${symbol.symbol} (${symbol.name.substring(0, 20)}${symbol.name.length > 20 ? '...' : ''})`,
@@ -262,8 +283,8 @@ export default function GrowthChart() {
         ticks: {
           maxTicksLimit: 8,
           color: 'rgb(148,163,184)',
-          callback: function(value: any, index: number, ticks: any): string {
-            const labels = this.chart?.data?.labels
+          callback: function(value: any, index: number): string {
+            const labels = (this as any).chart?.data?.labels
             if (labels && labels[index]) {
               return new Date(labels[index]).toLocaleDateString('en-US', { 
                 month: 'short', 
@@ -302,7 +323,14 @@ export default function GrowthChart() {
     const latest = data[data.length - 1]
     const earliest = data[0]
     
-    const portfolioGrowth = ((latest.portfolio - earliest.portfolio) / earliest.portfolio) * 100
+    // Chart shows normalized growth of $10k investment; for the summary percent,
+    // prefer deposit-averaged return if available, else contribution-adjusted net return
+    let portfolioGrowth = ((latest.portfolio - earliest.portfolio) / earliest.portfolio) * 100
+    if (depositAvg && typeof depositAvg.avg_return_pct === 'number') {
+      portfolioGrowth = depositAvg.avg_return_pct
+    } else if (netStats && typeof netStats.pct_of_start_plus_contrib === 'number') {
+      portfolioGrowth = netStats.pct_of_start_plus_contrib
+    }
     const spyGrowth = ((latest.spy - earliest.spy) / earliest.spy) * 100
     const outperformance = portfolioGrowth - spyGrowth
     
@@ -312,6 +340,7 @@ export default function GrowthChart() {
       portfolioGrowth,
       spyGrowth,
       outperformance,
+      twrStats
     }
   }
 
@@ -357,7 +386,16 @@ export default function GrowthChart() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">Growth of $10,000</h2>
-            <p className="text-slate-600">Compare your portfolio performance with SPY</p>
+            <p className="text-slate-600">Compare your portfolio performance with SPY using time-weighted returns</p>
+            {twrStats && (
+              <div className="mt-2 text-sm text-slate-600">
+                <span className="font-medium">Time-Weighted Return:</span> {twrStats.twr_pct.toFixed(2)}%
+                {twrStats.days > 365 && (
+                  <span className="ml-3"><span className="font-medium">Annualized:</span> {twrStats.annualized_pct.toFixed(2)}%</span>
+                )}
+                <span className="ml-3 text-slate-500">({twrStats.days} days)</span>
+              </div>
+            )}
           </div>
           
           <div className="flex items-center gap-4 mt-4 sm:mt-0">

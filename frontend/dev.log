@@ -1,0 +1,75 @@
+
+> stock-portfolio-frontend@1.0.0 dev
+> next dev
+
+   ▲ Next.js 14.0.3
+   - Local:        http://localhost:3000
+
+ ✓ Ready in 1387ms
+ ○ Compiling / ...
+ ✓ Compiled / in 6.3s (1476 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 1186ms (704 modules)
+(node:85295) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ○ Compiling /signup ...
+ ✓ Compiled /signup in 1577ms (1468 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /login in 123ms (1474 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 272ms (1484 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 196ms (1484 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 445ms (1470 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ○ Compiling /groups ...
+ ✓ Compiled /groups in 529ms (1484 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /rag in 148ms (1492 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /signup in 159ms (780 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+[?25h

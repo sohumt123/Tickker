@@ -72,3 +72,29 @@ export interface ApiResponse<T> {
   error?: string
   message?: string
 }
+
+export interface TWRStats {
+  twr: number
+  twr_pct: number
+  days: number
+  annualized_pct: number
+}
+
+export interface PerformanceResponse {
+  metrics: PerformanceMetrics
+  twr?: TWRStats
+  net?: {
+    start_value: number
+    end_value: number
+    net_contributions: number
+    net_profit: number
+    pct_of_start: number
+    pct_of_start_plus_contrib: number
+    start_date?: string
+    end_date?: string
+  }
+  deposit_avg?: {
+    periods: { start: string; end: string; begin: number; end: number; net_contrib: number; return_pct: number }[]
+    avg_return_pct: number
+  }
+}

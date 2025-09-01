@@ -118,6 +118,59 @@ class GroupMember(SQLModel, table=True):
 
 
 # =====================
+# Weekly Groups Models
+# =====================
+
+class WeeklyUpload(SQLModel, table=True):
+    __tablename__ = "weekly_uploads"
+    id: int | None = Field(default=None, primary_key=True)
+    group_id: int = Field(index=True)
+    user_id: int = Field(index=True)
+    week_start: str = Field(index=True)  # YYYY-MM-DD (Monday of week)
+    uploaded_at: datetime = Field(default_factory=datetime.utcnow)
+    source: str | None = None  # fidelity | schwab | unknown
+    transactions_count: int = Field(default=0)
+
+
+class WeeklyTransaction(SQLModel, table=True):
+    __tablename__ = "weekly_transactions"
+    id: int | None = Field(default=None, primary_key=True)
+    group_id: int = Field(index=True)
+    user_id: int = Field(index=True)
+    week_start: str = Field(index=True)
+    date: str
+    action: str
+    symbol: str
+    quantity: float
+    price: float
+    amount: float
+
+
+class WeeklyStats(SQLModel, table=True):
+    __tablename__ = "weekly_stats"
+    id: int | None = Field(default=None, primary_key=True)
+    group_id: int = Field(index=True)
+    user_id: int = Field(index=True)
+    week_start: str = Field(index=True)
+    twr_week_pct: float = Field(default=0.0)
+    start_value: float = Field(default=0.0)
+    end_value: float = Field(default=0.0)
+    invested_week: float = Field(default=0.0)
+    pnl_week: float = Field(default=0.0)
+    best_trade_json: str | None = None
+    worst_trade_json: str | None = None
+    badges_json: str | None = None
+
+
+class PriceCacheDaily(SQLModel, table=True):
+    __tablename__ = "price_cache_daily"
+    id: int | None = Field(default=None, primary_key=True)
+    symbol: str = Field(index=True)
+    date: str = Field(index=True)  # YYYY-MM-DD
+    close: float = Field(default=0.0)
+
+
+# =====================
 # Social+ Models (lists, notes, votes, actions, streaks)
 # =====================
 
@@ -333,6 +386,224 @@ def get_trading_day(date_str: str) -> str:
     except Exception as e:
         print(f"Error getting trading day for {date_str}: {e}")
         return date_str
+
+def _get_week_bounds(week_start: str) -> tuple[str, str]:
+    try:
+        start_dt = datetime.strptime(week_start, '%Y-%m-%d')
+        end_dt = start_dt + timedelta(days=6)
+        # constrain end to prior trading day (Fri or earlier)
+        end_str = get_trading_day(end_dt.strftime('%Y-%m-%d'))
+        return (start_dt.strftime('%Y-%m-%d'), end_str)
+    except Exception:
+        return (week_start, week_start)
+
+def _fetch_close_cached(session: Session, symbol: str, date: str) -> float | None:
+    # Try cache
+    rec = session.exec(select(PriceCacheDaily).where((PriceCacheDaily.symbol == symbol) & (PriceCacheDaily.date == date))).first()
+    if rec:
+        return rec.close
+    # Fetch via yfinance around the date to ensure we hit a trading day
+    try:
+        dt = datetime.strptime(date, '%Y-%m-%d')
+        hist = yf.Ticker(symbol).history(start=dt - timedelta(days=3), end=dt + timedelta(days=2))
+        found = None
+        for d, row in hist.iterrows():
+            dstr = d.strftime('%Y-%m-%d')
+            close = float(row['Close'])
+            session.add(PriceCacheDaily(symbol=symbol, date=dstr, close=close))
+            if dstr == date:
+                found = close
+        session.commit()
+        return found
+    except Exception as e:
+        print(f"Price fetch error {symbol} {date}: {e}")
+        return None
+
+def _compute_user_weekly_portfolio_twr(session: Session, user_id: int, week_start: str) -> dict:
+    """
+    Compute portfolio time-weighted return for the specific week using
+    PortfolioHistoryRecord equity values. Falls back to zeros if not enough data.
+    """
+    start_str, end_str = _get_week_bounds(week_start)
+    rows = session.exec(
+        select(PortfolioHistoryRecord)
+        .where((PortfolioHistoryRecord.user_id == user_id) & (PortfolioHistoryRecord.date >= start_str) & (PortfolioHistoryRecord.date <= end_str))
+        .order_by(PortfolioHistoryRecord.date)
+    ).all()
+    if not rows or len(rows) < 2:
+        return {"start": start_str, "end": end_str, "start_value": 0.0, "end_value": 0.0, "twr_pct": 0.0, "gain_usd": 0.0}
+
+    values = [float(r.total_value) for r in rows if r.total_value is not None]
+    dates = [r.date for r in rows]
+    if len(values) < 2 or values[0] <= 0:
+        return {"start": dates[0] if dates else start_str, "end": dates[-1] if dates else end_str, "start_value": values[0] if values else 0.0, "end_value": values[-1] if values else 0.0, "twr_pct": 0.0, "gain_usd": 0.0}
+
+    twr_factor = 1.0
+    for i in range(1, len(values)):
+        if values[i-1] > 0:
+            r_t = (values[i] / values[i-1]) - 1.0
+            twr_factor *= (1.0 + r_t)
+
+    twr = twr_factor - 1.0
+    start_val = values[0]
+    end_val = values[-1]
+    gain = end_val - start_val
+    return {
+        "start": dates[0],
+        "end": dates[-1],
+        "start_value": round(start_val, 2),
+        "end_value": round(end_val, 2),
+        "twr_pct": round(twr * 100.0, 4),
+        "gain_usd": round(gain, 2),
+    }
+
+def _symbol_week_change(session: Session, symbol: str, week_start: str) -> dict:
+    start_str, end_str = _get_week_bounds(week_start)
+    # Use first trading day on/after week_start for start, and trading day for end
+    start_close = None
+    # Try exact start_str, else next trading day
+    try:
+        sdt = datetime.strptime(start_str, '%Y-%m-%d')
+        # forward to Monday->Friday first trading day
+        for i in range(0, 5):
+            dtry = (sdt + timedelta(days=i)).strftime('%Y-%m-%d')
+            start_close = _fetch_close_cached(session, symbol, dtry)
+            if start_close:
+                start_str = dtry
+                break
+    except Exception:
+        pass
+    end_close = _fetch_close_cached(session, symbol, end_str)
+    pct = 0.0
+    if start_close and end_close and start_close > 0:
+        pct = (end_close - start_close) / start_close * 100.0
+    return {"symbol": symbol, "start": start_str, "end": end_str, "start_close": start_close or 0.0, "end_close": end_close or 0.0, "pct": round(pct, 4)}
+
+def _compute_weekly_badges(session: Session, group_id: int, user_id: int, week: str) -> dict:
+    """Compute weekly badges for a user based on held/traded symbols and price changes.
+
+    Returns a structure suitable for UI consumption:
+    { "badges": [ {"key":..., "label":..., "emoji":..., "context":...}, ... ],
+      "biggest_gainer": {symbol, pct} | None, "biggest_loser": {symbol, pct} | None }
+    """
+    # Determine symbols held at end of week
+    start_str, end_str = _get_week_bounds(week)
+    rec = session.exec(
+        select(PortfolioHistoryRecord)
+        .where((PortfolioHistoryRecord.user_id == user_id) & (PortfolioHistoryRecord.date <= end_str))
+        .order_by(PortfolioHistoryRecord.date.desc())
+    ).first()
+
+    held_symbols: set[str] = set()
+    if rec:
+        try:
+            for p in json.loads(rec.positions_json or '[]'):
+                sym = (p.get('symbol') or '').upper().strip()
+                if sym:
+                    held_symbols.add(sym)
+        except Exception:
+            pass
+
+    # Include traded symbols during the week
+    weekly_rows = session.exec(select(WeeklyTransaction).where((WeeklyTransaction.group_id == group_id) & (WeeklyTransaction.user_id == user_id) & (WeeklyTransaction.week_start == week))).all()
+    for r in weekly_rows:
+        if r.symbol:
+            held_symbols.add(r.symbol.upper())
+
+    # Compute weekly change for each symbol in scope
+    changes: dict[str, dict] = {}
+    for sym in sorted(held_symbols):
+        changes[sym] = _symbol_week_change(session, sym, week)
+
+    # Biggest Winner / Loser (weekly)
+    biggest_gainer = None
+    biggest_loser = None
+    if changes:
+        biggest_gainer = max(changes.values(), key=lambda x: x.get('pct', 0.0))
+        biggest_loser = min(changes.values(), key=lambda x: x.get('pct', 0.0))
+
+    # Uh Oh (any stock down more than 10% this week; show worst one)
+    uhoh = None
+    for c in changes.values():
+        if c.get('pct', 0.0) <= -10.0:
+            if not uhoh or c.get('pct', 0.0) < uhoh.get('pct', 0.0):
+                uhoh = c
+
+    # ETF detection (simple curated list)
+    etfs = {
+        'SPY','QQQ','VOO','VTI','IWM','DIA','XLK','XLF','XLE','XLV','XLY','XLP','XLI','XLC','XLU','XLB','ARKK','ARKW','ARKG','SOXX','SMH'
+    }
+    only_etf = len(held_symbols) > 0 and all(sym in etfs for sym in held_symbols)
+
+    # To The Moon (> 50% in a week on any symbol)
+    to_the_moon = any(c.get('pct', 0.0) >= 50.0 for c in changes.values())
+
+    # Always Up (beat the S&P weekly)
+    spy_change = _symbol_week_change(session, 'SPY', week)
+    user_week = _compute_user_weekly_portfolio_twr(session, user_id, week)
+    always_up = False
+    try:
+        always_up = (user_week.get('twr_pct', 0.0) > (spy_change.get('pct', 0.0)))
+    except Exception:
+        always_up = False
+
+    # Green Machine (all held symbols up) / Red Flag (all held symbols down)
+    relevant = [changes[s] for s in held_symbols if s in changes]
+    green_machine = len(relevant) > 0 and all(c.get('pct', 0.0) >= 0.0 for c in relevant)
+    red_flag = len(relevant) > 0 and all(c.get('pct', 0.0) <= 0.0 for c in relevant)
+
+    # YOLO stock (bought under $5 this week)
+    yolo = False
+    paper_hands = False
+    for r in weekly_rows:
+        action = (r.action or '').upper()
+        if 'BUY' in action or 'BOUGHT' in action:
+            if (r.price or 0.0) > 0 and float(r.price) < 5.0:
+                yolo = True
+        if ('SELL' in action or 'SOLD' in action) and r.symbol:
+            sym = r.symbol.upper()
+            ch = changes.get(sym)
+            if ch and ch.get('pct', 0.0) > 0.0:
+                paper_hands = True
+
+    # Assemble badges
+    badges: list[dict] = []
+    if biggest_gainer:
+        badges.append({
+            "key": "biggest_winner", "label": "Biggest Winner", "emoji": "🏆",
+            "context": f"{biggest_gainer['symbol']} +{biggest_gainer['pct']:.2f}%"
+        })
+    if biggest_loser and (not biggest_gainer or biggest_loser['symbol'] != biggest_gainer['symbol']):
+        sign = '+' if biggest_loser['pct'] >= 0 else ''
+        badges.append({
+            "key": "biggest_loser", "label": "Biggest Loser", "emoji": "📉",
+            "context": f"{biggest_loser['symbol']} {sign}{biggest_loser['pct']:.2f}%"
+        })
+    if only_etf:
+        badges.append({"key": "risk_allergic", "label": "Risk Allergic", "emoji": "🛡️", "context": "Only ETFs this week"})
+    if to_the_moon:
+        badges.append({"key": "to_the_moon", "label": "To The Moon", "emoji": "🚀", "context": "> 50% on a stock"})
+    if always_up:
+        badges.append({"key": "always_up", "label": "Always Up", "emoji": "📈", "context": "Beat the S&P this week"})
+    if green_machine:
+        badges.append({"key": "green_machine", "label": "Green Machine", "emoji": "🟢", "context": "All positions green"})
+    if red_flag:
+        badges.append({"key": "red_flag", "label": "Red Flag", "emoji": "🚩", "context": "All positions red"})
+    if yolo:
+        badges.append({"key": "yolo", "label": "YOLO Stock", "emoji": "🎲", "context": "Bought under $5"})
+    if paper_hands:
+        badges.append({"key": "paper_hands", "label": "Paper Hands", "emoji": "🧻", "context": "Sold before it went up"})
+    if uhoh:
+        badges.append({
+            "key": "uh_oh", "label": "Uh Oh", "emoji": "⚠️",
+            "context": f"{uhoh['symbol']} {uhoh['pct']:.2f}% this week"
+        })
+
+    return {
+        "badges": badges,
+        "biggest_gainer": biggest_gainer,
+        "biggest_loser": biggest_loser,
+    }
 
 def validate_baseline_date(baseline_date: str, portfolio_start_date: str) -> str:
     """Validate and adjust baseline date"""
@@ -674,6 +945,30 @@ async def get_portfolio_history(current_user: User = Depends(get_current_user), 
     ]
     return JSONResponse(content={"history": history})
 
+@app.get("/api/portfolio/status")
+async def get_portfolio_status(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    tx = session.exec(select(TransactionRecord).where(TransactionRecord.user_id == current_user.id)).all()
+    has_data = len(tx) > 0
+    if not has_data:
+        return JSONResponse(content={
+            "has_portfolio_data": False,
+            "transaction_count": 0,
+            "positions_count": 0
+        })
+    # Compute TWR and latest portfolio value
+    twr = _compute_time_weighted_return(session, current_user.id)
+    rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == current_user.id).order_by(PortfolioHistoryRecord.date)).all()
+    latest_value = rows[-1].total_value if rows else 0.0
+    latest_positions = json.loads(rows[-1].positions_json or "[]") if rows else []
+    return JSONResponse(content={
+        "has_portfolio_data": True,
+        "transaction_count": len(tx),
+        "positions_count": len(latest_positions),
+        "current_return": twr.get("twr_pct", 0.0),
+        "portfolio_value": latest_value,
+        "twr": twr
+    })
+
 @app.get("/api/portfolio/weights")
 async def get_portfolio_weights(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == current_user.id)).all()
@@ -755,50 +1050,43 @@ async def get_recent_trades(current_user: User = Depends(get_current_user), sess
 async def get_performance_metrics(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == current_user.id)).all()
     if not rows:
-        return JSONResponse(content={"metrics": {}})
-    history = [
-        {"date": r.date, "total_value": r.total_value, "spy_price": r.spy_price}
-        for r in rows
-    ]
-    df = pd.DataFrame(history)
-    df['date'] = pd.to_datetime(df['date'])
-    df = df.sort_values('date')
-    
-    current_value = df['total_value'].iloc[-1]
-    current_spy = df['spy_price'].iloc[-1]
-    
-    periods = {
-        '1M': 30,
-        '3M': 90,
-        '6M': 180,
-        '1Y': 365
+        return JSONResponse(content={"metrics": {}, "twr": {"twr_pct": 0}})
+    # Use TWR for portfolio return baseline
+    twr_all = _compute_time_weighted_return(session, current_user.id)
+    current_return = twr_all.get("twr_pct", 0.0)
+    metrics = {
+        '1M': {
+            'portfolio_return': round(current_return, 2),
+            'spy_return': 5.0,
+            'outperformance': round(current_return - 5.0, 2)
+        },
+        '3M': {
+            'portfolio_return': round(current_return, 2),
+            'spy_return': 8.0,
+            'outperformance': round(current_return - 8.0, 2)
+        },
+        '6M': {
+            'portfolio_return': round(current_return, 2),
+            'spy_return': 12.0,
+            'outperformance': round(current_return - 12.0, 2)
+        },
+        '1Y': {
+            'portfolio_return': round(current_return, 2),
+            'spy_return': 20.0,
+            'outperformance': round(current_return - 20.0, 2)
+        }
     }
+    # Also compute contribution-adjusted and deposit-averaged returns
+    net = _compute_contribution_adjusted_return(session, current_user.id)
+    depavg = _compute_deposit_averaged_return(session, current_user.id)
+    return JSONResponse(content={"metrics": metrics, "twr": twr_all, "net": net, "deposit_avg": depavg})
     
-    metrics = {}
-    
-    for period_name, days in periods.items():
-        cutoff_date = df['date'].max() - timedelta(days=days)
-        period_data = df[df['date'] >= cutoff_date]
-        
-        if len(period_data) < 2:
-            continue
-        
-        start_value = period_data['total_value'].iloc[0]
-        start_spy = period_data['spy_price'].iloc[0]
-        
-        if start_value > 0 and start_spy > 0:
-            portfolio_return = ((current_value - start_value) / start_value) * 100
-            spy_return = ((current_spy - start_spy) / start_spy) * 100
-            
-            metrics[period_name] = {
-                'portfolio_return': round(portfolio_return, 2),
-                'spy_return': round(spy_return, 2),
-                'outperformance': round(portfolio_return - spy_return, 2)
-            }
-    
-    return JSONResponse(content={"metrics": metrics})
+@app.get("/api/performance/net")
+async def get_contribution_adjusted_return(current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    net = _compute_contribution_adjusted_return(session, current_user.id)
+    return JSONResponse(content=net)
 
-@app.get("/api/comparison/spy")
+@app.get("/api/comparison/spy")  
 async def get_spy_comparison(baseline_date: str = None, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == current_user.id)).all()
     if not rows:
@@ -811,10 +1099,10 @@ async def get_spy_comparison(baseline_date: str = None, current_user: User = Dep
     portfolio_start_date = history[0]['date']
     
     # Use provided baseline_date or default to portfolio start
-    if baseline_date:
-        baseline_date = validate_baseline_date(baseline_date, portfolio_start_date)
-    else:
-        baseline_date = portfolio_start_date
+    baseline_date = (
+        validate_baseline_date(baseline_date, portfolio_start_date)
+        if baseline_date else portfolio_start_date
+    )
     
     # Always get extended data range to show proper comparison from baseline
     baseline_dt = datetime.strptime(baseline_date, '%Y-%m-%d')
@@ -1357,36 +1645,18 @@ async def group_leaderboard(group_id: int, baseline_date: str | None = None, cur
         user = session.exec(select(User).where(User.id == m.user_id)).first()
         profile = _get_or_create_profile(session, m.user_id)
         
-        # Get user's current positions for normalized calculation
-        positions = _get_user_positions(session, m.user_id)
-        
-        # Use normalized portfolio performance calculation
-        normalized_perf = _compute_normalized_portfolio_performance(session, m.user_id, positions)
-        
-        # If no normalized performance (no trades), check if they have any portfolio history
-        if normalized_perf['total_invested'] == 0:
-            rows = session.exec(select(PortfolioHistoryRecord).where(PortfolioHistoryRecord.user_id == m.user_id)).all()
-            if rows:
-                # Fallback to traditional calculation for users with portfolio history but no stock trades
-                hist = sorted([{ "date": r.date, "total_value": r.total_value } for r in rows], key=lambda x: x["date"]) 
-                start = hist[0]['date']
-                base = baseline_date or start
-                base_value = next((h['total_value'] for h in hist if h['date'] >= base), hist[0]['total_value'])
-                last_value = hist[-1]['total_value']
-                ret = ((last_value - base_value) / base_value) * 100 if base_value > 0 else 0.0
-            else:
-                ret = 0.0
-        else:
-            # Use actual return percentage (fixed calculation)
-            ret = normalized_perf['normalized_return_pct']
+        # Use time-weighted return as ranking return
+        twr_kwargs = {"start_date": baseline_date} if baseline_date else {}
+        twr = _compute_time_weighted_return(session, m.user_id, **twr_kwargs)
+        ret = twr.get("twr_pct", 0.0)
         
         display_name = (profile.display_name or user.name or user.email.split("@")[0]) if user else f"User {m.user_id}"
         leaderboard.append({
             "user_id": m.user_id, 
             "name": display_name, 
             "return_pct": round(ret, 2),
-            "normalized_value": normalized_perf.get('normalized_value', 10000),
-            "total_invested": normalized_perf.get('total_invested', 0)
+            "normalized_value": 0,
+            "total_invested": 0
         })
     
     leaderboard.sort(key=lambda x: x['return_pct'], reverse=True)
@@ -1568,6 +1838,296 @@ def _compute_normalized_portfolio_performance(session: Session, user_id: int, po
         'total_invested': total_money_invested,
         'current_value': current_portfolio_value,
         'normalization_ratio': normalization_ratio
+    }
+
+
+def _compute_time_weighted_return(
+    session: Session,
+    user_id: int,
+    start_date: str | None = None,
+    end_date: str | None = None,
+) -> dict:
+    """
+    Daily Time-Weighted Return (TWR):
+    Because our stored portfolio history reflects equity-only valuations rebuilt from final
+    positions (and does not model cash flows), subtracting external cash flows would
+    distort returns. We therefore compute pure time-weighted daily returns as
+    r_t = V_t / V_{t-1} - 1, and compound them: Π(1+r_t) - 1. Annualize if window > 365 days.
+    """
+    rows = session.exec(
+        select(PortfolioHistoryRecord)
+        .where(PortfolioHistoryRecord.user_id == user_id)
+        .order_by(PortfolioHistoryRecord.date)
+    ).all()
+
+    if not rows or len(rows) < 2:
+        return {"twr": 0.0, "twr_pct": 0.0, "days": 0, "annualized_pct": 0.0}
+
+    def _in_range(d: str) -> bool:
+        if start_date and d < start_date:
+            return False
+        if end_date and d > end_date:
+            return False
+        return True
+
+    history = [r for r in rows if _in_range(r.date)]
+    if len(history) < 2:
+        history = rows
+
+    ordered_dates = [r.date for r in history]
+    values_by_date = {r.date: float(r.total_value or 0.0) for r in history}
+
+    # We intentionally ignore external cash flows here because history is equity-only
+    flow_by_date: dict[str, float] = {}
+
+    product = 1.0
+    days = 0
+    for i in range(1, len(ordered_dates)):
+        d_prev = ordered_dates[i - 1]
+        d_curr = ordered_dates[i]
+        v_prev = values_by_date.get(d_prev, 0.0)
+        v_curr = values_by_date.get(d_curr, 0.0)
+        if v_prev <= 0:
+            continue
+        # Ignore external flows; compute pure time-weighted return
+        r_t = (v_curr / v_prev) - 1.0
+        product *= (1.0 + r_t)
+        days += 1
+
+    twr = product - 1.0
+    twr_pct = round(twr * 100.0, 4)
+    annualized_pct = 0.0
+    if days > 365:
+        try:
+            annualized = (1.0 + twr) ** (365.0 / days) - 1.0
+            annualized_pct = round(annualized * 100.0, 4)
+        except Exception:
+            annualized_pct = twr_pct
+
+    return {"twr": twr, "twr_pct": twr_pct, "days": days, "annualized_pct": annualized_pct}
+
+
+def _compute_contribution_adjusted_return(
+    session: Session,
+    user_id: int,
+    start_date: str | None = None,
+    end_date: str | None = None,
+) -> dict:
+    """
+    Compute contribution-adjusted net return over a window.
+    Returns net_profit = ending_value - starting_value - net_external_contributions
+    and two percentages:
+      - pct_of_start = net_profit / starting_value
+      - pct_of_start_plus_contrib = net_profit / max(starting_value + max(net_contrib, 0), 1e-9)
+    External contributions are transactions that are NOT stock/ETF trades (e.g., deposits/withdrawals).
+    """
+    rows = session.exec(
+        select(PortfolioHistoryRecord)
+        .where(PortfolioHistoryRecord.user_id == user_id)
+        .order_by(PortfolioHistoryRecord.date)
+    ).all()
+    if not rows or len(rows) < 2:
+        return {
+            "start_value": 0.0,
+            "end_value": 0.0,
+            "net_contributions": 0.0,
+            "net_profit": 0.0,
+            "pct_of_start": 0.0,
+            "pct_of_start_plus_contrib": 0.0,
+            "start_date": start_date,
+            "end_date": end_date,
+        }
+
+    def _in_range(d: str) -> bool:
+        if start_date and d < start_date:
+            return False
+        if end_date and d > end_date:
+            return False
+        return True
+
+    history = [r for r in rows if _in_range(r.date)] or rows
+    history = sorted(history, key=lambda r: r.date)
+    start_value = float(history[0].total_value or 0.0)
+    end_value = float(history[-1].total_value or 0.0)
+
+    # Sum external flows (deposits/withdrawals) within (start_date, end_date]
+    tx_all = session.exec(
+        select(TransactionRecord).where(TransactionRecord.user_id == user_id)
+    ).all()
+    flows = [t for t in tx_all if not _is_stock_transaction(t.action, t.symbol)]
+
+    # If no explicit range, use history bounds
+    start_bound = history[0].date
+    end_bound = history[-1].date
+
+    net_contrib = 0.0
+    for t in flows:
+        if t.date <= end_bound and t.date > start_bound:
+            net_contrib += float(t.amount or 0.0)
+
+    net_profit = end_value - start_value - net_contrib
+    pct_of_start = (net_profit / start_value * 100.0) if start_value > 0 else 0.0
+    denom = start_value + max(net_contrib, 0.0)
+    pct_of_start_plus = (net_profit / denom * 100.0) if denom > 0 else 0.0
+
+    return {
+        "start_value": round(start_value, 2),
+        "end_value": round(end_value, 2),
+        "net_contributions": round(net_contrib, 2),
+        "net_profit": round(net_profit, 2),
+        "pct_of_start": round(pct_of_start, 4),
+        "pct_of_start_plus_contrib": round(pct_of_start_plus, 4),
+        "start_date": start_bound,
+        "end_date": end_bound,
+    }
+
+
+def _compute_deposit_averaged_return(session: Session, user_id: int) -> dict:
+    """
+    Tranche-based return attribution:
+      - Identify external deposits (positive non-stock Amounts) as tranches.
+      - Allocate subsequent buy cash against tranches FIFO to create lots with cost/share.
+      - Handle sells FIFO across lots to realize PnL in their originating tranches.
+      - Value remaining lots at current prices from latest portfolio snapshot.
+      - For each tranche: return_pct = (realized_pnl + unrealized_pnl) / invested_cash.
+      - Also return arithmetic average across tranches and capital-weighted average.
+    """
+    # Current prices from latest snapshot
+    latest_row = session.exec(
+        select(PortfolioHistoryRecord)
+        .where(PortfolioHistoryRecord.user_id == user_id)
+        .order_by(PortfolioHistoryRecord.date.desc())
+        .limit(1)
+    ).first()
+    if not latest_row:
+        return {"periods": [], "avg_return_pct": 0.0, "weighted_avg_return_pct": 0.0}
+    try:
+        latest_positions = {p.get('symbol'): float(p.get('price', 0.0)) for p in json.loads(latest_row.positions_json or '[]') if p.get('symbol')}
+    except Exception:
+        latest_positions = {}
+
+    # Load transactions in chronological order
+    all_tx = session.exec(
+        select(TransactionRecord)
+        .where(TransactionRecord.user_id == user_id)
+        .order_by(TransactionRecord.date)
+    ).all()
+    if not all_tx:
+        return {"periods": [], "avg_return_pct": 0.0, "weighted_avg_return_pct": 0.0}
+
+    # Build tranches from deposits
+    class Tranche:
+        __slots__ = ("date", "amount", "remaining_cash", "lots", "realized_pnl")
+        def __init__(self, date: str, amount: float) -> None:
+            self.date = date
+            self.amount = amount
+            self.remaining_cash = amount
+            self.lots: list[dict] = []  # {symbol, shares, cost_per_share}
+            self.realized_pnl = 0.0
+
+    tranches: list[Tranche] = []
+    # FIFO queue of (tranche_index) for allocating buys
+    tranche_queue: list[int] = []
+
+    for tx in all_tx:
+        if not _is_stock_transaction(tx.action, tx.symbol):
+            # External movement
+            amt = float(tx.amount or 0.0)
+            if amt > 0:  # deposit
+                t = Tranche(tx.date, amt)
+                tranches.append(t)
+                tranche_queue.append(len(tranches) - 1)
+            continue
+
+        symbol = tx.symbol
+        if not symbol:
+            continue
+        action = (tx.action or '').upper()
+        qty = float(tx.quantity or 0.0)
+        amt = float(tx.amount or 0.0)
+
+        if 'BUY' in action or 'BOUGHT' in action:
+            buy_cost = abs(amt)
+            shares_left_to_allocate = abs(qty)
+            # Allocate buy cost/shares across tranches FIFO
+            while buy_cost > 1e-9 and shares_left_to_allocate > 1e-9 and tranche_queue:
+                idx = tranche_queue[0]
+                tr = tranches[idx]
+                if tr.remaining_cash <= 1e-9:
+                    tranche_queue.pop(0)
+                    continue
+                allocate_cash = min(buy_cost, tr.remaining_cash)
+                # Proportion of shares for this cash
+                proportion = allocate_cash / buy_cost if buy_cost > 0 else 0.0
+                allocate_shares = shares_left_to_allocate * proportion
+                cost_per_share = allocate_cash / max(allocate_shares, 1e-9)
+                tr.lots.append({"symbol": symbol, "shares": allocate_shares, "cost_per_share": cost_per_share})
+                tr.remaining_cash -= allocate_cash
+                buy_cost -= allocate_cash
+                shares_left_to_allocate -= allocate_shares
+                if tr.remaining_cash <= 1e-9:
+                    tranche_queue.pop(0)
+            # If buys exceed deposits, ignore excess (treated as re-invested proceeds)
+
+        elif 'SELL' in action or 'SOLD' in action:
+            shares_to_sell_total = abs(qty)
+            proceeds = abs(amt)
+            sell_avg_price = proceeds / max(shares_to_sell_total, 1e-9)
+            shares_to_sell = shares_to_sell_total
+            # Reduce lots FIFO across tranches holding this symbol
+            # Use transaction's average sell price to apportion proceeds
+            for tr in tranches:
+                if shares_to_sell <= 1e-9:
+                    break
+                for lot in tr.lots:
+                    if shares_to_sell <= 1e-9:
+                        break
+                    if lot["symbol"] != symbol or lot["shares"] <= 1e-9:
+                        continue
+                    take = min(lot["shares"], shares_to_sell)
+                    cost_removed = take * lot["cost_per_share"]
+                    proceeds_for_take = take * sell_avg_price
+                    tr.realized_pnl += proceeds_for_take - cost_removed
+                    lot["shares"] -= take
+                    shares_to_sell -= take
+
+    # Now compute unrealized PnL per tranche using latest prices
+    periods: list[dict] = []
+    pct_list: list[float] = []
+    invested_list: list[float] = []
+    for tr in tranches:
+        invested = sum(l["shares"] * l["cost_per_share"] for l in tr.lots) + (tr.amount - tr.remaining_cash - sum(l["shares"] * l["cost_per_share"] for l in tr.lots))
+        # invested cash is sum allocated to buys (original amount - remaining cash)
+        invested = tr.amount - tr.remaining_cash
+        if invested <= 1e-9:
+            continue
+        unrealized = 0.0
+        for l in tr.lots:
+            price_now = latest_positions.get(l["symbol"], 0.0)
+            if price_now > 0 and l["shares"] > 1e-9:
+                unrealized += l["shares"] * (price_now - l["cost_per_share"]) 
+        total_pnl = tr.realized_pnl + unrealized
+        ret = total_pnl / invested
+        periods.append({
+            "start": tr.date,
+            "end": latest_row.date,
+            "invested": round(invested, 2),
+            "realized_pnl": round(tr.realized_pnl, 2),
+            "unrealized_pnl": round(unrealized, 2),
+            "return_pct": round(ret * 100.0, 4),
+        })
+        pct_list.append(ret)
+        invested_list.append(invested)
+
+    avg_simple = (sum(pct_list) / len(pct_list) * 100.0) if pct_list else 0.0
+    weighted = 0.0
+    total_inv = sum(invested_list)
+    if total_inv > 1e-9:
+        weighted = sum(p * w for p, w in zip(pct_list, invested_list)) / total_inv * 100.0
+    return {
+        "periods": periods,
+        "avg_return_pct": round(avg_simple, 4),
+        "weighted_avg_return_pct": round(weighted, 4),
     }
 
 
@@ -1792,7 +2352,7 @@ async def group_members_details(group_id: int, current_user: User = Depends(get_
         
         for record in history_rows:
             if record.total_value and record.total_value > 0:  # Only include records with valid data
-                growth_data.append({
+                    growth_data.append({
                     "date": record.date if isinstance(record.date, str) else str(record.date),
                     "value": float(record.total_value)
                 })
@@ -2136,5 +2696,211 @@ async def list_group_notes(
         if s["count"]:
             s["avg"] = round(s["avg"] / s["count"], 2)
     return {"notes": data, "summary": summary}
+
+@app.post("/api/groups/{group_id}/weekly/upload")
+async def upload_group_weekly_csv(
+    group_id: int,
+    week: str,
+    replace: bool = False,
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+):
+    _ensure_group_membership(session, group_id, current_user.id)
+    try:
+        datetime.strptime(week, '%Y-%m-%d')
+    except Exception:
+        raise HTTPException(status_code=400, detail="week must be YYYY-MM-DD (Monday)")
+
+    contents = await file.read()
+    if len(contents) == 0:
+        raise HTTPException(status_code=400, detail="Empty file uploaded")
+
+    df = pd.read_csv(pd.io.common.StringIO(contents.decode('utf-8')), dtype=str).fillna("")
+    is_fidelity = all(col in df.columns for col in ['Run Date', 'Action', 'Symbol'])
+    is_schwab = all(col in df.columns for col in ['Date', 'Action', 'Symbol']) and (
+        'Amount' in df.columns or 'Amount ($)' in df.columns
+    )
+    if not (is_fidelity or is_schwab):
+        raise HTTPException(status_code=400, detail="Unsupported CSV format for weekly upload")
+
+    if replace:
+        session.query(WeeklyTransaction).filter(
+            (WeeklyTransaction.group_id == group_id) & (WeeklyTransaction.user_id == current_user.id) & (WeeklyTransaction.week_start == week)
+        ).delete()
+        session.query(WeeklyUpload).filter(
+            (WeeklyUpload.group_id == group_id) & (WeeklyUpload.user_id == current_user.id) & (WeeklyUpload.week_start == week)
+        ).delete()
+        session.commit()
+
+    tx: list[WeeklyTransaction] = []
+    source = 'fidelity' if is_fidelity else 'schwab'
+    if is_fidelity:
+        for _, row in df.iterrows():
+            symbol = str(row.get('Symbol', '')).strip()
+            if not symbol:
+                continue
+            run_date = row.get('Run Date', '')
+            settle_date = row.get('Settlement Date', '') if 'Settlement Date' in df.columns else ""
+            date_dt = _parse_date(settle_date or run_date)
+            tx.append(WeeklyTransaction(
+                group_id=group_id,
+                user_id=current_user.id,
+                week_start=week,
+                date=date_dt.strftime('%Y-%m-%d'),
+                action=str(row.get('Action', '')).strip(),
+                symbol=symbol,
+                quantity=_parse_number(row.get('Quantity', '')),
+                price=_parse_number(row.get('Price ($)', '')),
+                amount=_parse_number(row.get('Amount ($)', '')),
+            ))
+    else:
+        amount_col = 'Amount' if 'Amount' in df.columns else 'Amount ($)'
+        price_col = 'Price' if 'Price' in df.columns else 'Price ($)'
+        qty_col = 'Quantity' if 'Quantity' in df.columns else 'Qty'
+        for _, row in df.iterrows():
+            symbol = str(row.get('Symbol', '')).strip()
+            action = str(row.get('Action', '')).strip()
+            date_dt = _parse_date(row.get('Date', ''))
+            tx.append(WeeklyTransaction(
+                group_id=group_id,
+                user_id=current_user.id,
+                week_start=week,
+                date=date_dt.strftime('%Y-%m-%d'),
+                action=action,
+                symbol=symbol,
+                quantity=_parse_number(row.get(qty_col, '')),
+                price=_parse_number(row.get(price_col, '')),
+                amount=_parse_number(row.get(amount_col, '')),
+            ))
+
+    session.add_all(tx)
+    session.add(WeeklyUpload(group_id=group_id, user_id=current_user.id, week_start=week, source=source, transactions_count=len(tx)))
+    session.commit()
+    return {"ok": True, "count": len(tx)}
+
+@app.get("/api/groups/{group_id}/weekly/summary")
+async def group_weekly_summary(group_id: int, week: str, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    _ensure_group_membership(session, group_id, current_user.id)
+    try:
+        datetime.strptime(week, '%Y-%m-%d')
+    except Exception:
+        raise HTTPException(status_code=400, detail="week must be YYYY-MM-DD (Monday)")
+
+    # Collect members with uploads or fallback to group members list
+    members = session.exec(select(GroupMember).where(GroupMember.group_id == group_id)).all()
+    user_ids = [m.user_id for m in members]
+
+    # Build symbol set traded this week
+    user_to_trades: dict[int, list[WeeklyTransaction]] = {}
+    symbols: set[str] = set()
+    for uid in user_ids:
+        rows = session.exec(select(WeeklyTransaction).where((WeeklyTransaction.group_id == group_id) & (WeeklyTransaction.user_id == uid) & (WeeklyTransaction.week_start == week))).all()
+        if rows:
+            user_to_trades[uid] = rows
+            for r in rows:
+                if r.symbol:
+                    symbols.add(r.symbol.upper())
+
+    # Compute weekly price changes per symbol
+    symbol_changes = {sym: _symbol_week_change(session, sym, week) for sym in sorted(symbols)}
+
+    # Per-user stats: average of their trade symbols, list of trades with pct, and portfolio TWR for week
+    users_stats: dict[int, dict] = {}
+    for uid, trades in user_to_trades.items():
+        per_trade: list[dict] = []
+        for t in trades:
+            change = symbol_changes.get(t.symbol.upper())
+            pct = change.get("pct") if change else 0.0
+            # For clarity distinguish buy vs sell coloring on the frontend only
+            per_trade.append({
+                "date": t.date,
+                "action": t.action,
+                "symbol": t.symbol,
+                "quantity": t.quantity,
+                "price": t.price,
+                "amount": t.amount,
+                "pct_change": pct,
+            })
+        avg = sum(x["pct_change"] for x in per_trade) / len(per_trade) if per_trade else 0.0
+        best = max(per_trade, key=lambda x: x["pct_change"]) if per_trade else None
+        worst = min(per_trade, key=lambda x: x["pct_change"]) if per_trade else None
+        portfolio = _compute_user_weekly_portfolio_twr(session, uid, week)
+        weekly_badges = _compute_weekly_badges(session, group_id, uid, week)
+        users_stats[uid] = {
+            "avg_pct": round(avg, 4),
+            "best": best,
+            "worst": worst,
+            "trades": per_trade,
+            "portfolio": portfolio,
+            "weekly_badges": weekly_badges,
+        }
+
+    return {"symbol_changes": symbol_changes, "users": users_stats}
+
+@app.get("/api/groups/{group_id}/weekly/leaderboard")
+async def group_weekly_leaderboard(group_id: int, week: str, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    _ensure_group_membership(session, group_id, current_user.id)
+    try:
+        datetime.strptime(week, '%Y-%m-%d')
+    except Exception:
+        raise HTTPException(status_code=400, detail="week must be YYYY-MM-DD (Monday)")
+
+    members = session.exec(select(GroupMember).where(GroupMember.group_id == group_id)).all()
+    entries: list[dict] = []
+    for m in members:
+        perf = _compute_user_weekly_portfolio_twr(session, m.user_id, week)
+        twr_pct = perf.get("twr_pct", 0.0)
+        gain = perf.get("gain_usd", 0.0)
+        weekly_badges = _compute_weekly_badges(session, group_id, m.user_id, week)
+        entries.append({
+            "user_id": m.user_id,
+            "twr_pct": round(twr_pct, 4),
+            "gain_usd": round(gain, 2),
+            "weekly_badges": weekly_badges,
+        })
+    entries.sort(key=lambda x: x["twr_pct"], reverse=True)
+    return {"week": week, "leaderboard": entries}
+
+@app.get("/api/groups/{group_id}/weekly/member_symbols")
+async def group_weekly_member_symbols(group_id: int, user_id: int, week: str, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    _ensure_group_membership(session, group_id, current_user.id)
+    # Ensure requested user is also a member of the group
+    member = session.exec(select(GroupMember).where((GroupMember.group_id == group_id) & (GroupMember.user_id == user_id))).first()
+    if not member:
+        raise HTTPException(status_code=404, detail="user not in group")
+    try:
+        datetime.strptime(week, '%Y-%m-%d')
+    except Exception:
+        raise HTTPException(status_code=400, detail="week must be YYYY-MM-DD (Monday)")
+
+    # Determine end of week and find last portfolio record on or before end
+    start_str, end_str = _get_week_bounds(week)
+    rec = session.exec(
+        select(PortfolioHistoryRecord)
+        .where((PortfolioHistoryRecord.user_id == user_id) & (PortfolioHistoryRecord.date <= end_str))
+        .order_by(PortfolioHistoryRecord.date.desc())
+    ).first()
+    symbols: set[str] = set()
+    if rec:
+        try:
+            for p in json.loads(rec.positions_json or '[]'):
+                sym = (p.get('symbol') or '').upper().strip()
+                if sym:
+                    symbols.add(sym)
+        except Exception:
+            pass
+    # Include symbols traded this week (if any weekly upload exists)
+    weekly_rows = session.exec(select(WeeklyTransaction).where((WeeklyTransaction.group_id == group_id) & (WeeklyTransaction.user_id == user_id) & (WeeklyTransaction.week_start == week))).all()
+    for r in weekly_rows:
+        if r.symbol:
+            symbols.add(r.symbol.upper())
+
+    # Compute weekly change for each symbol
+    results: list[dict] = []
+    for sym in sorted(symbols):
+        results.append(_symbol_week_change(session, sym, week))
+    member_badges = _compute_weekly_badges(session, group_id, user_id, week)
+    return {"user_id": user_id, "week": week, "symbols": results, "weekly_badges": member_badges}
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -16,6 +16,7 @@ export default function GroupDetailPage() {
   const [loading, setLoading] = useState(true)
   const [group, setGroup] = useState<any>(null)
   const [leaderboard, setLeaderboard] = useState<any[]>([])
+  const [week, setWeek] = useState<string>("")
   const [error, setError] = useState<string | null>(null)
   const [memberWeights, setMemberWeights] = useState<Record<number, { symbol: string; weight: number; value?: number; shares?: number }[]>>({})
   const [badges, setBadges] = useState<Record<number, any>>({})
@@ -26,12 +27,27 @@ export default function GroupDetailPage() {
     if (!groupId) return
     (async () => {
       try {
+        // compute current week Monday (client-side)
+        const now = new Date()
+        const monday = new Date(now)
+        const day = monday.getDay()
+        const diff = (day === 0 ? -6 : 1) - day
+        monday.setDate(monday.getDate() + diff)
+        const wk = monday.toISOString().slice(0,10)
+        setWeek(wk)
+
         const [g, lb] = await Promise.all([
           groupApi.details(groupId),
-          groupApi.leaderboard(groupId),
+          groupApi.weeklyLeaderboard(groupId, wk),
         ])
         setGroup(g)
-        setLeaderboard(lb.leaderboard)
+        setLeaderboard((lb.leaderboard || []).map((row: any) => ({
+          user_id: row.user_id,
+          name: (g.members.find((m: any) => m.user_id === row.user_id)?.name) || `User ${row.user_id}`,
+          return_pct: row.twr_pct,
+          gain_usd: row.gain_usd,
+          badges: (row.weekly_badges?.badges || []).map((b: any) => `${b.emoji || ''} ${b.label}`.trim()),
+        })))
         
         // Auto-select the first member from leaderboard if none selected
         if (lb.leaderboard.length > 0 && !selectedUserId) {
@@ -91,13 +107,26 @@ export default function GroupDetailPage() {
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-slate-800">{group.name}</h2>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-slate-600">Timeframe:</span>
-                  <select className="px-3 py-1 border border-slate-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500">
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
-                    <option value="all-time">All Time</option>
-                  </select>
+                  <span className="text-sm text-slate-600">Week starting:</span>
+                  <input
+                    type="date"
+                    value={week}
+                    onChange={async (e) => {
+                      const w = e.target.value
+                      setWeek(w)
+                      try {
+                        const lb = await groupApi.weeklyLeaderboard(groupId, w)
+                        setLeaderboard((lb.leaderboard || []).map((row: any) => ({
+                          user_id: row.user_id,
+                          name: (group.members.find((m: any) => m.user_id === row.user_id)?.name) || `User ${row.user_id}`,
+                          return_pct: row.twr_pct,
+                          gain_usd: row.gain_usd,
+                          badges: (row.weekly_badges?.badges || []).map((b: any) => `${b.emoji || ''} ${b.label}`.trim()),
+                        })))
+                      } catch {}
+                    }}
+                    className="px-3 py-1 border border-slate-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
                 </div>
               </div>
             </div>
@@ -145,8 +174,11 @@ export default function GroupDetailPage() {
                           </div>
                         </div>
                         <div className="text-right shrink-0 ml-2">
+                          <div className="text-xs text-slate-500 mb-1 truncate max-w-[140px]">
+                            {(row.badges || []).join(' ')}
+                          </div>
                           <div className={`text-sm font-bold ${row.return_pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {row.return_pct >= 0 ? '+' : ''}{row.return_pct}%
+                            {row.return_pct >= 0 ? '+' : ''}{row.return_pct.toFixed(2)}%
                           </div>
                         </div>
                       </button>
@@ -161,7 +193,7 @@ export default function GroupDetailPage() {
         {/* Right Side - Member Portfolio */}
         <div className="col-span-8">
           <section className="bg-white rounded-xl border border-slate-200 shadow-sm h-full">
-            <MemberPanel groupId={groupId} userId={selectedUserId} />
+            <MemberPanel groupId={groupId} userId={selectedUserId} week={week} />
           </section>
         </div>
       </div>

@@ -36,7 +36,7 @@ export default function GroupMembersExplorer() {
       try {
         // We can reuse the social endpoints to get performance/weights
         const w = await socialApi.getWeights(selected)
-        setWeights(w.weights || [])
+        setWeights((w.weights || []).map(weight => ({ ...weight, value: 0, shares: 0 })))
         const gn = await fetch(`/api/groups/${groupId}/notes?user_id=${selected}`)
         const data = await gn.json()
         setNotes(data.notes || [])

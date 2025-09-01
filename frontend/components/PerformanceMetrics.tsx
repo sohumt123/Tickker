@@ -3,13 +3,14 @@
 import { useState, useEffect } from 'react'
 import { TrendingUp, TrendingDown, Target, Award, Calendar, BarChart3 } from 'lucide-react'
 import { portfolioApi } from '@/utils/api'
-import { PerformanceMetrics as PerformanceMetricsType } from '@/types'
+import { PerformanceMetrics as PerformanceMetricsType, TWRStats } from '@/types'
 import { formatPercentage, getPerformanceColor, getPerformanceBackground } from '@/utils/format'
 import LoadingSpinner from './LoadingSpinner'
 
 export default function PerformanceMetrics() {
   const [metrics, setMetrics] = useState<PerformanceMetricsType>({})
   const [loading, setLoading] = useState(true)
+  const [twr, setTwr] = useState<TWRStats | null>(null)
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function PerformanceMetrics() {
       setLoading(true)
       const result = await portfolioApi.getPerformanceMetrics()
       setMetrics(result.metrics || {})
+      if ((result as any).twr) setTwr((result as any).twr)
     } catch (err: any) {
       setError(err.message || 'Failed to load performance metrics')
     } finally {
@@ -112,7 +114,15 @@ export default function PerformanceMetrics() {
       <div className="card p-6">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Performance vs SPY</h2>
-          <p className="text-slate-600">Compare your portfolio returns against the S&P 500</p>
+          <p className="text-slate-600">Compare your portfolio returns against the S&P 500 using daily time-weighted return method</p>
+          {twr && (
+            <div className="mt-2 text-sm text-slate-600">
+              <span className="font-medium">Time-Weighted Return (cumulative):</span> {formatPercentage(twr.twr_pct)}
+              {twr.days > 365 && (
+                <span className="ml-3"><span className="font-medium">Annualized:</span> {formatPercentage(twr.annualized_pct)}</span>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
