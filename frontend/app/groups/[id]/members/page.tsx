@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { groupApi, socialApi } from '@/utils/api'
+import { groupApi, socialApi } from '@/utils/supabase-api'
 
 export default function GroupMembersExplorer() {
   const params = useParams() as { id?: string }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { groupApi } from '@/utils/api'
+import { groupApi } from '@/utils/supabase-api'
 import GroupComparisonChart from '@/components/GroupComparisonChart'
 import CopyButton from '@/components/CopyButton'
 import Avatar from '@/components/Avatar'
@@ -36,17 +36,23 @@ export default function GroupDetailPage() {
         const wk = monday.toISOString().slice(0,10)
         setWeek(wk)
 
-        const [g, lb] = await Promise.all([
+        const [g, lb, members] = await Promise.all([
           groupApi.details(groupId),
-          groupApi.weeklyLeaderboard(groupId, wk),
+          groupApi.leaderboard(groupId),
+          groupApi.members(groupId),
         ])
-        setGroup(g)
+        
+        // Add members info to group object
+        const groupWithMembers = { ...g, members: members.members || [] }
+        setGroup(groupWithMembers)
+        
+        // Process leaderboard data
         setLeaderboard((lb.leaderboard || []).map((row: any) => ({
           user_id: row.user_id,
-          name: (g.members.find((m: any) => m.user_id === row.user_id)?.name) || `User ${row.user_id}`,
-          return_pct: row.twr_pct,
-          gain_usd: row.gain_usd,
-          badges: (row.weekly_badges?.badges || []).map((b: any) => `${b.emoji || ''} ${b.label}`.trim()),
+          name: row.name || `User ${row.user_id}`,
+          return_pct: row.performance || 0,
+          gain_usd: row.portfolio_value || 0,
+          badges: [], // No badges for now
         })))
         
         // Auto-select the first member from leaderboard if none selected
@@ -54,20 +60,21 @@ export default function GroupDetailPage() {
           setSelectedUserId(lb.leaderboard[0].user_id)
         }
         
-        // Fetch group-scoped details (full visibility) and group comparison
-        const [details, comp] = await Promise.all([
-          groupApi.membersDetails(groupId),
-          groupApi.groupComparison(groupId),
-        ])
+        // For now, use simple mock data for weights and comparison
         const weightMap: Record<number, any[]> = {}
         const badgeMap: Record<number, any> = {}
-        details.members.forEach((m: any) => {
-          weightMap[m.user_id] = m.weights || []
-          badgeMap[m.user_id] = m.badges || {}
+        const comparisonMap: Record<number, any[]> = {}
+        
+        // Mock data for each member
+        members.members?.forEach((m: any) => {
+          weightMap[m.user_id] = [] // No weight data for now
+          badgeMap[m.user_id] = {} // No badges for now
+          comparisonMap[m.user_id] = [] // No comparison data for now
         })
+        
         setMemberWeights(weightMap)
         setBadges(badgeMap)
-        setComparison(comp.series || {})
+        setComparison(comparisonMap)
       } catch (e: any) {
         setError('Failed to load group')
       } finally {
@@ -115,13 +122,14 @@ export default function GroupDetailPage() {
                       const w = e.target.value
                       setWeek(w)
                       try {
-                        const lb = await groupApi.weeklyLeaderboard(groupId, w)
+                        // For now, just reload the basic leaderboard
+                        const lb = await groupApi.leaderboard(groupId)
                         setLeaderboard((lb.leaderboard || []).map((row: any) => ({
                           user_id: row.user_id,
-                          name: (group.members.find((m: any) => m.user_id === row.user_id)?.name) || `User ${row.user_id}`,
-                          return_pct: row.twr_pct,
-                          gain_usd: row.gain_usd,
-                          badges: (row.weekly_badges?.badges || []).map((b: any) => `${b.emoji || ''} ${b.label}`.trim()),
+                          name: row.name || `User ${row.user_id}`,
+                          return_pct: row.performance || 0,
+                          gain_usd: row.portfolio_value || 0,
+                          badges: [],
                         })))
                       } catch {}
                     }}

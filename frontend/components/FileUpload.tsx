@@ -3,7 +3,8 @@
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Upload, FileText, CheckCircle, AlertCircle } from 'lucide-react'
-import { portfolioApi } from '@/utils/api'
+import { portfolioApi } from '@/utils/supabase-api'
+import { useAuth } from '@/contexts/AuthContext'
 import LoadingSpinner from './LoadingSpinner'
 
 interface FileUploadProps {
@@ -11,6 +12,7 @@ interface FileUploadProps {
 }
 
 export default function FileUpload({ onSuccess }: FileUploadProps) {
+  const { user } = useAuth()
   const [uploading, setUploading] = useState(false)
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
@@ -19,6 +21,12 @@ export default function FileUpload({ onSuccess }: FileUploadProps) {
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0]
     if (!file) return
+
+    if (!user) {
+      setUploadStatus('error')
+      setErrorMessage('Please log in to upload your portfolio data')
+      return
+    }
 
     setUploadedFile(file)
     setUploading(true)
@@ -43,7 +51,7 @@ export default function FileUpload({ onSuccess }: FileUploadProps) {
     } finally {
       setUploading(false)
     }
-  }, [onSuccess])
+  }, [onSuccess, user])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

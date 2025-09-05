@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Users, Plus, KeyRound, RefreshCw } from 'lucide-react'
-import { authApi, groupApi } from '@/utils/api'
+import { authApi, groupApi } from '@/utils/supabase-api'
 
 type Group = { id: number; name: string; code: string; is_public?: boolean }
 
@@ -23,10 +23,13 @@ export default function GroupsBar() {
       await authApi.me()
       setLoggedIn(true)
       const res = await groupApi.mine()
-      setGroups(res.groups)
-    } catch {
+      setGroups(res.groups || [])
+      console.log('Groups loaded successfully:', res)
+    } catch (e: any) {
+      console.error('Error loading groups:', e)
       setLoggedIn(false)
       setGroups([])
+      setError(`Failed to load groups: ${e.message || 'Unknown error'}`)
     } finally {
       setLoading(false)
     }
@@ -41,11 +44,14 @@ export default function GroupsBar() {
     setBusy(true)
     setError(null)
     try {
-      await groupApi.create(createName.trim(), true)
+      console.log('Creating group:', createName.trim())
+      const result = await groupApi.create(createName.trim(), true)
+      console.log('Group created successfully:', result)
       setCreateName('')
       await load()
     } catch (e: any) {
-      setError('Could not create group')
+      console.error('Error creating group:', e)
+      setError(`Could not create group: ${e.message || 'Unknown error'}`)
     } finally {
       setBusy(false)
     }

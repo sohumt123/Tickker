@@ -3,18 +3,16 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
-import { Mail, Lock, User, Chrome, ArrowRight } from 'lucide-react'
+import { Mail, Lock, Chrome, ArrowRight } from 'lucide-react'
 import LoadingSpinner from '@/components/LoadingSpinner'
 
-export default function SignUpPage() {
-  const { user, signUp, signInWithGoogle, loading: authLoading } = useAuth()
+export default function LoginPage() {
+  const { user, signIn, signInWithGoogle, loading: authLoading } = useAuth()
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
 
   useEffect(() => {
     if (!authLoading && user) {
@@ -22,36 +20,31 @@ export default function SignUpPage() {
     }
   }, [user, authLoading, router])
 
-  const handleEmailSignUp = async (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || !password) return
 
     setLoading(true)
     setError('')
-    setSuccess('')
 
     try {
-      const { error } = await signUp(email, password, name)
+      const { error } = await signIn(email, password)
       if (error) {
         setError(error.message)
       } else {
-        setSuccess('Account created successfully! Redirecting to get you started...')
-        // Redirect to onboarding for new users
-        setTimeout(() => {
-          window.location.href = '/onboarding'
-        }, 2000)
+        // Let the app determine where to redirect based on user data
+        window.location.href = '/portfolio'
       }
     } catch (e: any) {
-      setError('Sign up failed. Please try again.')
+      setError('Login failed. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
-  const handleGoogleSignUp = async () => {
+  const handleGoogleLogin = async () => {
     setLoading(true)
     setError('')
-    setSuccess('')
 
     try {
       const { error } = await signInWithGoogle()
@@ -61,7 +54,7 @@ export default function SignUpPage() {
       }
       // Don't set loading to false here - redirect will handle it
     } catch (e: any) {
-      setError('Google sign up failed. Please try again.')
+      setError('Google login failed. Please try again.')
       setLoading(false)
     }
   }
@@ -87,8 +80,8 @@ export default function SignUpPage() {
             <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl font-bold text-white">T</span>
             </div>
-            <h1 className="text-2xl font-bold text-slate-800 mb-2">Create Account</h1>
-            <p className="text-slate-600">Get started with your Tickker portfolio</p>
+            <h1 className="text-2xl font-bold text-slate-800 mb-2">Welcome Back</h1>
+            <p className="text-slate-600">Sign in to your Tickker account</p>
           </div>
 
           {/* Error Message */}
@@ -98,22 +91,15 @@ export default function SignUpPage() {
             </div>
           )}
 
-          {/* Success Message */}
-          {success && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-green-600 text-sm">{success}</p>
-            </div>
-          )}
-
           {/* Google OAuth Button */}
           <button
-            onClick={handleGoogleSignUp}
+            onClick={handleGoogleLogin}
             disabled={loading}
             className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Chrome size={20} className="text-slate-600" />
             <span className="text-slate-700 font-medium">
-              {loading ? 'Creating account...' : 'Continue with Google'}
+              {loading ? 'Signing in...' : 'Continue with Google'}
             </span>
           </button>
 
@@ -123,26 +109,12 @@ export default function SignUpPage() {
               <div className="w-full border-t border-slate-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-slate-500">or create account with email</span>
+              <span className="px-2 bg-white text-slate-500">or continue with email</span>
             </div>
           </div>
 
           {/* Email/Password Form */}
-          <form onSubmit={handleEmailSignUp} className="space-y-4">
-            <div>
-              <div className="relative">
-                <User size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Full name (optional)"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  disabled={loading}
-                />
-              </div>
-            </div>
-
+          <form onSubmit={handleEmailLogin} className="space-y-4">
             <div>
               <div className="relative">
                 <Mail size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
@@ -163,12 +135,11 @@ export default function SignUpPage() {
                 <Lock size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                 <input
                   type="password"
-                  placeholder="Password (min. 6 characters)"
+                  placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   disabled={loading}
-                  minLength={6}
                   required
                 />
               </div>
@@ -183,22 +154,22 @@ export default function SignUpPage() {
                 <LoadingSpinner size="sm" />
               ) : (
                 <>
-                  <span>Create Account</span>
+                  <span>Sign In</span>
                   <ArrowRight size={18} />
                 </>
               )}
             </button>
           </form>
 
-          {/* Sign In Link */}
+          {/* Sign Up Link */}
           <div className="mt-6 text-center">
             <p className="text-slate-600">
-              Already have an account?{' '}
+              Don't have an account?{' '}
               <a 
-                href="/login" 
+                href="/signup" 
                 className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
               >
-                Sign in
+                Sign up
               </a>
             </p>
           </div>

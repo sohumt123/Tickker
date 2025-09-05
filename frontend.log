@@ -1,0 +1,4368 @@
+🚀 Starting Tickker Frontend (Next.js + Supabase)...
+✅ Node.js dependencies found.
+🔧 Ensuring @supabase/supabase-js is installed...
+🌟 Starting frontend development server on http://localhost:3000...
+   Press Ctrl+C to stop the server
+
+
+> stock-portfolio-frontend@1.0.0 dev
+> next dev
+
+   ▲ Next.js 14.0.3
+   - Local:        http://localhost:3000
+   - Environments: .env.local
+
+ ✓ Ready in 1083ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1839ms (1606 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 214ms (765 modules)
+ ✓ Compiled /login in 300ms (1598 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /signup in 115ms (1604 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+(node:63763) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Failed to proxy http://localhost:8000/api/auth/register AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ✓ Compiled /_error in 466ms (1770 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/auth/login AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ○ Compiling /portfolio ...
+ ✓ Compiled /portfolio in 510ms (1353 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /about in 138ms (1758 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled / in 75ms (898 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/portfolio/history AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/me AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/history AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/me AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ✓ Compiled /_error in 147ms (1790 modules)
+ ✓ Compiled /rag in 288ms (1782 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /groups in 464ms (1797 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /about in 133ms (905 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /portfolio in 90ms (910 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/portfolio/history AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/me AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/history AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/me AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ✓ Compiled /_error in 168ms (1810 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 489ms (1799 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 282ms (912 modules)
+ ⨯ app/login/page.tsx
+You cannot have two parallel pages that resolve to the same path. Please check /login/page and /(auth)/login/page. Refer to the route group docs for more information: https://nextjs.org/docs/app/building-your-application/routing/route-groups
+ ○ Compiling /login ...
+ ⨯ app/login/page.tsx
+You cannot have two parallel pages that resolve to the same path. Please check /login/page and /(auth)/login/page. Refer to the route group docs for more information: https://nextjs.org/docs/app/building-your-application/routing/route-groups
+ ⨯ app/login/page.tsx
+You cannot have two parallel pages that resolve to the same path. Please check /login/page and /(auth)/login/page. Refer to the route group docs for more information: https://nextjs.org/docs/app/building-your-application/routing/route-groups
+ ⨯ app/login/page.tsx
+You cannot have two parallel pages that resolve to the same path. Please check /login/page and /(auth)/login/page. Refer to the route group docs for more information: https://nextjs.org/docs/app/building-your-application/routing/route-groups
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ app/login/page.tsx
+You cannot have two parallel pages that resolve to the same path. Please check /login/page and /(auth)/login/page. Refer to the route group docs for more information: https://nextjs.org/docs/app/building-your-application/routing/route-groups
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⨯ app/login/page.tsx
+You cannot have two parallel pages that resolve to the same path. Please check /login/page and /(auth)/login/page. Refer to the route group docs for more information: https://nextjs.org/docs/app/building-your-application/routing/route-groups
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⨯ app/login/page.tsx
+You cannot have two parallel pages that resolve to the same path. Please check /login/page and /(auth)/login/page. Refer to the route group docs for more information: https://nextjs.org/docs/app/building-your-application/routing/route-groups
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⨯ app/login/page.tsx
+You cannot have two parallel pages that resolve to the same path. Please check /login/page and /(auth)/login/page. Refer to the route group docs for more information: https://nextjs.org/docs/app/building-your-application/routing/route-groups
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled /not-found in 497ms (1810 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ○ Compiling /login ...
+ ✓ Compiled /login in 583ms (1818 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /portfolio in 152ms (914 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 337ms (1823 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 117ms (1818 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/comparison/spy?baseline_date=2025-02-03 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /portfolio in 126ms (911 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/trades?limit=500 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/trades?limit=500 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/trades?limit=500 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/trades?limit=500 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 176ms (1794 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/trades?limit=500 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/trades?limit=500 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 250ms (921 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 335ms (1803 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 137ms (1803 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 119ms (1803 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⨯ ./app/portfolio/page.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/app/portfolio/page.tsx[0m:79:1]
+ [2m79[0m |   if (error) return <div className="p-6 text-red-600">{error}</div>
+ [2m80[0m | 
+ [2m81[0m |   return (
+ [2m82[0m |     <>
+    : [31;1m     ^[0m
+ [2m83[0m |       <div className="w-full py-6 space-y-6">
+ [2m84[0m |         {/* Header with Upload Button */}
+ [2m85[0m |         <div className="flex items-center justify-between mb-6">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/portfolio/page.tsx
+ ○ Compiling /not-found ...
+ ✓ Compiled /not-found in 561ms (1821 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 100ms (927 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 239ms (1821 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 136ms (1835 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 219ms (1835 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 126ms (1830 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 125ms (1832 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 133ms (1832 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 150ms (1832 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 120ms (1832 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled / in 289ms (916 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/trades?limit=500 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/trades?limit=500 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ○ Compiling /onboarding ...
+ ✓ Compiled /onboarding in 564ms (1836 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/upload AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/trades?limit=500 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/comparison/spy AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/performance/net AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/portfolio/trades?limit=500 AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+Failed to proxy http://localhost:8000/api/upload AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ✓ Compiled /not-found in 223ms (1837 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+Failed to proxy http://localhost:8000/api/upload AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1714:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8000
+        at createConnectionError (node:net:1677:14)
+        at afterConnectMultiple (node:net:1707:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -61,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8000
+    }
+  ]
+}
+ ✓ Compiled in 554ms (1823 modules)
+ ✓ Compiled in 131ms (1823 modules)
+ ✓ Compiled in 112ms (1823 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled / in 129ms (917 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 297ms (1837 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /groups in 240ms (922 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 276ms (1829 modules)
+ ✓ Compiled in 116ms (1829 modules)
+ ✓ Compiled in 546ms (1843 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 133ms (1843 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 235ms (1834 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /about in 142ms (923 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 157ms (929 modules)
+ ✓ Compiled in 81ms (929 modules)
+ ✓ Compiled in 65ms (929 modules)
+ ✓ Compiled in 391ms (1843 modules)
+ ✓ Compiled in 337ms (1677 modules)
+ ✓ Compiled in 64ms (884 modules)
+ ✓ Compiled in 93ms (884 modules)
+ ✓ Compiled in 66ms (884 modules)
+ ✓ Compiled in 92ms (884 modules)
+ ✓ Compiled in 70ms (884 modules)
+ ✓ Compiled in 76ms (884 modules)
+ ✓ Compiled in 346ms (1677 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 218ms (1663 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 117ms (1663 modules)
+ ✓ Compiled in 136ms (1663 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ○ Compiling /not-found ...
+ ✓ Compiled /not-found in 695ms (1668 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /about in 109ms (802 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 305ms (1674 modules)
+ ✓ Compiled in 120ms (1663 modules)
+ ✓ Compiled in 149ms (1663 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 254ms (1668 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ○ Compiling /groups/[id] ...
+ ✓ Compiled /groups/[id] in 593ms (1679 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 111ms (1676 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /login in 130ms (805 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 204ms (891 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 77ms (891 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 147ms (1679 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /rag in 211ms (801 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 220ms (1683 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /about in 118ms (810 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 525ms (1679 modules)
+ ✓ Compiled in 170ms (1674 modules)
+ ⨯ ./app/groups/page.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/app/groups/page.tsx[0m:76:1]
+ [2m76[0m |               performance: 0
+ [2m77[0m |             }
+ [2m78[0m |           }
+ [2m79[0m |         })
+    : [31;1m         ^[0m
+ [2m80[0m |       )
+ [2m81[0m |       setGroups(groupsWithDetails)
+ [2m82[0m |     } catch (e: any) {
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/groups/page.tsx
+ ⨯ ./app/groups/page.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/app/groups/page.tsx[0m:76:1]
+ [2m76[0m |               performance: 0
+ [2m77[0m |             }
+ [2m78[0m |           }
+ [2m79[0m |         })
+    : [31;1m         ^[0m
+ [2m80[0m |       )
+ [2m81[0m |       setGroups(groupsWithDetails)
+ [2m82[0m |     } catch (e: any) {
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/groups/page.tsx
+ ○ Compiling /not-found ...
+ ⨯ ./app/groups/page.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/app/groups/page.tsx[0m:74:1]
+ [2m74[0m |               performance: 0
+ [2m75[0m |             }
+ [2m76[0m |           }
+ [2m77[0m |         })
+    : [31;1m         ^[0m
+ [2m78[0m |       )
+ [2m79[0m |       setGroups(groupsWithDetails)
+ [2m80[0m |     } catch (e: any) {
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/groups/page.tsx
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⨯ ./app/groups/page.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/app/groups/page.tsx[0m:74:1]
+ [2m74[0m |               performance: 0
+ [2m75[0m |             }
+ [2m76[0m |           }
+ [2m77[0m |         })
+    : [31;1m         ^[0m
+ [2m78[0m |       )
+ [2m79[0m |       setGroups(groupsWithDetails)
+ [2m80[0m |     } catch (e: any) {
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/groups/page.tsx
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled /not-found in 171ms (887 modules)
+ ⨯ ./app/groups/page.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/app/groups/page.tsx[0m:74:1]
+ [2m74[0m |               performance: 0
+ [2m75[0m |             }
+ [2m76[0m |           }
+ [2m77[0m |         })
+    : [31;1m         ^[0m
+ [2m78[0m |       )
+ [2m79[0m |       setGroups(groupsWithDetails)
+ [2m80[0m |     } catch (e: any) {
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/groups/page.tsx
+ ○ Compiling /not-found ...
+ ✓ Compiled /not-found in 499ms (1679 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 76ms (893 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⨯ ./utils/supabase-api.ts
+Error: 
+  [31mx[0m the name `supabase` is defined multiple times
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/utils/supabase-api.ts[0m:1:1]
+ [2m 1[0m | import { supabase } from '@/lib/supabase'
+    : [31;1m         ^^^^|^^^[0m
+    :              [31;1m`-- [31;1mprevious definition of `supabase` here[0m[0m
+ [2m 2[0m | import { 
+ [2m 3[0m |   Transaction, 
+ [2m 4[0m |   PortfolioHistory, 
+ [2m 5[0m |   PortfolioWeight, 
+ [2m 6[0m |   PerformanceMetrics, 
+ [2m 7[0m |   ComparisonData,
+ [2m 8[0m |   StockSearchResult,
+ [2m 9[0m |   ApiResponse 
+ [2m10[0m | } from '@/types'
+ [2m11[0m | import { createClient } from '@supabase/supabase-js'
+ [2m12[0m | 
+ [2m13[0m | // Supabase configuration
+ [2m14[0m | const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+ [2m15[0m | const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+ [2m16[0m | const supabase = createClient(supabaseUrl, supabaseAnonKey)
+    : [33;1m      ^^^^|^^^[0m
+    :           [33;1m`-- [33;1m`supabase` redefined here[0m[0m
+ [2m17[0m | 
+ [2m18[0m | // Backend API base URL
+ [2m19[0m | const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
+    `----
+
+Import trace for requested module:
+./utils/supabase-api.ts
+./app/page.tsx
+ ⨯ ./utils/supabase-api.ts
+Error: 
+  [31mx[0m the name `supabase` is defined multiple times
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/utils/supabase-api.ts[0m:1:1]
+ [2m 1[0m | import { supabase } from '@/lib/supabase'
+    : [31;1m         ^^^^|^^^[0m
+    :              [31;1m`-- [31;1mprevious definition of `supabase` here[0m[0m
+ [2m 2[0m | import { 
+ [2m 3[0m |   Transaction, 
+ [2m 4[0m |   PortfolioHistory, 
+ [2m 5[0m |   PortfolioWeight, 
+ [2m 6[0m |   PerformanceMetrics, 
+ [2m 7[0m |   ComparisonData,
+ [2m 8[0m |   StockSearchResult,
+ [2m 9[0m |   ApiResponse 
+ [2m10[0m | } from '@/types'
+ [2m11[0m | import { createClient } from '@supabase/supabase-js'
+ [2m12[0m | 
+ [2m13[0m | // Supabase configuration
+ [2m14[0m | const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+ [2m15[0m | const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+ [2m16[0m | const supabase = createClient(supabaseUrl, supabaseAnonKey)
+    : [33;1m      ^^^^|^^^[0m
+    :           [33;1m`-- [33;1m`supabase` redefined here[0m[0m
+ [2m17[0m | 
+ [2m18[0m | // Backend API base URL
+ [2m19[0m | const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
+    `----
+
+Import trace for requested module:
+./utils/supabase-api.ts
+./app/page.tsx
+ ⨯ ./utils/supabase-api.ts
+Error: 
+  [31mx[0m the name `supabase` is defined multiple times
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/utils/supabase-api.ts[0m:1:1]
+ [2m 1[0m | import { supabase } from '@/lib/supabase'
+    : [31;1m         ^^^^|^^^[0m
+    :              [31;1m`-- [31;1mprevious definition of `supabase` here[0m[0m
+ [2m 2[0m | import { 
+ [2m 3[0m |   Transaction, 
+ [2m 4[0m |   PortfolioHistory, 
+ [2m 5[0m |   PortfolioWeight, 
+ [2m 6[0m |   PerformanceMetrics, 
+ [2m 7[0m |   ComparisonData,
+ [2m 8[0m |   StockSearchResult,
+ [2m 9[0m |   ApiResponse 
+ [2m10[0m | } from '@/types'
+ [2m11[0m | import { createClient } from '@supabase/supabase-js'
+ [2m12[0m | 
+ [2m13[0m | // Supabase configuration
+ [2m14[0m | const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+ [2m15[0m | const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+ [2m16[0m | const supabase = createClient(supabaseUrl, supabaseAnonKey)
+    : [33;1m      ^^^^|^^^[0m
+    :           [33;1m`-- [33;1m`supabase` redefined here[0m[0m
+ [2m17[0m | 
+ [2m18[0m | // Backend API base URL
+ [2m19[0m | const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
+    `----
+
+Import trace for requested module:
+./utils/supabase-api.ts
+./app/page.tsx
+ ⨯ ./utils/supabase-api.ts
+Error: 
+  [31mx[0m the name `supabase` is defined multiple times
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/utils/supabase-api.ts[0m:1:1]
+ [2m 1[0m | import { supabase } from '@/lib/supabase'
+    : [31;1m         ^^^^|^^^[0m
+    :              [31;1m`-- [31;1mprevious definition of `supabase` here[0m[0m
+ [2m 2[0m | import { 
+ [2m 3[0m |   Transaction, 
+ [2m 4[0m |   PortfolioHistory, 
+ [2m 5[0m |   PortfolioWeight, 
+ [2m 6[0m |   PerformanceMetrics, 
+ [2m 7[0m |   ComparisonData,
+ [2m 8[0m |   StockSearchResult,
+ [2m 9[0m |   ApiResponse 
+ [2m10[0m | } from '@/types'
+ [2m11[0m | import { createClient } from '@supabase/supabase-js'
+ [2m12[0m | 
+ [2m13[0m | // Supabase configuration
+ [2m14[0m | const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+ [2m15[0m | const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+ [2m16[0m | const supabase = createClient(supabaseUrl, supabaseAnonKey)
+    : [33;1m      ^^^^|^^^[0m
+    :           [33;1m`-- [33;1m`supabase` redefined here[0m[0m
+ [2m17[0m | 
+ [2m18[0m | // Backend API base URL
+ [2m19[0m | const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
+    `----
+
+Import trace for requested module:
+./utils/supabase-api.ts
+./app/page.tsx
+ ⨯ ./utils/supabase-api.ts
+Error: 
+  [31mx[0m the name `supabase` is defined multiple times
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/utils/supabase-api.ts[0m:1:1]
+ [2m 1[0m | import { supabase } from '@/lib/supabase'
+    : [31;1m         ^^^^|^^^[0m
+    :              [31;1m`-- [31;1mprevious definition of `supabase` here[0m[0m
+ [2m 2[0m | import { 
+ [2m 3[0m |   Transaction, 
+ [2m 4[0m |   PortfolioHistory, 
+ [2m 5[0m |   PortfolioWeight, 
+ [2m 6[0m |   PerformanceMetrics, 
+ [2m 7[0m |   ComparisonData,
+ [2m 8[0m |   StockSearchResult,
+ [2m 9[0m |   ApiResponse 
+ [2m10[0m | } from '@/types'
+ [2m11[0m | import { createClient } from '@supabase/supabase-js'
+ [2m12[0m | 
+ [2m13[0m | // Supabase configuration
+ [2m14[0m | const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+ [2m15[0m | const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+ [2m16[0m | const supabase = createClient(supabaseUrl, supabaseAnonKey)
+    : [33;1m      ^^^^|^^^[0m
+    :           [33;1m`-- [33;1m`supabase` redefined here[0m[0m
+ [2m17[0m | 
+ [2m18[0m | // Backend API base URL
+ [2m19[0m | const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
+    `----
+
+Import trace for requested module:
+./utils/supabase-api.ts
+./app/page.tsx
+ ⨯ ./utils/supabase-api.ts
+Error: 
+  [31mx[0m the name `supabase` is defined multiple times
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/utils/supabase-api.ts[0m:1:1]
+ [2m 1[0m | import { supabase } from '@/lib/supabase'
+    : [31;1m         ^^^^|^^^[0m
+    :              [31;1m`-- [31;1mprevious definition of `supabase` here[0m[0m
+ [2m 2[0m | import { 
+ [2m 3[0m |   Transaction, 
+ [2m 4[0m |   PortfolioHistory, 
+ [2m 5[0m |   PortfolioWeight, 
+ [2m 6[0m |   PerformanceMetrics, 
+ [2m 7[0m |   ComparisonData,
+ [2m 8[0m |   StockSearchResult,
+ [2m 9[0m |   ApiResponse 
+ [2m10[0m | } from '@/types'
+ [2m11[0m | import { createClient } from '@supabase/supabase-js'
+ [2m12[0m | 
+ [2m13[0m | // Supabase configuration
+ [2m14[0m | const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+ [2m15[0m | const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+ [2m16[0m | const supabase = createClient(supabaseUrl, supabaseAnonKey)
+    : [33;1m      ^^^^|^^^[0m
+    :           [33;1m`-- [33;1m`supabase` redefined here[0m[0m
+ [2m17[0m | 
+ [2m18[0m | // Backend API base URL
+ [2m19[0m | const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
+    `----
+
+Import trace for requested module:
+./utils/supabase-api.ts
+./app/page.tsx
+ ⨯ ./utils/supabase-api.ts
+Error: 
+  [31mx[0m the name `supabase` is defined multiple times
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/utils/supabase-api.ts[0m:1:1]
+ [2m 1[0m | import { supabase } from '@/lib/supabase'
+    : [31;1m         ^^^^|^^^[0m
+    :              [31;1m`-- [31;1mprevious definition of `supabase` here[0m[0m
+ [2m 2[0m | import { 
+ [2m 3[0m |   Transaction, 
+ [2m 4[0m |   PortfolioHistory, 
+ [2m 5[0m |   PortfolioWeight, 
+ [2m 6[0m |   PerformanceMetrics, 
+ [2m 7[0m |   ComparisonData,
+ [2m 8[0m |   StockSearchResult,
+ [2m 9[0m |   ApiResponse 
+ [2m10[0m | } from '@/types'
+ [2m11[0m | import { createClient } from '@supabase/supabase-js'
+ [2m12[0m | 
+ [2m13[0m | // Supabase configuration
+ [2m14[0m | const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+ [2m15[0m | const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+ [2m16[0m | const supabase = createClient(supabaseUrl, supabaseAnonKey)
+    : [33;1m      ^^^^|^^^[0m
+    :           [33;1m`-- [33;1m`supabase` redefined here[0m[0m
+ [2m17[0m | 
+ [2m18[0m | // Backend API base URL (fallback to localhost if not defined)
+ [2m19[0m | const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
+    `----
+
+Import trace for requested module:
+./utils/supabase-api.ts
+./app/page.tsx
+ ○ Compiling /not-found ...
+ ✓ Compiled /not-found in 860ms (1679 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 312ms (1674 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 290ms (1679 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled in 337ms (1674 modules)
+ ✓ Compiled in 154ms (1674 modules)
+ ✓ Compiled in 152ms (1674 modules)
+ ✓ Compiled in 170ms (1674 modules)
+ ✓ Compiled in 141ms (1674 modules)
+ ✓ Compiled in 121ms (1674 modules)
+ ✓ Compiled in 119ms (1674 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 460ms (1679 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⨯ ./app/groups/[id]/page.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/app/groups/[id]/page.tsx[0m:54:1]
+ [2m54[0m |           gain_usd: row.portfolio_value || 0,
+ [2m55[0m |           badges: [], // No badges for now
+ [2m56[0m |         }))),
+ [2m57[0m |         })))
+    : [31;1m        ^[0m
+ [2m58[0m |         
+ [2m59[0m |         // Auto-select the first member from leaderboard if none selected
+ [2m60[0m |         if (lb.leaderboard.length > 0 && !selectedUserId) {
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/groups/[id]/page.tsx
+ ⨯ ./app/groups/[id]/page.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/app/groups/[id]/page.tsx[0m:54:1]
+ [2m54[0m |           gain_usd: row.portfolio_value || 0,
+ [2m55[0m |           badges: [], // No badges for now
+ [2m56[0m |         }))),
+ [2m57[0m |         })))
+    : [31;1m        ^[0m
+ [2m58[0m |         
+ [2m59[0m |         // Auto-select the first member from leaderboard if none selected
+ [2m60[0m |         if (lb.leaderboard.length > 0 && !selectedUserId) {
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/groups/[id]/page.tsx
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ○ Compiling /not-found ...
+ ⨯ ./app/groups/[id]/page.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/sohumtrivedi/Downloads/VSCode/Tickker/Tickker/frontend/app/groups/[id]/page.tsx[0m:54:1]
+ [2m54[0m |           gain_usd: row.portfolio_value || 0,
+ [2m55[0m |           badges: [], // No badges for now
+ [2m56[0m |         }))),
+ [2m57[0m |         })))
+    : [31;1m        ^[0m
+ [2m58[0m |         
+ [2m59[0m |         // Auto-select the first member from leaderboard if none selected
+ [2m60[0m |         if (lb.leaderboard.length > 0 && !selectedUserId) {
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/groups/[id]/page.tsx
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled /not-found in 118ms (887 modules)
+ ✓ Compiled in 80ms (887 modules)
+ ○ Compiling /not-found ...
+ ✓ Compiled /not-found in 620ms (1679 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /rag in 184ms (801 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /not-found in 285ms (1683 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ✓ Compiled /about in 166ms (810 modules)
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+ ⚠ Unsupported metadata viewport is configured in metadata export. Please move it to viewport export instead.
+[?25h

@@ -13,7 +13,7 @@ import {
   Legend,
   Filler,
 } from 'chart.js'
-import { portfolioApi } from '@/utils/api'
+import { portfolioApi } from '@/utils/supabase-api'
 import { ComparisonData, CustomSymbol, TWRStats } from '@/types'
 import { formatCurrency, formatDate } from '@/utils/format'
 import LoadingSpinner from './LoadingSpinner'

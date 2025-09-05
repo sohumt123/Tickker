@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from 'react'
-import { portfolioApi } from '@/utils/api'
+import { portfolioApi } from '@/utils/supabase-api'
 import { Transaction } from '@/types'
 import { formatCurrency, formatDate } from '@/utils/format'
 

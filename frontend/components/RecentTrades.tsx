@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ArrowUpRight, ArrowDownRight, Calendar, DollarSign, Hash } from 'lucide-react'
-import { portfolioApi } from '@/utils/api'
+import { portfolioApi } from '@/utils/supabase-api'
 import { Transaction } from '@/types'
 import { formatCurrency, formatDate, formatNumber, getPerformanceColor } from '@/utils/format'
 import LoadingSpinner from './LoadingSpinner'

@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
-import { portfolioApi } from '@/utils/api'
+import { portfolioApi } from '@/utils/supabase-api'
 import { PortfolioWeight } from '@/types'
 import { formatCurrency, formatPercentage, formatWeight } from '@/utils/format'
 import LoadingSpinner from './LoadingSpinner'

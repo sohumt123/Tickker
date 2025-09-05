@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { groupApi } from '@/utils/api'
+import { groupApi } from '@/utils/supabase-api'
 
 export default function GroupNotes({ groupId }: { groupId: number }) {
   const [symbol, setSymbol] = useState('AAPL')

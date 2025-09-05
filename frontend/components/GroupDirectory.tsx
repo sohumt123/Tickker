@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { groupApi } from '@/utils/api'
+import { groupApi } from '@/utils/supabase-api'
 
 export default function GroupDirectory({ groupId, onSelect }: { groupId: number; onSelect: (userId: number) => void }) {
   const [members, setMembers] = useState<{ user_id: number; name: string }[]>([])

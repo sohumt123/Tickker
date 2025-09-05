@@ -1,0 +1,175 @@
+🚀 Starting Tickker Backend (Supabase)...
+🔧 Activating virtual environment...
+📦 Installing dependencies...
+
+[notice] A new release of pip is available: 25.1.1 -> 25.2
+[notice] To update, run: pip install --upgrade pip
+🌟 Starting Supabase backend on http://localhost:8000...
+   Press Ctrl+C to stop the server
+
+INFO:     Started server process [90271]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🚀 Starting Tickker Backend with Supabase...
+🎯 Backend ready for connections!
+INFO:     127.0.0.1:61951 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62128 - "OPTIONS /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62130 - "OPTIONS /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62131 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62128 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62131 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62130 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62133 - "OPTIONS /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62128 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62133 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62130 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62131 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62133 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62133 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62130 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62131 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62133 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62130 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62131 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62128 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62130 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62131 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62176 - "OPTIONS /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62177 - "OPTIONS /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62178 - "OPTIONS /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62176 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62177 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62178 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62176 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62178 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62177 - "OPTIONS /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62182 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62177 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62176 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62187 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62187 - "OPTIONS /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62177 - "OPTIONS /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62176 - "OPTIONS /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62187 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62187 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62205 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62177 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62208 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62212 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62219 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62221 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62222 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62219 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62221 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62222 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62230 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62221 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62222 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62302 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62303 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62304 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62302 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62303 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62304 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62312 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62303 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62304 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62361 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62363 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62364 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62361 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62364 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62363 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62372 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62364 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62363 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62908 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62910 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62911 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62908 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62911 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62910 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62919 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62911 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62910 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62020 - "OPTIONS /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62023 - "OPTIONS /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62024 - "OPTIONS /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62039 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62024 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62020 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62039 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62024 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62024 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62020 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62023 - "OPTIONS /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62039 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62023 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62571 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62573 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62571 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62575 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62573 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62575 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62571 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62573 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62575 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62883 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62885 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62886 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62883 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62886 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62885 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62894 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62886 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62885 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62886 - "OPTIONS /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62885 - "OPTIONS /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62894 - "OPTIONS /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62883 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62883 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62937 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62883 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62940 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62944 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63231 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63240 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63277 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63286 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63277 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63277 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63301 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63277 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63305 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63309 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63277 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63277 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63330 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63277 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63334 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63338 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63507 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63512 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64135 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64144 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64183 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64184 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64185 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64183 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64185 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64184 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64197 - "GET /api/comparison/spy?baseline_date=2025-01-31 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64184 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64185 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64185 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64185 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64215 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64185 - "GET /api/groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64223 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64227 - "GET /api/groups/1/leaderboard HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [90271]
+./run-backend.sh: line 38: 90271 Terminated: 15          python supabase_main.py

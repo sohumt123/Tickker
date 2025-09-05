@@ -1,29 +1,71 @@
 "use client"
 
 import { useEffect, useMemo, useState } from 'react'
-import { portfolioApi } from '@/utils/api'
+import { useAuth } from '@/contexts/AuthContext'
+import { portfolioApi } from '@/utils/supabase-api'
+import { useRouter } from 'next/navigation'
+import { Upload, RefreshCw } from 'lucide-react'
 import GrowthChart from '@/components/GrowthChart'
 import Dividends from '@/components/Dividends'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import CSVUploadModal from '@/components/CSVUploadModal'
+import { usePortfolioData } from '@/hooks/usePortfolioData'
 
 type Weight = { symbol: string; weight: number; value: number; shares: number; gain_loss_pct?: number }
 
 export default function PortfolioPage() {
+  const { user, loading: authLoading } = useAuth()
+  const { hasData, loading: dataLoading, refreshDataCheck } = usePortfolioData()
+  const router = useRouter()
   const [weights, setWeights] = useState<Weight[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showUploadModal, setShowUploadModal] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
+
+  const loadPortfolioData = async () => {
+    if (!user) return
+    
+    try {
+      setError(null)
+      const res = await portfolioApi.getPortfolioWeights()
+      setWeights(res.weights || [])
+    } catch (e: any) {
+      setError('Failed to load portfolio')
+    } finally {
+      setLoading(false)
+      setRefreshing(false)
+    }
+  }
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await portfolioApi.getPortfolioWeights()
-        setWeights(res.weights || [])
-      } catch (e: any) {
-        setError('Failed to load portfolio')
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [])
+    if (!authLoading && !user) {
+      router.push('/login')
+      return
+    }
+    
+    if (!user) return
+    loadPortfolioData()
+  }, [user, authLoading, router])
+
+  // Redirect to onboarding if user has no portfolio data
+  useEffect(() => {
+    if (!dataLoading && hasData === false && user) {
+      router.push('/onboarding')
+    }
+  }, [hasData, dataLoading, user, router])
+
+  const handleCSVUploadSuccess = () => {
+    // Refresh portfolio data after successful upload
+    setRefreshing(true)
+    loadPortfolioData()
+    refreshDataCheck() // Also refresh the data check
+  }
+
+  const handleRefreshData = () => {
+    setRefreshing(true)
+    loadPortfolioData()
+  }
 
   const totals = useMemo(() => {
     const totalValue = weights.reduce((s, w) => s + (w.value || 0), 0)
@@ -32,12 +74,50 @@ export default function PortfolioPage() {
     return { totalValue, totalPLPct }
   }, [weights])
 
-  if (loading) return <div className="p-6">Loading portfolio...</div>
+  if (authLoading || loading || dataLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <LoadingSpinner size="lg" />
+      </div>
+    )
+  }
+
+  if (!user) {
+    return null // This will redirect to login
+  }
+
   if (error) return <div className="p-6 text-red-600">{error}</div>
 
   return (
-    <div className="w-full py-6 space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <>
+      <div className="w-full py-6 space-y-6">
+        {/* Header with Upload Button */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-800">Portfolio</h1>
+            <p className="text-slate-600">Track your investment performance and analytics</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleRefreshData}
+              disabled={refreshing}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Refresh portfolio data"
+            >
+              <RefreshCw size={18} className={refreshing ? 'animate-spin' : ''} />
+              {refreshing ? 'Refreshing...' : 'Refresh'}
+            </button>
+            <button
+              onClick={() => setShowUploadModal(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              <Upload size={18} />
+              Update CSV
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="card p-5">
           <div className="text-sm text-slate-500">Total Value</div>
           <div className="text-2xl font-bold mt-1 dark:text-slate-100">{totals.totalValue.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</div>
@@ -111,7 +191,17 @@ export default function PortfolioPage() {
       </div>
 
       <Dividends />
-    </div>
+      </div>
+
+      {/* CSV Upload Modal */}
+      <CSVUploadModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onSuccess={handleCSVUploadSuccess}
+        title="Update Portfolio Data"
+        subtitle="Upload your latest Fidelity CSV to refresh your portfolio analytics"
+      />
+    </>
   )
 }
 

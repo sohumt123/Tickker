@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { TrendingUp, TrendingDown, Target, Award, Calendar, BarChart3 } from 'lucide-react'
-import { portfolioApi } from '@/utils/api'
+import { portfolioApi } from '@/utils/supabase-api'
 import { PerformanceMetrics as PerformanceMetricsType, TWRStats } from '@/types'
 import { formatPercentage, getPerformanceColor, getPerformanceBackground } from '@/utils/format'
 import LoadingSpinner from './LoadingSpinner'

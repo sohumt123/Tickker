@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { socialApi } from '@/utils/api'
+import { socialApi } from '@/utils/supabase-api'
 
 export default function SocialPanel() {
   const [feed, setFeed] = useState<any[]>([])

@@ -3,32 +3,35 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Upload, TrendingUp, Users, BarChart3, Target, Zap, Shield, ArrowRight, Play, Star, CheckCircle } from 'lucide-react'
-import api, { authApi, groupApi } from '@/utils/api'
+import { useAuth } from '@/contexts/AuthContext'
+import { portfolioApi } from '@/utils/supabase-api'
 import FileUpload from '@/components/FileUpload'
 import GrowthChart from '@/components/GrowthChart'
 import PortfolioWeights from '@/components/PortfolioWeights'
 import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function Home() {
+  const { user, loading: authLoading } = useAuth()
   const [hasData, setHasData] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [activeTab, setActiveTab] = useState('overview')
-  const [user, setUser] = useState<any>(null)
   const { scrollYProgress } = useScroll()
   
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '200%'])
 
   useEffect(() => {
-    checkExistingData()
-    // Attempt to fetch current user if token exists
-    authApi.me().then(setUser).catch(() => setUser(null))
-  }, [])
+    if (user) {
+      checkExistingData()
+    }
+  }, [user])
 
   const checkExistingData = async () => {
+    if (!user) return
+    
     try {
-      const { data } = await api.get('/portfolio/history')
-      if (data.history && data.history.length > 0) {
+      const result = await portfolioApi.getPortfolioHistory()
+      if (result.history && result.history.length > 0) {
         setHasData(true)
       }
     } catch (error) {
@@ -41,6 +44,15 @@ export default function Home() {
     setActiveTab('overview')
     // Force a page refresh to ensure all components reload with new data
     window.location.reload()
+  }
+
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    )
   }
 
   // If user is authenticated and has data, show the dashboard

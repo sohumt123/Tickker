@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { groupApi, socialApi } from '@/utils/api'
+import { groupApi, socialApi } from '@/utils/supabase-api'
 import { TrendingUp, Award } from 'lucide-react'
 import GroupNotes from './GroupNotes'
 
@@ -33,7 +33,11 @@ export default function MemberPanel({ groupId, userId, week }: { groupId: number
     (async () => {
       setLoading(true)
       try {
-        const details = await groupApi.membersDetails(groupId)
+        const [members, leaderboard] = await Promise.all([
+          groupApi.members(groupId),
+          groupApi.leaderboard(groupId)
+        ])
+        const details = { members: members.members || [] }
         const member = details.members.find((m: any) => m.user_id === userId)
         if (member) {
           setMemberData({
@@ -56,7 +60,8 @@ export default function MemberPanel({ groupId, userId, week }: { groupId: number
     if (!userId || !week) return
     (async () => {
       try {
-        const res = await groupApi.weeklyMemberSymbols(groupId, userId, week)
+        // For now, use empty data since weeklyMemberSymbols doesn't exist
+        const res = { symbols: [], weekly_badges: { badges: [] } }
         const list = (res.symbols || []).map((s: any) => ({ symbol: s.symbol, pct: s.pct }))
         setWeeklySymbols(list)
         const wb = (res as any).weekly_badges?.badges || []

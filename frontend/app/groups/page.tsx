@@ -1,8 +1,11 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { groupApi } from '@/utils/api'
+import { useAuth } from '@/contexts/AuthContext'
+import { groupApi } from '@/utils/supabase-api'
+import { useRouter } from 'next/navigation'
 import { Users, Plus, TrendingUp, Award, Copy, ArrowRight, Sparkles } from 'lucide-react'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 interface Group {
   id: number
@@ -15,6 +18,8 @@ interface Group {
 }
 
 export default function GroupsPage() {
+  const { user, loading: authLoading } = useAuth()
+  const router = useRouter()
   const [groups, setGroups] = useState<Group[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -23,41 +28,65 @@ export default function GroupsPage() {
   const [creating, setCreating] = useState(false)
 
   useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/login')
+      return
+    }
+    
+    if (!user) return
+
     loadGroups()
-  }, [])
+  }, [user, authLoading, router])
 
   const loadGroups = async () => {
     try {
       const res = await groupApi.mine()
-      // Get real group data with member counts and performance
-      const groupsWithDetails = await Promise.all(
-        res.groups.map(async (g: any) => {
-          try {
-            // Get group details and leaderboard for each group
-            const [details, leaderboard] = await Promise.all([
-              groupApi.details(g.id),
-              groupApi.leaderboard(g.id)
-            ])
-            
-            return {
-              ...g,
-              member_count: details.members?.length || 0,
-              top_performer: leaderboard.leaderboard?.[0]?.name || 'No data',
-              performance: leaderboard.leaderboard?.[0]?.return_pct || 0
-            }
-          } catch {
-            // Fallback if individual group requests fail
-            return {
-              ...g,
-              member_count: 0,
-              top_performer: 'No data',
-              performance: 0
-            }
-          }
-        })
-      )
+      
+      // Start with basic group data to show something immediately
+      const groupsWithDetails = res.groups.map((g: any) => ({
+        ...g,
+        member_count: 1,
+        top_performer: 'Loading...',
+        performance: 0
+      }))
+      
       setGroups(groupsWithDetails)
+      
+      // Try to enhance each group individually, handling errors gracefully
+      for (let i = 0; i < groupsWithDetails.length; i++) {
+        const group = groupsWithDetails[i]
+        
+        try {
+          // Only call leaderboard API to avoid the 500 error from details API
+          const leaderboard = await groupApi.leaderboard(group.id)
+          if (leaderboard?.leaderboard?.length > 0) {
+            group.top_performer = leaderboard.leaderboard[0].name || 'No data'
+            group.performance = leaderboard.leaderboard[0].performance || 0
+          } else {
+            group.top_performer = 'No data'
+          }
+        } catch (err) {
+          console.log(`Failed to get leaderboard for group ${group.id}:`, err)
+          group.top_performer = 'No data'
+        }
+        
+        // Try to get member count separately
+        try {
+          const members = await groupApi.members(group.id)
+          if (members?.members?.length > 0) {
+            group.member_count = members.members.length
+          }
+        } catch (err) {
+          console.log(`Failed to get members for group ${group.id}:`, err)
+          // Keep default of 1
+        }
+      }
+      
+      // Update with enhanced data
+      setGroups([...groupsWithDetails])
+      
     } catch (e: any) {
+      console.error('Failed to load groups:', e)
       setError('Failed to load groups')
     } finally {
       setLoading(false)
@@ -85,17 +114,19 @@ export default function GroupsPage() {
     navigator.clipboard.writeText(code)
   }
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-            <Users className="text-white" size={24} />
-          </div>
-          <p className="text-slate-600 text-lg">Loading your groups...</p>
+          <LoadingSpinner size="lg" />
+          <p className="text-slate-600 text-lg mt-4">Loading your groups...</p>
         </div>
       </div>
     )
+  }
+
+  if (!user) {
+    return null // This will redirect to login
   }
 
   if (error) {
@@ -141,7 +172,7 @@ export default function GroupsPage() {
                 Create Group
               </button>
               <a 
-                href="/" 
+                href="/portfolio" 
                 className="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
               >
                 ← Back
@@ -285,7 +316,3 @@ export default function GroupsPage() {
     </div>
   )
 }
-
-
-
-

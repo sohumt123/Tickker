@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Search, Plus, X } from 'lucide-react'
-import { portfolioApi } from '@/utils/api'
+import { portfolioApi } from '@/utils/supabase-api'
 import { StockSearchResult, CustomSymbol } from '@/types'
 
 interface StockSearchBarProps {

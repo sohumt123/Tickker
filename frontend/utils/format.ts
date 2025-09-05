@@ -8,14 +8,23 @@ export const formatCurrency = (amount: number): string => {
 }
 
 export const formatPercentage = (percentage: number, decimals: number = 2): string => {
+  if (percentage === null || percentage === undefined || isNaN(percentage)) {
+    return '0.00%'
+  }
   return `${percentage >= 0 ? '+' : ''}${percentage.toFixed(decimals)}%`
 }
 
 export const formatWeight = (weight: number, decimals: number = 2): string => {
+  if (weight === null || weight === undefined || isNaN(weight)) {
+    return '0.00%'
+  }
   return `${weight.toFixed(decimals)}%`
 }
 
 export const formatNumber = (num: number, decimals: number = 0): string => {
+  if (num === null || num === undefined || isNaN(num)) {
+    return '0'
+  }
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,

@@ -1,0 +1,387 @@
+INFO:     Started server process [79290]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🚀 Starting Tickker Backend with Supabase...
+🎯 Backend ready for connections!
+INFO:     127.0.0.1:54455 - "HEAD /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54618 - "GET /api/portfolio/weights HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54739 - "OPTIONS /api/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54739 - "POST /api/upload HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [79290]
+INFO:     Started server process [79825]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🚀 Starting Tickker Backend with Supabase...
+🎯 Backend ready for connections!
+INFO:     127.0.0.1:54908 - "HEAD /docs HTTP/1.1" 200 OK
+Available columns: ['Run Date', 'Account', 'Account Number', 'Action', 'Symbol', 'Description', 'Type', 'Quantity', 'Price ($)', 'Commission ($)', 'Fees ($)', 'Accrued Interest ($)', 'Amount ($)', 'Settlement Date']
+First few rows:      Run Date     Account  ... Amount ($) Settlement Date
+0  07/31/2025  Individual  ...     468.20      08/01/2025
+1  07/31/2025  Individual  ...     517.01      08/01/2025
+2  07/31/2025  Individual  ...       2.65             NaN
+3  07/22/2025  Individual  ...     174.50      07/23/2025
+4  07/21/2025  Individual  ...    -330.04      07/22/2025
+
+[5 rows x 14 columns]
+INFO:     127.0.0.1:54945 - "POST /api/upload HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [79825]
+INFO:     Started server process [80176]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🚀 Starting Tickker Backend with Supabase...
+🎯 Backend ready for connections!
+INFO:     127.0.0.1:55202 - "HEAD /docs HTTP/1.1" 200 OK
+Available columns: ['Run Date', 'Account', 'Account Number', 'Action', 'Symbol', 'Description', 'Type', 'Quantity', 'Price ($)', 'Commission ($)', 'Fees ($)', 'Accrued Interest ($)', 'Amount ($)', 'Settlement Date']
+First few rows after filtering:      Run Date     Account  ... Amount ($) Settlement Date
+0  07/31/2025  Individual  ...     468.20      08/01/2025
+1  07/31/2025  Individual  ...     517.01      08/01/2025
+2  07/31/2025  Individual  ...       2.65             NaN
+3  07/22/2025  Individual  ...     174.50      07/23/2025
+4  07/21/2025  Individual  ...    -330.04      07/22/2025
+
+[5 rows x 14 columns]
+Total rows: 37
+INFO:     127.0.0.1:55264 - "POST /api/upload HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:55417 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55421 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55422 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55423 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:55429 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55431 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55433 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55434 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [80176]
+INFO:     Started server process [80480]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🚀 Starting Tickker Backend with Supabase...
+🎯 Backend ready for connections!
+INFO:     127.0.0.1:55464 - "HEAD /docs HTTP/1.1" 200 OK
+$QTUM: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$CIBR: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$OPEN: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$TSLA: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$IBBQ: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$ICLN: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$HIMS: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$CIFR: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$AMD: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$IREN: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$QQQ: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$FXAIX: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$GOOGL: possibly delisted; no price data found  (1d 2025-08-03 -> 2025-08-04)
+$QTUM: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$CIBR: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$OPEN: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$TSLA: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$IBBQ: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$ICLN: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$HIMS: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$CIFR: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$AMD: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$IREN: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$QQQ: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$FXAIX: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$GOOGL: possibly delisted; no price data found  (1d 2025-08-09 -> 2025-08-10)
+$QTUM: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$CIBR: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$OPEN: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$TSLA: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$IBBQ: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$ICLN: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$HIMS: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$CIFR: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$AMD: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$IREN: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$QQQ: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$FXAIX: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$GOOGL: possibly delisted; no price data found  (1d 2025-08-10 -> 2025-08-11)
+$QTUM: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$CIBR: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$OPEN: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$TSLA: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$IBBQ: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$ICLN: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$HIMS: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$CIFR: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$AMD: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$IREN: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$QQQ: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$FXAIX: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$GOOGL: possibly delisted; no price data found  (1d 2025-08-16 -> 2025-08-17)
+$QTUM: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$CIBR: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$OPEN: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$TSLA: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$IBBQ: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$ICLN: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$HIMS: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$CIFR: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$AMD: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$IREN: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$QQQ: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$FXAIX: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$GOOGL: possibly delisted; no price data found  (1d 2025-08-17 -> 2025-08-18)
+$QTUM: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$CIBR: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$OPEN: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$TSLA: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$IBBQ: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$ICLN: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$HIMS: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$CIFR: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$AMD: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$IREN: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$QQQ: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$FXAIX: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$GOOGL: possibly delisted; no price data found  (1d 2025-08-23 -> 2025-08-24)
+$QTUM: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$CIBR: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$OPEN: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$TSLA: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$IBBQ: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$ICLN: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$HIMS: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$CIFR: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$AMD: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$IREN: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$QQQ: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$FXAIX: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$GOOGL: possibly delisted; no price data found  (1d 2025-08-24 -> 2025-08-25)
+$FXAIX: possibly delisted; no price data found  (1d 2025-08-30 -> 2025-08-31)
+$QTUM: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$CIBR: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$OPEN: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$TSLA: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$IBBQ: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$ICLN: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$HIMS: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$CIFR: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$AMD: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$IREN: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$QQQ: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$FXAIX: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$GOOGL: possibly delisted; no price data found  (1d 2025-08-31 -> 2025-09-01)
+$QTUM: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$CIBR: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$OPEN: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$TSLA: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$IBBQ: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$ICLN: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$HIMS: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$CIFR: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$AMD: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$IREN: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$QQQ: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$FXAIX: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+$GOOGL: possibly delisted; no price data found  (1d 2025-09-01 -> 2025-09-02)
+Available columns: ['Run Date', 'Account', 'Account Number', 'Action', 'Symbol', 'Description', 'Type', 'Quantity', 'Price ($)', 'Commission ($)', 'Fees ($)', 'Accrued Interest ($)', 'Amount ($)', 'Settlement Date']
+First few rows after filtering:      Run Date     Account  ... Amount ($) Settlement Date
+0  07/31/2025  Individual  ...     468.20      08/01/2025
+1  07/31/2025  Individual  ...     517.01      08/01/2025
+2  07/31/2025  Individual  ...       2.65             NaN
+3  07/22/2025  Individual  ...     174.50      07/23/2025
+4  07/21/2025  Individual  ...    -330.04      07/22/2025
+
+[5 rows x 14 columns]
+Total rows: 37
+Created profile for user 7789ef01-3f4d-4b52-8c49-ebbc5d55ecb2
+INFO:     127.0.0.1:55494 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55595 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55598 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55601 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55602 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:55607 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55610 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55611 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55613 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:55639 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55640 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55642 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55653 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55654 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55655 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55672 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55673 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55674 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55675 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:55682 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55684 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:55685 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55687 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55966 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55969 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55971 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55972 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:55979 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55981 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55983 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55984 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:56167 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56170 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56173 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56174 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:56179 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56182 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56184 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56185 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:56228 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56231 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56233 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56234 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:56240 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56244 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56245 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56246 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:56447 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56449 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56453 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56454 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:56459 - "GET /api/comparison/spy HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56462 - "GET /api/performance HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56463 - "GET /api/performance/net HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56465 - "GET /api/portfolio/trades?limit=500 HTTP/1.1" 401 Unauthorized
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [80480]
+INFO:     Started server process [82553]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🚀 Starting Tickker Backend with Supabase...
+🎯 Backend ready for connections!
+INFO:     127.0.0.1:57782 - "HEAD /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57837 - "GET /api/performance HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:57983 - "OPTIONS /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57984 - "OPTIONS /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57986 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57983 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57986 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57983 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58024 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58025 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58024 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58025 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58065 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58066 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58065 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58066 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58096 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58097 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58096 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58097 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58107 - "OPTIONS /api/upload HTTP/1.1" 200 OK
+Available columns: ['Run Date', 'Account', 'Account Number', 'Action', 'Symbol', 'Description', 'Type', 'Quantity', 'Price ($)', 'Commission ($)', 'Fees ($)', 'Accrued Interest ($)', 'Amount ($)', 'Settlement Date']
+First few rows after filtering:      Run Date     Account  ... Amount ($) Settlement Date
+0  07/31/2025  Individual  ...     468.20      08/01/2025
+1  07/31/2025  Individual  ...     517.01      08/01/2025
+2  07/31/2025  Individual  ...       2.65             NaN
+3  07/22/2025  Individual  ...     174.50      07/23/2025
+4  07/21/2025  Individual  ...    -330.04      07/22/2025
+
+[5 rows x 14 columns]
+Total rows: 37
+Date range corrected: 2024-01-31 to 2024-07-31
+INFO:     127.0.0.1:58107 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58107 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58109 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58107 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58109 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58256 - "OPTIONS /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58257 - "OPTIONS /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58259 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58256 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58259 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58256 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58272 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58274 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58272 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58274 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58287 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58288 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58287 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58288 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58975 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59002 - "GET /api/performance HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:59033 - "GET /api/comparison/spy HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:59066 - "GET /api/performance/net HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:59133 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59134 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59133 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59134 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59151 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59152 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59153 - "OPTIONS /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59151 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59156 - "OPTIONS /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59152 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59153 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59152 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59179 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59182 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59183 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59179 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59182 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59183 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59295 - "OPTIONS /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59297 - "OPTIONS /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59298 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59295 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59297 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59298 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59300 - "OPTIONS /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59295 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59300 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59303 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59373 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59303 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59374 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59373 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59374 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59389 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59391 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59392 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59389 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59391 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59392 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59392 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59391 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59389 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59391 - "OPTIONS /api/upload HTTP/1.1" 200 OK
+Available columns: ['Run Date', 'Account', 'Account Number', 'Action', 'Symbol', 'Description', 'Type', 'Quantity', 'Price ($)', 'Commission ($)', 'Fees ($)', 'Accrued Interest ($)', 'Amount ($)', 'Settlement Date']
+First few rows after filtering:      Run Date     Account  ... Amount ($) Settlement Date
+0  07/31/2025  Individual  ...     468.20      08/01/2025
+1  07/31/2025  Individual  ...     517.01      08/01/2025
+2  07/31/2025  Individual  ...       2.65             NaN
+3  07/22/2025  Individual  ...     174.50      07/23/2025
+4  07/21/2025  Individual  ...    -330.04      07/22/2025
+
+[5 rows x 14 columns]
+Total rows: 37
+Date range corrected: 2024-01-31 to 2024-07-31
+INFO:     127.0.0.1:59389 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59389 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59553 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59554 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59389 - "GET /api/comparison/spy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59554 - "GET /api/performance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59553 - "GET /api/performance/net HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60591 - "GET / HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [82553]
